@@ -24,10 +24,13 @@ mtspecPy installer
     02110-1301, USA.
 """
 
-from numpy.distutils.ccompiler import get_default_compiler
-from setuptools import find_packages
-from numpy.distutils.core import setup
-from numpy.distutils.extension import Extension
+from distutils.ccompiler import get_default_compiler
+from setuptools import find_packages, setup
+from setuptools.extension import Extension
+#from numpy.distutils.ccompiler import get_default_compiler
+#from setuptools import find_packages
+#from numpy.distutils.core import setup
+#from numpy.distutils.extension import Extension
 import os, re
 import platform
 import sys
