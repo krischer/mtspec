@@ -25,6 +25,8 @@ mtspecPy installer
 """
 
 from distutils.ccompiler import get_default_compiler
+from distutils.unixccompiler import UnixCCompiler
+from distutils.errors import DistutilsExecError
 from setuptools import find_packages, setup
 from setuptools.extension import Extension
 #from numpy.distutils.ccompiler import get_default_compiler
@@ -38,6 +40,22 @@ import sys
 
 VERSION = open(os.path.join("VERSION.txt")).read()
 
+# Monkey patch Compiler for Unix, Linux and darwin
+UnixCCompiler.src_extensions.append(".f90")
+def _compile(self, obj, src, ext, cc_args, extra_postargs, pp_opts):
+        compiler_so = self.compiler_so
+        if sys.platform == 'darwin':
+            compiler_so = _darwin_compiler_fixup(compiler_so, cc_args + extra_postargs)
+        if ext == ".f90":
+            if sys.platform == 'darwin' or sys.platform == 'linux2':
+                compiler_so = ["gfortran"]
+                cc_args = ["-O", "-fPIC", "-c"]
+        try:
+            self.spawn(compiler_so + cc_args + [src, '-o', obj] +
+                       extra_postargs)
+        except DistutilsExecError, msg:
+            raise CompileError, msg
+UnixCCompiler._compile = _compile
 
 # hack to prevent build_ext from trying to append "init" to the export symbols
 class finallist(list):
@@ -56,7 +74,7 @@ class MyExtension(Extension):
 
 macros = []
 extra_link_args = []
-extra_compile_args = ["-O -fPIC"]
+extra_compile_args = []
 if platform.system() == "Windows":
     macros.append(('WIN32', '1'))
     # disable some warnings for MSVC
