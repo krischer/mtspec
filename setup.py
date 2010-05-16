@@ -32,7 +32,7 @@ import platform
 import sys
 
 
-#VERSION = open(os.path.join("mtspec", "VERSION.txt")).read()
+VERSION = open(os.path.join("VERSION.txt")).read()
 
 
 # hack to prevent build_ext from trying to append "init" to the export symbols
