@@ -3,7 +3,7 @@
 import numpy as np
 import ctypes as C
 import matplotlib.pyplot as plt
-lib = C.CDLL('./mtspec.so')
+lib = C.CDLL('../lib/mtspec.so')
 
 def mtspec(data, df, tbp=3.5, kspec=5, nf=-1):
     """

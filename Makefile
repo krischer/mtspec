@@ -159,8 +159,13 @@ SPOBJS =  $(SPFILES:.f90=.o)
 # $? means all dependencies (OBJS) that are new.
 # $< similar to $? but just on dependency rules (%.o : %.f90)
 
-mtspec.so : $(PLOBJS) $(SPOBJS) $(MTOBJS)
+lib/mtspec.so : $(PLOBJS) $(SPOBJS) $(MTOBJS)
 	$(FC) $(FFLAGS) -shared -o mtspec.so -lfftw3 -llapack -L/usr/lib *.o
+	mv mtspec.so lib/
+
+lib/mtspec.dylib : $(PLOBJS) $(SPOBJS) $(MTOBJS)
+	$(FC) $(FFLAGS) -shared -o mtspec.dylib -lfftw3 -llapack -L/usr/lib *.o
+	mv mtspec.dylib lib/
 
 all : libraries programs
 
