@@ -97,7 +97,7 @@ lib = MyExtension('mtspec',
                            src + 'mt_deconv.f90', src + 'mt_transfer.f90',
                            src + 'qi_nsqi.f90', src + 'cumtrapz.f90',
                            src + 'spec_gram.f90', src + 'spec_gram2.f90',
-                           src + 'qi_nsqi2.f90', src + 'qi_nsqi3.f90',
+                           src + 'qi_nsqi2.f90', src + 'qi_nsqi3.f90'],
                   #export_symbols=symbols,
                   extra_link_args=extra_link_args,
                   extra_compile_args=extra_compile_args)
