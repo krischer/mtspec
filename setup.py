@@ -24,10 +24,11 @@ mtspecPy installer
     02110-1301, USA.
 """
 
-from distutils.ccompiler import get_default_compiler
-from setuptools import find_packages, setup
-from setuptools.extension import Extension
-import os
+from numpy.distutils.ccompiler import get_default_compiler
+from setuptools import find_packages
+from numpy.distutils.core import setup
+from numpy.distutils.extension import Extension
+import os, re
 import platform
 import sys
 
@@ -40,14 +41,19 @@ class finallist(list):
     def append(self, object):
         return
 
+#fortran = re.compile(r'.*[.](f90|f95|f77|for|ftn|f|pyf)\Z',re.I).match
 class MyExtension(Extension):
     def __init__(self, *args, **kwargs):
         Extension.__init__(self, *args, **kwargs)
         self.export_symbols = finallist(self.export_symbols)
+    #def has_fortran(self):
+    #    for source in self.sources:
+    #        if fortran(source):
+    #            return True
 
 macros = []
 extra_link_args = []
-extra_compile_args = []
+extra_compile_args = ["-O -fPIC"]
 if platform.system() == "Windows":
     macros.append(('WIN32', '1'))
     # disable some warnings for MSVC
@@ -73,7 +79,11 @@ sp_src = os.path.join('splines', 'src') + os.sep
 #           if s.strip() != '']
 lib = MyExtension('mtspec',
                   define_macros=macros,
-                  libraries=[],
+                  library_dirs=['/usr/bin'],
+                  libraries=['lapack', 'fftw3'],
+                  extra_link_args=extra_link_args,
+                  extra_compile_args=extra_compile_args,
+                  #export_symbols=symbols,
                   sources=[gp_src + 'gplot.f90', gp_src + 'gnuplot.f90',
                            sp_src + 'spline_cubic.f90',
                            src + 'spectra.f90', src + 'mtspec.f90',
@@ -97,10 +107,7 @@ lib = MyExtension('mtspec',
                            src + 'mt_deconv.f90', src + 'mt_transfer.f90',
                            src + 'qi_nsqi.f90', src + 'cumtrapz.f90',
                            src + 'spec_gram.f90', src + 'spec_gram2.f90',
-                           src + 'qi_nsqi2.f90', src + 'qi_nsqi3.f90'],
-                  #export_symbols=symbols,
-                  extra_link_args=extra_link_args,
-                  extra_compile_args=extra_compile_args)
+                           src + 'qi_nsqi2.f90', src + 'qi_nsqi3.f90'])
 
 
 setup(
@@ -139,8 +146,8 @@ setup(
     ],
     download_url="https://svn.geophysik.uni-muenchen.de" + \
         "/svn/mtspecpy/trunk#egg=mtspecpy-dev",
-    ext_package='mtspecpy.lib',
+    ext_package='lib',
     ext_modules=[lib],
-    include_package_data=True,
-    test_suite="mtspecpy.tests.suite"
+    #include_package_data=True,
+    #test_suite="mtspecpy.tests.suite"
 )
