@@ -52,7 +52,7 @@ subroutine sine_psd (npts,dt,x,ntap,ntimes,fact,nf,freq,spec,kopt,err)
 !  INPUT
 !
 !	npts		integer number of points in time series
-! 	dt		real, sampling rate of time series
+! 	dt		real, sampling spacing of time series
 !	x(npts)		real, data vector
 !	ntap		integer, constant number of tapers (def = 0)
 !	ntimes		integer, number of iterations to perform
@@ -267,7 +267,7 @@ subroutine sine_psd_short (npts,dt,x,ntap,ntimes,fact,nf,spec)
 !  INPUT
 !
 !	npts		integer number of points in time series
-! 	dt		real, sampling rate of time series
+! 	dt		real, sampling spacing of time series
 !	x(npts)		real, data vector
 !	ntap		integer, constant number of tapers (def = 0)
 !	ntimes		integer, number of iterations to perform

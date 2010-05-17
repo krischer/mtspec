@@ -47,7 +47,7 @@
 !  Input
 !
 !	npts	-	integer number of data points in x
-!	dt	- 	real, sampling rate of the time series x
+!	dt	- 	real, sampling spacing of the time series x
 !	x(npts) -	real, data vector
 !	tbp	-	real, the time-bandwidth product (NW)
 !	kspec	- 	integer, number of tapers to use in the estimation
