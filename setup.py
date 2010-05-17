@@ -29,16 +29,12 @@ from distutils.unixccompiler import UnixCCompiler
 from distutils.errors import DistutilsExecError
 from setuptools import find_packages, setup
 from setuptools.extension import Extension
-#from numpy.distutils.ccompiler import get_default_compiler
-#from setuptools import find_packages
-#from numpy.distutils.core import setup
-#from numpy.distutils.extension import Extension
 import os, re
 import platform
 import sys
 
 
-VERSION = open(os.path.join("VERSION.txt")).read()
+VERSION = open(os.path.join("mtspec", "VERSION.txt")).read()
 
 # Monkey patch Compiler for Unix, Linux and darwin
 UnixCCompiler.src_extensions.append(".f90")
@@ -62,15 +58,10 @@ class finallist(list):
     def append(self, object):
         return
 
-#fortran = re.compile(r'.*[.](f90|f95|f77|for|ftn|f|pyf)\Z',re.I).match
 class MyExtension(Extension):
     def __init__(self, *args, **kwargs):
         Extension.__init__(self, *args, **kwargs)
         self.export_symbols = finallist(self.export_symbols)
-    #def has_fortran(self):
-    #    for source in self.sources:
-    #        if fortran(source):
-    #            return True
 
 macros = []
 extra_link_args = []
@@ -93,9 +84,9 @@ if platform.system() == "Windows":
             extra_compile_args.append("/fp:strict")
 
 
-src = os.path.join('src', 'mtspec', 'src') + os.sep
-gp_src = os.path.join('src', 'gplot', 'src') + os.sep
-sp_src = os.path.join('src', 'splines', 'src') + os.sep
+src = os.path.join('mtspec', 'src', 'mtspec', 'src') + os.sep
+gp_src = os.path.join('mtspec', 'src', 'gplot', 'src') + os.sep
+sp_src = os.path.join('mtspec', 'src', 'splines', 'src') + os.sep
 #symbols = [s.strip() for s in open(src + 'mtspec.def', 'r').readlines()[2:]
 #           if s.strip() != '']
 lib = MyExtension('mtspec',
@@ -135,9 +126,9 @@ setup(
     name='mtspec',
     version=VERSION,
     description="Python Bindings for multitaper `mtspec` f90 Library",
-    long_description="""Python (ctypes) Bindings for multitaper mtspec f90
-    Library
+    long_description="""Python Bindings for multitaper Library
 
+    Python ctypes bindings for multitaper `mtspec` f90 Library.
     For more information see:
     https://svn.geophysik.uni-muenchen.de/trac/mtspecpy/wiki
     """,
@@ -167,7 +158,7 @@ setup(
     ],
     download_url="https://svn.geophysik.uni-muenchen.de" + \
         "/svn/mtspecpy/trunk#egg=mtspecpy-dev",
-    ext_package='lib',
+    ext_package='mtspec.lib',
     ext_modules=[lib],
     #include_package_data=True,
     #test_suite="mtspecpy.tests.suite"
