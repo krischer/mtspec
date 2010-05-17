@@ -26,15 +26,17 @@ plt.plot(st[0].data)
 plt.xlim(0, len(st[0].data))
 
 plt.subplot(312)
-plt.fill_between(freq, spec + jackknife[:, 1]/2.0, spec - jackknife[:, 1]/2.0,
-                 color = 'grey')
+plt.plot(freq, spec + jackknife[:, 1]/2.0)
+plt.plot(freq, spec - jackknife[:, 1]/2.0)
+#plt.fill_between(freq, spec + jackknife[:, 1]/2.0, spec - jackknife[:, 1]/2.0,
+#                 color = 'grey')
 plt.plot(freq, spec)
 plt.title('Adaptive Multitaper Spectrum')
 plt.yscale('log')
 plt.xlim(freq[0], freq[-1])
 
 plt.subplot(313)
-plt.fill_between(sinefreq, sine_errors[:, 0], sine_errors[:, 1], color = 'grey')
+#plt.fill_between(sinefreq, sine_errors[:, 0], sine_errors[:, 1], color = 'grey')
 plt.plot(sinefreq, sinespec)
 plt.plot(sinefreq, sine_errors[:, 0], '--', color = 'red')
 plt.plot(sinefreq, sine_errors[:, 1], '--', color = 'red')

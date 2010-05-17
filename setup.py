@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-mtspecPy installer
+mtspecPy installer. Added -L option for parsing static library path.
 
 :copyright:
     Lion Krischer, Moritz Beyreuther and German A. Prieto
@@ -33,6 +33,15 @@ import os, re
 import platform
 import sys
 
+# Manualy parse for -L option
+library_dirs = []
+for i in xrange(10): #circumvent endless loop
+    try:
+        ind = sys.argv.index('-L')
+        library_dirs.append(sys.argv.pop(ind+1))
+        sys.argv.pop(ind)
+    except ValueError:
+        break
 
 VERSION = open(os.path.join("mtspec", "VERSION.txt")).read()
 
@@ -89,13 +98,9 @@ gp_src = os.path.join('mtspec', 'src', 'gplot', 'src') + os.sep
 sp_src = os.path.join('mtspec', 'src', 'splines', 'src') + os.sep
 #symbols = [s.strip() for s in open(src + 'mtspec.def', 'r').readlines()[2:]
 #           if s.strip() != '']
-try:
-    libs = os.environ['LD_LIBRARY_PATH'].split(':')
-except:
-    libs = []
 lib = MyExtension('mtspec',
                   define_macros=macros,
-                  library_dirs=libs,
+                  library_dirs=library_dirs,
                   libraries=['lapack', 'fftw3'],
                   extra_link_args=extra_link_args,
                   extra_compile_args=extra_compile_args,
@@ -154,7 +159,7 @@ setup(
     keywords=['mtspecpy', 'multitaper', 'python', 'seismology', 'waveform',
              'signal', 'processing'],
     packages=find_packages(),
-    namespace_packages=['mtspec'],
+    #namespace_packages=['mtspec'],
     zip_safe=False,
     install_requires=[
         'numpy',
