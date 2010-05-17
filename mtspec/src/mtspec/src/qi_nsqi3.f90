@@ -61,8 +61,6 @@ subroutine qi_nsqi3(npts,tbp,kspec,nf,lambda,vn,yk,wt,  &
 !
 !********************************************************************
 
-   use plot
-
    implicit none
 
 !  Odd freq points in 2W bandwidth

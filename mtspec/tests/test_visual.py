@@ -27,6 +27,7 @@ plt.xlim(0, len(st[0].data))
 
 plt.subplot(322)
 fft = np.fft.rfft(st[0].data)**2
+fft /= fft.sum()
 fftfreqs = np.linspace(0, 0.5*st[0].stats.sampling_rate, len(fft))
 plt.plot(fftfreqs, fft)
 plt.title('Boxcar tapered spectrum')
@@ -34,7 +35,9 @@ plt.yscale('log')
 plt.xlim(fftfreqs[0], fftfreqs[-1])
 
 plt.subplot(323)
-plt.plot(fftfreqs, np.fft.rfft(np.hanning(len(st[0].data)) * st[0].data)**2)
+fft = np.fft.rfft(np.hanning(len(st[0].data)) * st[0].data)**2
+fft /= fft.sum()
+plt.plot(fftfreqs, fft)
 plt.title('Hanning tapered spectrum')
 plt.yscale('log')
 plt.xlim(fftfreqs[0], fftfreqs[-1])

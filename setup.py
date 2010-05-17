@@ -25,7 +25,7 @@ mtspecPy installer
 """
 
 from distutils.ccompiler import get_default_compiler
-from distutils.unixccompiler import UnixCCompiler
+from distutils.unixccompiler import UnixCCompiler, _darwin_compiler_fixup
 from distutils.errors import DistutilsExecError
 from setuptools import find_packages, setup
 from setuptools.extension import Extension
@@ -89,15 +89,18 @@ gp_src = os.path.join('mtspec', 'src', 'gplot', 'src') + os.sep
 sp_src = os.path.join('mtspec', 'src', 'splines', 'src') + os.sep
 #symbols = [s.strip() for s in open(src + 'mtspec.def', 'r').readlines()[2:]
 #           if s.strip() != '']
+try:
+    libs = os.environ['LD_LIBRARY_PATH'].split(':')
+except:
+    libs = []
 lib = MyExtension('mtspec',
                   define_macros=macros,
-                  #library_dirs=['/usr/bin'],
+                  library_dirs=libs,
                   libraries=['lapack', 'fftw3'],
                   extra_link_args=extra_link_args,
                   extra_compile_args=extra_compile_args,
                   #export_symbols=symbols,
-                  sources=[gp_src + 'gplot.f90', gp_src + 'gnuplot.f90',
-                           sp_src + 'spline_cubic.f90',
+                  sources=[sp_src + 'spline_cubic.f90',
                            src + 'spectra.f90', src + 'mtspec.f90',
                            src + 'fft.f90', src + 'ifft.f90',
                            src + 'adaptspec.f90', src + 'dpss.f90',
@@ -163,3 +166,13 @@ setup(
     #include_package_data=True,
     #test_suite="mtspecpy.tests.suite"
 )
+
+# Remove mod files.
+try:
+    os.remove('mvspectra.mod')
+except:
+    pass
+try:
+    os.remove('spectra.mod')
+except:
+    pass
