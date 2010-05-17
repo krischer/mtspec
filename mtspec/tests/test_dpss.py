@@ -3,7 +3,7 @@
 import numpy as np
 import ctypes as C
 import matplotlib.pyplot as plt
-lib = C.CDLL('../lib/mtspec.so')
+from mtspec.headers import mtspeclib as lib
 
 xx = np.random.random((512,2))
 xx = np.require(xx, 'float64', ['F_CONTIGUOUS', 'ALIGNED', 'WRITEABLE'])
