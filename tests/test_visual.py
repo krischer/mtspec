@@ -14,7 +14,7 @@ st[0].data -= np.linspace(st[0].data[0], st[0].data[-1],
                           len(st[0].data))
 
 # Calculate multitaper spectrums.
-spec, freq, jackknife, _, _ = mtspec(st[0].data, st[0].stats.delta, 4)
+spec, freq = mtspec(st[0].data, st[0].stats.delta, 4)
 quadspec, quadfreq = mtspec(st[0].data, st[0].stats.delta, 4,
                       quadratic = True)
 sinespec, sinefreq = sine_psd(st[0].data, st[0].stats.delta)

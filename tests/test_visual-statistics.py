@@ -26,7 +26,7 @@ plt.xlim(0, len(st[0].data))
 
 plt.subplot(312)
 plt.fill_between(freq, spec + jackknife[:, 1]/2.0, spec - jackknife[:, 1]/2.0,
-                 color = 'grey')
+#                 color = 'grey')
 plt.plot(freq, spec)
 plt.title('Adaptive Multitaper Spectrum')
 plt.yscale('log')

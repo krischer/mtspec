@@ -93,14 +93,14 @@ if platform.system() == "Windows":
             extra_compile_args.append("/fp:strict")
 
 
-src = os.path.join('mtspec', 'src') + os.sep
-gp_src = os.path.join('gplot', 'src') + os.sep
-sp_src = os.path.join('splines', 'src') + os.sep
+src = os.path.join('src', 'mtspec', 'src') + os.sep
+gp_src = os.path.join('src', 'gplot', 'src') + os.sep
+sp_src = os.path.join('src', 'splines', 'src') + os.sep
 #symbols = [s.strip() for s in open(src + 'mtspec.def', 'r').readlines()[2:]
 #           if s.strip() != '']
 lib = MyExtension('mtspec',
                   define_macros=macros,
-                  library_dirs=['/usr/bin'],
+                  #library_dirs=['/usr/bin'],
                   libraries=['lapack', 'fftw3'],
                   extra_link_args=extra_link_args,
                   extra_compile_args=extra_compile_args,
