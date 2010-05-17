@@ -1,9 +1,10 @@
 from obspy.core import read
-from multitaper import mtspec
+from mtspec import mtspec
 import numpy as np
 import time
+import os
 
-st = read('test_file.gse2')
+st = read(os.path.join('data','test_file.gse2'))
 st[0].data = np.require(st[0].data, 'float32')
 
 # Level and demean data.

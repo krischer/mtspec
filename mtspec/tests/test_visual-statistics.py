@@ -2,10 +2,11 @@
 
 from obspy.core import read
 import matplotlib.pyplot as plt
-from multitaper import mtspec, sine_psd
+from mtspec import mtspec, sine_psd
 import numpy as np
+import os
 
-st = read('test_file.gse2')
+st = read(os.path.join('data', 'test_file.gse2'))
 st[0].data = np.require(st[0].data, 'float32')
 
 # Level and demean data.
@@ -26,7 +27,7 @@ plt.xlim(0, len(st[0].data))
 
 plt.subplot(312)
 plt.fill_between(freq, spec + jackknife[:, 1]/2.0, spec - jackknife[:, 1]/2.0,
-#                 color = 'grey')
+                 color = 'grey')
 plt.plot(freq, spec)
 plt.title('Adaptive Multitaper Spectrum')
 plt.yscale('log')
