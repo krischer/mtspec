@@ -6,7 +6,8 @@ from mtspec import mtspec, sine_psd
 import numpy as np
 import os
 
-st = read(os.path.join('data', 'test_file.gse2'))
+st = read(os.path.join(os.path.dirname(__file__), 'data', 
+                       'test_file.gse2'))
 st[0].data = np.require(st[0].data, 'float32')
 
 # Level and demean data.
