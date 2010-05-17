@@ -33,16 +33,6 @@ import os, re
 import platform
 import sys
 
-# Manualy parse for -L option
-library_dirs = []
-for i in xrange(10): #circumvent endless loop
-    try:
-        ind = sys.argv.index('-L')
-        library_dirs.append(sys.argv.pop(ind+1))
-        sys.argv.pop(ind)
-    except ValueError:
-        break
-
 VERSION = open(os.path.join("mtspec", "VERSION.txt")).read()
 
 # Monkey patch Compiler for Unix, Linux and darwin
@@ -92,7 +82,7 @@ if platform.system() == "Windows":
             # Workaround Win32 and MSVC - see issue #64 
             extra_compile_args.append("/fp:strict")
 
-
+library_dirs = os.environ['LIBRARY_PATH'].split(':')
 src = os.path.join('mtspec', 'src', 'mtspec', 'src') + os.sep
 gp_src = os.path.join('mtspec', 'src', 'gplot', 'src') + os.sep
 sp_src = os.path.join('mtspec', 'src', 'splines', 'src') + os.sep
