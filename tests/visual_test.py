@@ -2,7 +2,7 @@
 
 from obspy.core import read
 import matplotlib.pyplot as plt
-from multitaper import mtspec, sine_mtspec
+from multitaper import mtspec, sine_psd
 import numpy as np
 
 st = read('test_file.gse2')
@@ -14,10 +14,10 @@ st[0].data -= np.linspace(st[0].data[0], st[0].data[-1],
                           len(st[0].data))
 
 # Calculate multitaper spectrums.
-spec, freq = mtspec(st[0].data, st[0].stats.delta, 4)
+spec, freq, jackknife, _, _ = mtspec(st[0].data, st[0].stats.delta, 4)
 quadspec, quadfreq = mtspec(st[0].data, st[0].stats.delta, 4,
                       quadratic = True)
-sinespec, sinefreq = sine_mtspec(st[0].data, st[0].stats.delta)
+sinespec, sinefreq = sine_psd(st[0].data, st[0].stats.delta)
 
 plt.subplot(321)
 plt.title('Data (%.2f Hz)' % st[0].stats.sampling_rate)

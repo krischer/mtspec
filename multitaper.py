@@ -66,9 +66,9 @@ def mtspec(data, delta, time_bandwidth, number_of_tapers = None,
     eigencoefficients and an array containing the weights for each eigenspectra
     normalized so that the sum of squares over the eigenspectra is one. 
     If statistics is True is will also return (in the given order)
-    (multidimensional) arrays containing the jackknife 95% confidence interval,
-    the F statistics for single line and the number of degrees of freedom for
-    each frequency bin.
+    (multidimensional) arrays containing the jackknife 5% and 95% confidence
+    intervals, the F statistics for single line and the number of degrees of
+    freedom for each frequency bin.
     If both optional_output and statistics are true, the optional_outputs will
     be returned before the statistics.
 
@@ -177,40 +177,119 @@ def mtspec(data, delta, time_bandwidth, number_of_tapers = None,
                               degrees_of_freedom])
     return return_values
 
-def sine_mtspec(data, delta, number_of_tapers = None,
-                number_of_iterations = 2, degree_of_smoothing = 1.0):
+def sine_psd(data, delta, number_of_tapers = None,
+             number_of_iterations = 2, degree_of_smoothing = 1.0,
+             statistics = False):
+    """
+    Wrapper method for the sine_psd subroutine in the library by German A.
+    Prieto.
+
+    The subroutine is in charge of estimating the adaptive sine multitaper as
+    in Riedel and Sidorenko (1995). 
+    This is done by performing a MSE adaptive estimation. First a pilot
+    spectral estimate is used, and S" is estimated, in order to get te number
+    of tapers to use, using (13) of Riedel and Sidorenko for a min square error
+    spectrum. 
+    Unlike the prolate spheroidal multitapers, the sine multitaper adaptive
+    process introduces a variable resolution and error in the frequency domain.
+    Complete error information is contained in the output variables as the
+    corridor of 1-standard-deviation errors, and in the number of tapers used
+    at each frequency.  The errors are estimated in the simplest way, from the
+    number of degrees of freedom (two per taper), not by jack-knifing. The
+    frequency resolution is found from K*fN/Nf where fN is the Nyquist
+    frequency and Nf is the number of frequencies estimated.  The adaptive
+    process used is as follows. A quadratic fit to the log PSD within an
+    adaptively determined frequency band is used to find an estimate of the
+    local second derivative of the spectrum. This is used in an equation like R
+    & S (13) for the MSE taper number, with the difference that a parabolic
+    weighting is applied with increasing taper order. Because the FFTs of the
+    tapered series can be found by resampling the FFT of the original time
+    series (doubled in length and padded with zeros) only one FFT is required
+    per series, no matter how many tapers are used. This makes the program
+    fast. Compared with the Thomson multitaper programs, this code is not only
+    fast but simple and short. The spectra associated with the sine tapers are
+    weighted before averaging with a parabolically varying weight. The
+    expression for the optimal number of tapers given by R & S must be modified
+    since it gives an unbounded result near points where S" vanishes, which
+    happens at many points in most spectra. This program restricts the rate of
+    growth of the number of tapers so that a neighboring covering interval
+    estimate is never completely contained in the next such interval.
+
+    This method SHOULD not be used for sharp cutoffs or deep valleys, or small
+    sample sizes. Instead use Thomson multitaper in mtspec in this same
+    library. 
+
+    Parameters
+    ----------
+    data : :class:`numpy.ndarray'
+        Array with the data.
+    delta : float
+        Sample spacing of the data.
+    number_of_tapers : integer/None, optional
+        Number of tapers to use. If none is given, the library will perform an
+        adaptive taper estimation with a varying number of tapers for each
+        frequency. Defaults to None.
+    number_of_iterations : integer, optional
+        Number of iterations to perform. Values less than 2 will be set to 2.
+        Defaults to 2.
+    degree_of_smoothing : float, optional
+        Degree of smoothing. Defaults to 1.0.
+    statistics : bool, optional
+        Calculates and returns statistics. See the notes in the docstring for
+        further details.
+
+    Notes
+    -----
+    This method will at return at least two arrays: The calculated spectrum and
+    the corresponding frequencies.
+    If statistics is True is will also return (in the given order)
+    (multidimensional) arrays containing the 1-std errors (a simple dof
+    estimate) and the number of tapers used for each frequency point.
+
+    Returns
+    -------
+    list
+        Returns a list with :class:`numpy.ndarray`. See the notes in the
+        docstring for details.
+    """
+    # Set the number of tapers so it can be read by the library.
     if number_of_tapers is None:
         number_of_tapers = 0
-
     # Transform the data to work with the library.
     data = np.require(data, 'float32', ['F_CONTIGUOUS', 'ALIGNED', 'WRITEABLE'])
-
+    data_p = data.ctypes.data_as(C.POINTER(C.c_double))
+    # Some variables necessary to call the library.
     npts = len(data)
     number_of_frequency_bins = int(npts/2) + 1
-
     # Create output arrays.
-    frequency_bins = np.empty(number_of_frequency_bins)
-    frequency_bins = np.require(frequency_bins, 'float32', ['F_CONTIGUOUS', 'ALIGNED', 'WRITEABLE'])
-    spectrum = np.empty(number_of_frequency_bins)
-    spectrum = np.require(spectrum, 'float32', ['F_CONTIGUOUS', 'ALIGNED', 'WRITEABLE'])
-
-    number_of_tapers_per_freq_points = np.empty(number_of_frequency_bins)
-    number_of_tapers_per_freq_points = np.require(number_of_tapers_per_freq_points,
-                                                  'int32', ['F_CONTIGUOUS', 'ALIGNED', 'WRITEABLE'])
-
-    errors = np.empty((number_of_frequency_bins,2))
-    errors = np.require(errors, 'float32', ['F_CONTIGUOUS', 'ALIGNED', 'WRITEABLE'])
-    # Call the library.
+    frequency_bins = np.empty(number_of_frequency_bins,
+                            'float32', ['F_CONTIGUOUS', 'ALIGNED', 'WRITEABLE'])
+    frequency_bins_p = frequency_bins.ctypes.data_as(C.POINTER(C.c_double))
+    spectrum = np.empty(number_of_frequency_bins,
+                            'float32', ['F_CONTIGUOUS', 'ALIGNED', 'WRITEABLE'])
+    spectrum_p = spectrum.ctypes.data_as(C.POINTER(C.c_double))
+    # Create optional arrays or set to None.
+    if statistics is True:
+        tapers_per_freq_point = np.empty(number_of_frequency_bins,
+                                'int32', ['F_CONTIGUOUS', 'ALIGNED', 'WRITEABLE'])
+        tapers_per_freq_point_p = \
+                        tapers_per_freq_point.ctypes.data_as(C.POINTER(C.c_double))
+        errors = np.empty((number_of_frequency_bins,2),
+                                'float32', ['F_CONTIGUOUS', 'ALIGNED', 'WRITEABLE'])
+        errors_p = errors.ctypes.data_as(C.POINTER(C.c_double))
+    else:
+        tapers_per_freq_point_p = errors_p = None
+    # Call the library. Fortran passes pointers!
     mtspeclib.sine_psd_(C.byref(C.c_int(npts)),
-                  C.byref(C.c_float(delta)),
-                  data.ctypes.data_as(C.POINTER(C.c_double)), 
+                  C.byref(C.c_float(delta)), data_p,
                   C.byref(C.c_int(number_of_tapers)),
                   C.byref(C.c_int(number_of_iterations)),
                   C.byref(C.c_float(degree_of_smoothing)),
                   C.byref(C.c_int(number_of_frequency_bins)),
-                  frequency_bins.ctypes.data_as(C.POINTER(C.c_double)), 
-                  spectrum.ctypes.data_as(C.POINTER(C.c_double)),
-                  number_of_tapers_per_freq_points.ctypes.data_as(C.POINTER(C.c_double)),
-                  errors.ctypes.data_as(C.POINTER(C.c_double)))
-
-    return spectrum, frequency_bins
+                  frequency_bins_p, spectrum_p, tapers_per_freq_point_p,
+                  errors_p)
+    # Calculate return values.
+    return_values = [spectrum, frequency_bins]
+    if statistics is True:
+        return_values.extend([errors, tapers_per_freq_point])
+    return return_values
