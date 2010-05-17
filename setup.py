@@ -85,9 +85,9 @@ if platform.system() == "Windows":
 try:
     library_dirs = os.environ['LIBRARY_PATH'].split(':')
 except KeyError:
-    pass
+    library_dirs = []
+
 src = os.path.join('mtspec', 'src', 'mtspec', 'src') + os.sep
-gp_src = os.path.join('mtspec', 'src', 'gplot', 'src') + os.sep
 sp_src = os.path.join('mtspec', 'src', 'splines', 'src') + os.sep
 #symbols = [s.strip() for s in open(src + 'mtspec.def', 'r').readlines()[2:]
 #           if s.strip() != '']
