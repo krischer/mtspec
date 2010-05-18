@@ -12,7 +12,7 @@ import os
 if platform.system() == 'Windows':
     lib_name = 'mtspec.pyd'
 elif platform.system() == 'Darwin':
-    lib_name = 'mtspec.dylib'
+    lib_name = 'mtspec.so'
 else:
     lib_name = 'mtspec.so'
 

@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-mtspecPy installer. Added -L option for parsing static library path.
+mtspecPy installer.
 
 :copyright:
     Lion Krischer, Moritz Beyreuther and German A. Prieto
@@ -83,7 +83,7 @@ if platform.system() == "Windows":
             extra_compile_args.append("/fp:strict")
 
 try:
-    library_dirs = os.environ['LIBRARY_PATH'].split(':')
+    library_dirs = os.environ['LIBRARY'].split(':')
 except KeyError:
     library_dirs = []
 
@@ -91,10 +91,16 @@ src = os.path.join('mtspec', 'src', 'mtspec', 'src') + os.sep
 sp_src = os.path.join('mtspec', 'src', 'splines', 'src') + os.sep
 #symbols = [s.strip() for s in open(src + 'mtspec.def', 'r').readlines()[2:]
 #           if s.strip() != '']
+
+# Add libraries.
+libs=['lapack', 'fftw3', 'gfortran']
+if platform.system() == "Windows":
+    libs = []
+
 lib = MyExtension('mtspec',
                   define_macros=macros,
                   library_dirs=library_dirs,
-                  libraries=['lapack', 'fftw3'],
+                  libraries=libs,
                   extra_link_args=extra_link_args,
                   extra_compile_args=extra_compile_args,
                   #export_symbols=symbols,
