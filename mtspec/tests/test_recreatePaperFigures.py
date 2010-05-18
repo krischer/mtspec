@@ -1,0 +1,64 @@
+# -*- coding: utf-8 -*-
+"""
+This test case will create some figure in Prieto et al. (2008) for a visual
+comparision to see whether or not the wrapper works.
+
+Currently produces figure 3.
+
+References:
+    * Prieto G, Parker R, Vernon III F. A Fortran 90 library for multitaper
+      spectrum analysis. Computers & Geosciences. 2009;35(8):1701-1710.
+"""
+
+import matplotlib.pylab as plt
+from mtspec import mtspec, sine_psd
+import numpy as np
+import os
+
+# Output path.
+outpath = 'output'
+if not os.path.exists(outpath):
+    os.mkdir(outpath)
+
+####
+# Figure 3.
+####
+datafile = os.path.join('data', 'PASC.dat')
+data = np.loadtxt(datafile)
+length = len(data)
+
+fig = plt.figure()
+ax1 = fig.add_subplot(3, 1, 1)
+ax1.plot(data, color = 'black')
+ax1.set_xlim(0, length)
+
+ax2 = fig.add_subplot(3, 2, 3)
+spec, freq = mtspec(data, 1.0, 1.5, number_of_tapers = 1)
+ax2.set_yscale('log')
+ax2.set_xscale('log')
+ax2.plot(freq, spec, color = 'black')
+ax2.set_xlim(freq[0], freq[-1])
+
+ax3 = fig.add_subplot(3, 2, 4)
+spec, freq = mtspec(data, 1.0, 4.5, number_of_tapers = 5)
+ax3.set_yscale('log')
+ax3.set_xscale('log')
+ax3.plot(freq, spec, color = 'black')
+ax3.set_xlim(freq[0], freq[-1])
+
+ax4 = fig.add_subplot(3, 2, 5)
+spec, freq = sine_psd(data, 1.0)
+ax4.set_yscale('log')
+ax4.set_xscale('log')
+ax4.plot(freq, spec, color = 'black')
+ax4.set_xlim(freq[0], freq[-1])
+
+ax5 = fig.add_subplot(3, 2, 6)
+spec, freq = mtspec(data, 1.0, 4.5, number_of_tapers = 5, quadratic = True)
+ax5.set_yscale('log')
+ax5.set_xscale('log')
+ax5.plot(freq, spec, color = 'black')
+ax5.set_xlim(freq[0], freq[-1])
+
+outfile = os.path.join(outpath, 'fig3.pdf')
+fig.savefig(outfile)
