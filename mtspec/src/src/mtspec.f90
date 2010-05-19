@@ -1362,7 +1362,7 @@ subroutine mtspec_pad (npts,nfft,dt,x,tbp,kspec,nf,freq,spec,           &
          write(6,*) 'Critical F-test value ', fcritical
       endif
 
-      call psd_reshape(npts,nfft,nf,kspec,fcritical,p,vn,yk_o,yk_shape,sline)
+      call psd_reshape_pad(npts,nfft,nf,kspec,fcritical,p,vn,yk_o,yk_shape,sline)
 
       do i = 1,nf
          if (sline(i) > 0.0d0) then 
