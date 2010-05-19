@@ -173,7 +173,6 @@ def mtspec_pad(data, nfft, delta, time_bandwidth, number_of_tapers = None,
                 degrees_of_freedom_p, eigenspectra_p, rshape, f_statistics_p,
                 fcrit, None)
 
-
     # Figure out what to return. See the docstring of this method for details.
     return_values = [spectrum, frequency_bins]
     if optional_output is True:
