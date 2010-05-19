@@ -1320,7 +1320,7 @@ subroutine mtspec_pad (npts,nfft,dt,x,tbp,kspec,nf,freq,spec,           &
 ! Get the eigenspectra (yk's, sk's and smean)
 !
 
-   call eigenft(npts, nfft, x2, kspec, vn, lambda, nf, yk_o, sk_o, sbar)
+   call eigenft_pad(npts, nfft, x2, kspec, vn, lambda, nf, yk_o, sk_o, sbar)
 
 !
 !  The F test and reshaping

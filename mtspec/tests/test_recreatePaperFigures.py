@@ -16,7 +16,7 @@ import numpy as np
 import os
 
 # Output path.
-outpath = 'output'
+outpath = os.path.join(os.path.dirname(__file__), 'output')
 if not os.path.exists(outpath):
     os.mkdir(outpath)
 
@@ -35,8 +35,8 @@ ax1.set_xlim(0, length)
 ax2 = fig.add_subplot(2, 1, 2)
 #spec, freq, jackknife, _, _  = mtspec_pad(data, 312, 4930., 3.5, number_of_tapers=5,
 #                                          statistics = True)
-spec, freq, = mtspec_pad(data, 312, 4930., 3.5, number_of_tapers=5, 
-                         verbose=True)
+spec, freq, jackknife, _, _ = mtspec_pad(data, 312, 4930., 3.5, number_of_tapers=5, 
+                         statistics=True)
 ax2.set_yscale('log')
 ax2.plot(freq, spec, color='black')
 try:
@@ -52,7 +52,7 @@ fig.savefig(outfile)
 ####
 # Figure 3.
 ####
-datafile = os.path.join('data', 'PASC.dat')
+datafile = os.path.join(os.path.dirname(__file__), 'data', 'PASC.dat')
 data = np.loadtxt(datafile)
 length = len(data)
 

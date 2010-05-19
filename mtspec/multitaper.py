@@ -25,7 +25,7 @@ def mtspec_pad(data, nfft, delta, time_bandwidth, number_of_tapers = None,
     data : :class:`numpy.ndarray'
         Array with the data.
     nfft : :class:`numpy.ndarray'
-        Number of points for fft
+        Number of points for fft.
     delta : float
         Sample spacing of the data.
     time_bandwidth : float
