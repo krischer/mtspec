@@ -21,6 +21,32 @@ if not os.path.exists(outpath):
     os.mkdir(outpath)
 
 ####
+# Figure 1.
+####
+datafile = os.path.join('data', 'v22_174_series.dat')
+data = np.loadtxt(datafile)
+length = len(data)
+
+fig = plt.figure()
+ax1 = fig.add_subplot(2, 1, 1)
+ax1.plot(data, color = 'black')
+ax1.set_xlim(0, length)
+
+ax2 = fig.add_subplot(2, 1, 2)
+spec, freq, jackknife, asdf, asdf2  = mtspec(data, 4930., 3.5, number_of_tapers = 5,
+                                     statistics = True)
+print 'asdfasf'
+#print jackknife, asdf, asdf2
+ax2.set_yscale('log')
+ax2.plot(freq, spec, color = 'black')
+ax2.plot(freq, jackknife[:, 0], color = 'grey')
+ax2.plot(freq, jackknife[:, 1], color = 'grey')
+ax2.set_xlim(freq[0], freq[-1])
+
+outfile = os.path.join(outpath, 'fig1.pdf')
+fig.savefig(outfile)
+
+####
 # Figure 3.
 ####
 datafile = os.path.join('data', 'PASC.dat')

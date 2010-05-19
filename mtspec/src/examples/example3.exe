@@ -1,0 +1,72 @@
+../bin/coherence << !
+file ../data/asc_akima.dat
+method thomson		
+plot 1
+column 3 2 	
+tbnw 7.5 
+kspec 12
+interval 3600.
+save mt_cohe.dat
+exec	
+
+method sine		
+plot 0
+ntap 12
+save sin_cohe.dat
+exec
+
+quit
+!
+
+../bin/trfunction << !
+file ../data/asc_akima.dat
+method thomson	
+column 3 2 
+tbnw 7.5 
+kspec 12 
+interval 3600.		
+save mt_trfun.dat
+exec
+
+quit
+!
+
+#--------------------------------------------------------------------
+# Explanations
+#--------------------------------------------------------------------
+
+# ../bin/coherence << !	Coherence program
+# file ../paper/data/asc_akima.dat
+# 			Open file with data
+# method thomson	Method to use
+# plot 1		Plot both input data and results
+# column 3 2 		Columns of the data to study
+# tbnw 7.5  		Time-bandwidth product to use
+# kspec 12  		Number of tapers to use
+# interval 3600.	dt, time intervals of sampling
+# save mt_cohe.dat	Save results to file
+# exec			Execute command
+# 
+# method sine		Use sine multitaper
+# plot 0		Plot only results, not input series
+# ntap 12 		Use 12 tapers, constant weighting
+# save sin_cohe.dat	Save results of sine coherence estimation
+# exec			Execute new command
+# 
+# quit
+# !
+# 
+# ../bin/trfunction << ! Transfer function program
+# file ../paper/data/asc_akima.dat
+# 			Open file with data
+# method thomson	Method to use
+# column 3 2 		Columns of the data to study
+# tbnw 7.5  		Time-bandwidth product to use
+# kspec 12  		Number of tapers to use
+# interval 3600.	dt, time intervals of sampling
+# save mt_trfun.dat	Save transfer function estimate results
+# exec			Execute command
+# 
+# quit
+# !
+

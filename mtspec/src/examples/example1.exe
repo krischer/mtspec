@@ -1,0 +1,54 @@
+../bin/mtpad << !
+file ../data/v22_174_series.dat
+method thomson		
+plot 1
+logxy linlog
+fill			
+tbnw 3.5  		
+kspec 5  		
+interval 4930.	
+save d18O_1.dat
+exec			
+
+clear fill		
+plot 0			
+line 0			
+fval 0.9		
+save d18O_2.dat
+exec			
+
+quit		
+!
+
+#--------------------------------------------------------------------
+# Explanation
+#--------------------------------------------------------------------
+
+# ../bin/mtpad << !	Multitaper program, with zero padding
+# file ../data/v22_174_series.dat
+#			Open file with data
+# method thomson		Method to use
+# plot 1			Plot data and results
+# logxy linlog		Plot lin - log spectra
+# fill			Plot confidence intervals
+# tbnw 3.5  		Time-bandwidth product to use
+# kspec 5  		Number of tapers to use
+# interval 4930.		dt, time intervals of sampling
+# save d18O_1.dat	Save data file with results
+# exec			Execute command
+#
+# clear fill		Do not plot confidence interval
+# plot 0			Do not plot data series (already done)
+# line 0			reshape spectral lines
+# fval 0.9		Threshold for F-statistics
+# save d18O_2.dat	Save new spetral estimate, with F-statistic
+# exec			Execute commands
+#
+# quit			Quit program
+# !
+
+
+
+
+
+		

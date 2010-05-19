@@ -1,0 +1,45 @@
+This is BibTeX, Version 0.99c (Web2C 7.5.4)
+The top-level auxiliary file: mtspec.aux
+The style file: natbib.bst
+Database file #1: /homes/german/articles/latex/bibliography.bib
+You've used 6 entries,
+            2378 wiz_defined-function locations,
+            623 strings with 5762 characters,
+and the built_in function-call counts, 3142 in all, are:
+= -- 331
+> -- 117
+< -- 9
++ -- 37
+- -- 33
+* -- 236
+:= -- 503
+add.period$ -- 27
+call.type$ -- 6
+change.case$ -- 37
+chr.to.int$ -- 6
+cite$ -- 6
+duplicate$ -- 149
+empty$ -- 225
+format.name$ -- 41
+if$ -- 665
+int.to.chr$ -- 1
+int.to.str$ -- 0
+missing$ -- 6
+newline$ -- 33
+num.names$ -- 24
+pop$ -- 47
+preamble$ -- 1
+purify$ -- 37
+quote$ -- 0
+skip$ -- 113
+stack$ -- 0
+substring$ -- 234
+swap$ -- 47
+text.length$ -- 5
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 54
+warning$ -- 0
+while$ -- 30
+width$ -- 0
+write$ -- 82

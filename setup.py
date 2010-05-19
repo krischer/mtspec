@@ -44,7 +44,7 @@ def _compile(self, obj, src, ext, cc_args, extra_postargs, pp_opts):
         if ext == ".f90":
             if sys.platform == 'darwin' or sys.platform == 'linux2':
                 compiler_so = ["gfortran"]
-                cc_args = ["-O", "-fPIC", "-c"]
+                cc_args = ["-O", "-fPIC", "-c", "-ffree-form"]
         try:
             self.spawn(compiler_so + cc_args + [src, '-o', obj] +
                        extra_postargs)
@@ -87,13 +87,15 @@ try:
 except KeyError:
     library_dirs = []
 
-src = os.path.join('mtspec', 'src', 'mtspec', 'src') + os.sep
-sp_src = os.path.join('mtspec', 'src', 'splines', 'src') + os.sep
+src = os.path.join('mtspec', 'src', 'src') + os.sep
+# Needed vor version 4.2
+#src = os.path.join('mtspec', 'src', 'mtspec', 'src') + os.sep
+#sp_src = os.path.join('mtspec', 'src', 'splines', 'src') + os.sep
 #symbols = [s.strip() for s in open(src + 'mtspec.def', 'r').readlines()[2:]
 #           if s.strip() != '']
 
 # Add libraries.
-libs=['lapack', 'fftw3', 'gfortran']
+libs=['gfortran']
 if platform.system() == "Windows":
     libs = []
 
@@ -104,30 +106,28 @@ lib = MyExtension('mtspec',
                   extra_link_args=extra_link_args,
                   extra_compile_args=extra_compile_args,
                   #export_symbols=symbols,
-                  sources=[sp_src + 'spline_cubic.f90',
-                           src + 'spectra.f90', src + 'mtspec.f90',
-                           src + 'fft.f90', src + 'ifft.f90',
-                           src + 'adaptspec.f90', src + 'dpss.f90',
-                           src + 'dpss_ev.f90', src + 'eigenft.f90',
-                           src + 'pythag.f90', src + 'sym_fft.f90',
-                           src + 'oct_spec.f90', src + 'set_xint.f90',
-                           src + 'sft.f90', src + 'xint.f90',
-                           src + 'qtdis.f90', src + 'qsnorm.f90',
-                           src + 'yule.f90', src + 'wv_spec.f90',
-                           src + 'jackspec.f90', src + 'df_spec.f90',
-                           src + 'atanh2.f90', src + 'nearn.f90',
-                           src + 'sine_psd.f90', src + 'sine_cohe.f90',
-                           src + 'dpss_spline.f90', src + 'mt_cohe.f90',
-                           src + 'nsqi.f90', src + 'qrfac.f90',
-                           src + 'rsm_eig.f90', src + 'rst_eig.f90',
-                           src + 'nsinv.f90', src + 'ftest.f90',
-                           src + 'fdis.f90', src + 'psd_reshape.f90',
-                           src + 'qiinv.f90', src + 'zqrfac.f90',
-                           src + 'mt_deconv.f90', src + 'mt_transfer.f90',
-                           src + 'qi_nsqi.f90', src + 'cumtrapz.f90',
-                           src + 'spec_gram.f90', src + 'spec_gram2.f90',
-                           src + 'qi_nsqi2.f90', src + 'qi_nsqi3.f90'])
-
+                  sources=[src + 'spectra.f90', src + 'adaptspec.f90', src + 'atanh2.f90',
+                        src + 'df_spec.f90', src + 'dpss.f90',
+                        src + 'dpss_ev.f90', src + 'dpss_spline.f90',
+                        src + 'eigenft.f90', src + 'fdis.f90', src + 'fft.f90',
+                        src + 'ftest.f90', src + 'ifft.f90',
+                        src + 'jackspec.f90', src + 'mt_cohe.f90',
+                        src + 'mt_deconv.f90', src + 'mt_transfer.f90',
+                        src + 'mtspec.f90', src + 'nearn.f90',
+                        src + 'nnls.f90', src + 'nsinv.f90',
+                        src + 'nsqi.f90', src + 'oct_spec.f90',
+                        src + 'psd_reshape.f90', src + 'pythag.f90',
+                        src + 'qiinv.f90', src + 'qrfac.f90',
+                        src + 'qsnorm.f90', src + 'qtdis.f90',
+                        src + 'rsm_eig.f90', src + 'set_xint.f90',
+                        src + 'sft.f90', src + 'sine_cohe.f90',
+                        src + 'sine_psd.f90', 
+                        src + 'spline.f90', src + 'sym_fft.f90',
+                        src + 'tinvit.f90', src + 'trbak1.f90',
+                        src + 'tred1.f90', src + 'tridib.f90',
+                        src + 'wv_spec.f90', src + 'xint.f90',
+                        src + 'yule.f90', src + 'zqrcov.f90',
+                        src + 'zqrfac.f90'])
 
 setup(
     name='mtspec',

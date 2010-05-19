@@ -1,0 +1,38 @@
+MWLIB version 2.0 -- Multitaper Spectrum Estimation Library
+
+Copyright (C) 2008 German A. Prieto
+All Rights Reserved
+
+German A. Prieto
+Department of Geophysics
+397 Panama Mall Room 453B
+Mitchell Building 
+Stanford University
+Stanford, CA 94305
+
+Email: gprieto@stanford.edu
+Web: www.pangea.stanford.edu/~gprieto
+
+
+This software is freely available for scientific research purposes. 
+If you use this software in writing scientific papers include proper 
+attributions to its author, by citing:
+
+Prieto, G. A., R. L. Parker and F. L. Vernon (2008). A Fortran 90 
+library for multitaper spectrum analysis. Submitted to Computers 
+and Geosciences, February 2008. 
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+

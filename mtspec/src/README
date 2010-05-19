@@ -1,0 +1,52 @@
+	MULTITAPER SPECTRUM LIBRARY
+
+VERSION 2.01
+LAST MODIFIED: 
+	APRIL 2008
+
+The multitaper spectral analysis library is a Fortran 90 library 
+for multitaper spectral analysis of univariate and multivariate 
+problems, as explained in Prieto et al. (2008). 
+
+The library has been extensively tested but is made available 
+without warranty. Users of the software are free to make modifications
+to the programs to meet their particular needs, but are asked not to
+distribute modified code to others.  Tell us about your improvements
+and bug fixes, and we will add them to the code for everyone's benefit.
+
+COMPILING
+
+This release contains a Makefile that will compile the entire set of
+libraries and programs as explained in the documentation. The folder
+makefiles/ contains other makefiles to compile with other F90 
+compilers (ifort, G95, gfortran) or using the Sun F90 compiler (f90). 
+
+To compile just type 
+
+> make
+
+and the libraries mwlib.a, gplot.a will be compiled in folder libraries/
+modules will be compiled to the modules/ folder
+and interactive programs will be compiled in folder programs/.
+
+We have tested with different compiler versions and various computer
+systems (Mac OS X, Sun and Linux) and no modification should be necesary.
+Just use the appropriate Makefile from the list in the makefiles/ folder.  
+
+
+PLOTTING
+
+I added to the new release on-the-fly plotting routines. This allows 
+the plotting of results from the interactive programs. For plotting to 
+work you need to have plotxy installed. The source code is available
+in folder /plot/plotprogram/. This code generates PostScript figures
+that need to be viewed using Ghostview (gv). Both plotxy and gv need 
+to be in your path for on-the-fly plotting to work. 
+
+
+REFERENCES
+
+Prieto, G. A., Parker, R. L., and Vernon, F. L. (2008)
+A Forrtan 90 Library for multitaper spectrum analysis., Computers &
+Geosciences. Submitted with revisions, April 2008.
+

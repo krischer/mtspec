@@ -1,0 +1,75 @@
+../bin/mtpsd << !
+file ../data/PASC.dat
+method thomson		
+plot 0 
+logxy loglog  		
+tbnw 1.5  		
+kspec 1  		
+interval 1.		
+save noise_st.dat
+exec
+
+method thomson
+plot 0
+tbnw 4.5  		
+kspec 7  		
+save noise_mt.dat
+exec
+
+method qispec		
+plot 0
+tbnw 4.5  
+kspec 7  
+save noise_qi.dat
+exec
+
+method sine		
+plot 0
+save noise_sin.dat
+exec
+
+quit
+!
+
+#--------------------------------------------------------------------
+# Explanation
+#--------------------------------------------------------------------
+
+# ../bin/mtpsd << !	Multitaper spectrum program
+# file ../data/PASC.dat
+# 			Open file with data
+# method thomson	Method to use
+# plot 0		Plot only results for spectra
+# logxy loglog  	Log-Log plot
+# tbnw 1.5  		Time bandwidth product for single taper
+# kspec 1  		Use only one taper
+# interval 1.		Sampling interval
+# save noise_st.dat	Save file with results
+# exec			execute command 
+# 
+# method thomson		
+# plot 0
+# tbnw 4.5  		Increase time bandwidth product
+# kspec 7  		Use 7 tapers, not one
+# save noise_mt.dat	Save file with MT results
+# exec			Execute command with new parameters
+# 
+# method qispec		Use another method, the quadratic mt
+# plot 0
+# tbnw 4.5  		Same time-bandwidth as previous
+# kspec 7  		Same number of tapers as previous
+# save noise_qi.dat	Save new spectral estimate
+# exec			Execute command with new parameters
+# 
+# method sine		Use the sine multitaper method	
+# 			Since no parameters are specified 
+# 			(ntap or ntimes), the default is used
+# 			An adaptive spectrum is calculated
+# plot 0			
+# save noise_sin.dat	Save new sine multitaper estimate
+# exec			Execute, with sine MT method
+# 
+# quit
+# !
+
+
