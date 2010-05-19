@@ -354,7 +354,7 @@ def mtspec(data, delta, time_bandwidth, number_of_tapers = None,
 
 def sine_psd(data, delta, number_of_tapers = None,
              number_of_iterations = 2, degree_of_smoothing = 1.0,
-             statistics = False):
+             statistics = False, verbose = False):
     """
     Wrapper method for the sine_psd subroutine in the library by German A.
     Prieto.
@@ -412,6 +412,8 @@ def sine_psd(data, delta, number_of_tapers = None,
     statistics : bool, optional
         Calculates and returns statistics. See the notes in the docstring for
         further details.
+    verbose : bool, optional
+        Passed to the fortran library. Defaults to False.
 
     Notes
     -----
@@ -427,6 +429,11 @@ def sine_psd(data, delta, number_of_tapers = None,
         Returns a list with :class:`numpy.ndarray`. See the notes in the
         docstring for details.
     """
+    # Verbose mode on or off.
+    if verbose is True:
+        verbose = C.byref(C.c_char('y'))
+    else:
+        verbose = None
     # Set the number of tapers so it can be read by the library.
     if number_of_tapers is None:
         number_of_tapers = 0
@@ -462,7 +469,7 @@ def sine_psd(data, delta, number_of_tapers = None,
                   C.byref(C.c_float(degree_of_smoothing)),
                   C.byref(C.c_int(number_of_frequency_bins)),
                   frequency_bins_p, spectrum_p, tapers_per_freq_point_p,
-                  errors_p)
+                  errors_p, verbose)
     # Calculate return values.
     return_values = [spectrum, frequency_bins]
     if statistics is True:

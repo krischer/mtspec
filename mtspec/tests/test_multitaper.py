@@ -21,7 +21,7 @@ class MtSpecTestCase(unittest.TestCase):
         datafile = os.path.join(os.path.dirname(__file__), 'data', 'PASC.dat')
         data = np.loadtxt(datafile)
         # Calculate the spectra.
-        spec, freq = mtspec(data, 1.0, 1.5, number_of_tapers = 1)
+        spec, freq = mtspec(data, 1.0, 1.5, number_of_tapers=1)
         # Load the good data.
         datafile = os.path.join(os.path.dirname(__file__), 'data', 'single_taper.npz')
         files = np.load(datafile)
@@ -41,7 +41,7 @@ class MtSpecTestCase(unittest.TestCase):
         datafile = os.path.join(os.path.dirname(__file__), 'data', 'PASC.dat')
         data = np.loadtxt(datafile)
         # Calculate the spectra.
-        spec, freq = mtspec(data, 1.0, 4.5, number_of_tapers = 5)
+        spec, freq = mtspec(data, 1.0, 4.5, number_of_tapers=5)
         # Load the good data.
         datafile = os.path.join(os.path.dirname(__file__), 'data', 'multitaper.npz')
         files = np.load(datafile)
@@ -61,8 +61,8 @@ class MtSpecTestCase(unittest.TestCase):
         datafile = os.path.join(os.path.dirname(__file__), 'data', 'v22_174_series.dat')
         data = np.loadtxt(datafile)
         # Calculate the spectra.
-        spec, freq, jackknife, _, _ = mtspec_pad(data, 312, 4930., 3.5, number_of_tapers = 5,
-                                     statistics = True)
+        spec, freq, jackknife, _, _ = mtspec_pad(data, 312, 4930., 3.5, number_of_tapers=5,
+                                     statistics=True)
         # Load the good data.
         datafile = os.path.join(os.path.dirname(__file__), 'data', 'mtspec_pad_with_errors.npz')
         files = np.load(datafile)
@@ -84,8 +84,8 @@ class MtSpecTestCase(unittest.TestCase):
         datafile = os.path.join(os.path.dirname(__file__), 'data', 'PASC.dat')
         data = np.loadtxt(datafile)
         # Calculate the spectra.
-        spec, freq = mtspec(data, 1.0, 4.5, number_of_tapers = 5,
-                            quadratic = True)
+        spec, freq = mtspec(data, 1.0, 4.5, number_of_tapers=5,
+                            quadratic=True)
         # Load the good data.
         datafile = os.path.join(os.path.dirname(__file__), 'data', 'quadratic_multitaper.npz')
         files = np.load(datafile)
@@ -147,12 +147,19 @@ class MtSpecTestCase(unittest.TestCase):
         The quadratic and the normal multitaper spectra look quite similar.
         Check that they are different.
         """
-        datafile = os.path.join(os.path.dirname(__file__), 'data', 'PASC.dat')
+        datafile = os.path.join(os.path.dirname(__file__), 'data', 'v22_174_series.dat')
         data = np.loadtxt(datafile)
         # Calculate the spectra.
-        spec, freq = mtspec(data, 1.0, 4.5, number_of_tapers = 2)
-        spec2, freq2 = mtspec(data, 1.0, 4.5, number_of_tapers = 2,
-                              quadratic = True)
+        spec, freq = mtspec(data, 1.0, 4.5, number_of_tapers=2)
+        spec2, freq2 = mtspec(data, 1.0, 4.5, number_of_tapers=2,
+                              quadratic=True)
+        # Test that these are not equal.
+        self.assertRaises(AssertionError, np.testing.assert_almost_equal,
+                          spec, spec2)
+        # Do the same with the mtspec_pad method.
+        spec, freq = mtspec_pad(data, 312,  1.0, 4.5, number_of_tapers=2)
+        spec2, freq2 = mtspec_pad(data, 312,  1.0, 4.5, number_of_tapers=2,
+                              quadratic=True)
         # Test that these are not equal.
         self.assertRaises(AssertionError, np.testing.assert_almost_equal,
                           spec, spec2)

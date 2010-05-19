@@ -1160,6 +1160,10 @@ subroutine mtspec_pad (npts,nfft,dt,x,tbp,kspec,nf,freq,spec,           &
    complex(8), dimension(nfft,kspec) 	       :: yk_o 
    complex(4), dimension(nfft,kspec), optional, intent(out) :: yk 
 
+!  Quadratic spectrum
+
+   real(8),    dimension(nf)            :: slope
+
 !  Simple mean spectra
 
    real(8), dimension(nf) 	    :: sbar
@@ -1404,9 +1408,9 @@ subroutine mtspec_pad (npts,nfft,dt,x,tbp,kspec,nf,freq,spec,           &
 
    if (present(qispec)) then 
       if (qispec==1) then
-         write(6,'(a)') 'No quadratic multitaper supported yet'
-         !call qiinv(npts,dble(tbp),kspec,nf,lambda,vn,yk_o,  &
-         !           wt_o,spec8,slope) 
+         !write(6,'(a)') 'No quadratic multitaper supported yet'
+         call qiinv(npts,dble(tbp),kspec,nf,lambda,vn,yk_o,  &
+                    wt_o,spec8,slope) 
       endif  
    endif
 

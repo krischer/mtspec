@@ -33,11 +33,9 @@ ax1.plot(data, color='black')
 ax1.set_xlim(0, length)
 
 ax2 = fig.add_subplot(2, 1, 2)
-spec, freq, jackknife, fstatistics, _ = mtspec_pad(data, 312, 4930., 3.5, number_of_tapers=5,
-                        statistics=True)
+
 spec, freq, jackknife, _, _ = mtspec_pad(data, 312, 4930., 3.5, number_of_tapers=5, 
-                                                                  statistics=True)
-#np.savez('mtspec_pad_with_errors.npz', spec=spec, freq=freq, jackknife=jackknife)
+                                                statistics=True)
 ax2.set_yscale('log')
 ax2.plot(freq, spec, color='black')
 try:
@@ -56,7 +54,8 @@ fig.savefig(outfile)
 ####
 #using read data from figure 1
 spec, freq, jackknife, fstatistics, _ = mtspec_pad(data, 312, 4930., 3.5, number_of_tapers=5,
-                                                   statistics=True, rshape=0, fcrit=0.9)
+                                                   statistics=True, rshape=0,
+                                                   fcrit=0.9)
 # XXX How to determine the real confidence intervals?
 # fstatistics_clipped =  np.where(fstatistics.clip(3.1) == 3.1, 1, fstatistics)
 # XXX: What does clip do?
@@ -87,7 +86,6 @@ ax1.set_xlim(0, length)
 
 ax2 = fig.add_subplot(3, 2, 3)
 spec, freq = mtspec(data, 1.0, 1.5, number_of_tapers=1)
-#np.savez('single_taper.npz', spec=spec, freq=freq)
 ax2.set_yscale('log')
 ax2.set_xscale('log')
 ax2.plot(freq, spec, color='black')
@@ -95,7 +93,6 @@ ax2.set_xlim(freq[0], freq[-1])
 
 ax3 = fig.add_subplot(3, 2, 4)
 spec, freq = mtspec(data, 1.0, 4.5, number_of_tapers=5)
-#np.savez('multitaper.npz', spec=spec, freq=freq)
 ax3.set_yscale('log')
 ax3.set_xscale('log')
 ax3.plot(freq, spec, color='black')
@@ -103,7 +100,6 @@ ax3.set_xlim(freq[0], freq[-1])
 
 ax4 = fig.add_subplot(3, 2, 5)
 spec, freq = sine_psd(data, 1.0)
-#np.savez('sine_psd.npz', spec=spec, freq=freq)
 ax4.set_yscale('log')
 ax4.set_xscale('log')
 ax4.plot(freq, spec, color='black')
@@ -111,7 +107,6 @@ ax4.set_xlim(freq[0], freq[-1])
 
 ax5 = fig.add_subplot(3, 2, 6)
 spec, freq = mtspec(data, 1.0, 4.5, number_of_tapers=5, quadratic=True)
-#np.savez('quadratic_multitaper.npz', spec=spec, freq=freq)
 ax5.set_yscale('log')
 ax5.set_xscale('log')
 ax5.plot(freq, spec, color='black')

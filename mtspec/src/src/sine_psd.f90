@@ -1,4 +1,4 @@
-subroutine sine_psd (npts,dt,x,ntap,ntimes,fact,nf,freq,spec,kopt,err)
+subroutine sine_psd (npts,dt,x,ntap,ntimes,fact,nf,freq,spec,kopt,err,verb)
 
 !
 !  Performs the PSD estimation by the sie multitaper method of
@@ -59,6 +59,10 @@ subroutine sine_psd (npts,dt,x,ntap,ntimes,fact,nf,freq,spec,kopt,err)
 !	fact		real, degree of smoothing (def = 1.)
 !	nf		integer, number of freq points in spectrum
 !
+!  OPTIONAL INPUT
+!	verb		verbose option, print various intermediate 
+!			results (y, n)
+!
 !  OUTPUT
 !
 !	freq(nf)	real vector with frequency bins
@@ -90,6 +94,11 @@ subroutine sine_psd (npts,dt,x,ntap,ntimes,fact,nf,freq,spec,kopt,err)
 
    real(4), intent(out), dimension(nf)    :: spec, freq
 
+!  Verbose
+
+   character (len=1),                optional  :: verb
+   integer                                     :: ver
+
 !  Optional
 
    integer, dimension(nf),       optional :: kopt
@@ -117,8 +126,17 @@ subroutine sine_psd (npts,dt,x,ntap,ntimes,fact,nf,freq,spec,kopt,err)
    real(4) :: xmean, xvar
    
 !********************************************************************
+   if (present(verb)) then 
+      if (index(verb,'n') == 0) then
+         ver = 1 
+      endif
+   else
+      ver = 0
+   endif
 
-   write(6,'(a)') 'Calling Sine multitaper'
+   if (ver ==1) then
+     write(6,'(a)') 'Calling Sine multitaper'
+   endif
 
 !  Set defaults
 
@@ -187,8 +205,10 @@ subroutine sine_psd (npts,dt,x,ntap,ntimes,fact,nf,freq,spec,kopt,err)
 
    !  Estimate uniform taper PSD
 
-      write(6,'(a,i6,a)') 'Uniform S(f) with ',ntap, ' tapers'
-      write(6,'(a,f6.1)') 'Time-bandwidth product ',0.5*ntap
+      if (ver ==1) then
+        write(6,'(a,i6,a)') 'Uniform S(f) with ',ntap, ' tapers'
+        write(6,'(a,f6.1)') 'Time-bandwidth product ',0.5*ntap
+      endif
 
       call quick(nptwo,fx,nf,ntap,spec,kopt_o)
 
@@ -196,8 +216,11 @@ subroutine sine_psd (npts,dt,x,ntap,ntimes,fact,nf,freq,spec,kopt,err)
 
       initap = 3.0 + sqrt(fact*real(npts))/5.0
 
-      write(6,'(a,i6,a)') 'Adaptive S(f) with ',ntimes, ' iterations'
-      write(6,'(a,i6)') 'Initial number of tapers ', initap
+      if (ver ==1) then
+        write(6,'(a,i6,a)') 'Adaptive S(f) with ',ntimes, ' iterations'
+        write(6,'(a,i6)') 'Initial number of tapers ', initap
+      endif
+
 
       call adapt(nptwo,fx,nf,df,initap,ntimes,fact,spec,kopt_o)
 
