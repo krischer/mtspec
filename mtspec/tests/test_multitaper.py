@@ -95,6 +95,33 @@ class MtSpecTestCase(unittest.TestCase):
         np.testing.assert_almost_equal(freq, freq2)
         np.testing.assert_almost_equal(spec, spec2)
 
+    def test_fstatisticsAndReshapedSpectrum(self):
+        """
+        Test for mtspec_pad with jackknife interval errors. The result is
+        compared to the output of test_recreatePaperFigures.py in the same
+        directory. This is assumed to be correct because they are identical to
+        the figures in the paper on the machine that created these.
+        """
+        datafile = os.path.join(os.path.dirname(__file__), 'data', 'v22_174_series.dat')
+        data = np.loadtxt(datafile)
+        # Calculate the spectra.
+        spec, freq, jackknife, fstatistics, _ = mtspec_pad(data, 312, 4930.,
+                            3.5, number_of_tapers=5, statistics=True,
+                            rshape=0, fcrit=0.9)
+        # Load the good data.
+        datafile = os.path.join(os.path.dirname(__file__), 'data',
+                                'fstatistics.npz')
+        files = np.load(datafile)
+        spec2 = files['spec']
+        freq2 = files['freq']
+        jackknife2 = files['jackknife']
+        fstatistics2 = files['fstatistics']
+        # Compare.
+        np.testing.assert_almost_equal(freq, freq2)
+        np.testing.assert_almost_equal(spec, spec2)
+        np.testing.assert_almost_equal(jackknife, jackknife2)
+        np.testing.assert_almost_equal(fstatistics, fstatistics2)
+
     def test_sinePSD(self):
         """
         Test for the sine_psd spectra. The result is compared to the output of
