@@ -126,8 +126,7 @@ lib = MyExtension('mtspec',
                         src + 'tinvit.f90', src + 'trbak1.f90',
                         src + 'tred1.f90', src + 'tridib.f90',
                         src + 'wv_spec.f90', src + 'xint.f90',
-                        src + 'yule.f90', src + 'zqrcov.f90',
-                        src + 'zqrfac.f90'])
+                        src + 'yule.f90', src + 'zqrfac.f90'])
 
 setup(
     name='mtspec',
