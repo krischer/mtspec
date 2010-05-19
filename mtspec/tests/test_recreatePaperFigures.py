@@ -56,18 +56,18 @@ fig.savefig(outfile)
 ####
 #using read data from figure 1
 spec, freq, jackknife, fstatistics, _ = mtspec_pad(data, 312, 4930., 3.5, number_of_tapers=5,
-                                                   statistics=True, rshape=1)
-#XXX How to determine the real confidence intervals?
-fstatistics_clipped =  np.where(fstatistics.clip(3.1) == 3.1, 1, fstatistics)
-#
+                                                   statistics=True, rshape=0, fcrit=0.9)
+# XXX How to determine the real confidence intervals?
+# fstatistics_clipped =  np.where(fstatistics.clip(3.1) == 3.1, 1, fstatistics)
+# XXX: What does clip do?
 fig = plt.figure()
 ax1 = fig.add_subplot(2, 1, 1)
 ax1.plot(freq, fstatistics, color='black')
-ax2.set_xlim(freq[0], freq[-1])
+ax1.set_xlim(freq[0], freq[-1])
 #
 ax2 = fig.add_subplot(2, 1, 2)
 ax2.set_yscale('log')
-ax2.plot(freq, fstatistics_clipped * spec, color='black')
+ax2.plot(freq, spec, color='black')
 ax2.set_xlim(freq[0], freq[-1])
 
 outfile = os.path.join(outpath, 'fig2.pdf')
