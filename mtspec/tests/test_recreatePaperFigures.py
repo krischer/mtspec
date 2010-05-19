@@ -11,7 +11,7 @@ References:
 """
 
 import matplotlib.pylab as plt
-from mtspec import mtspec, sine_psd
+from mtspec import mtspec, sine_psd, mtspec_pad
 import numpy as np
 import os
 
@@ -23,7 +23,7 @@ if not os.path.exists(outpath):
 ####
 # Figure 1.
 ####
-datafile = os.path.join('data', 'v22_174_series.dat')
+datafile = os.path.join(os.path.dirname(__file__), 'data', 'v22_174_series.dat')
 data = np.loadtxt(datafile)
 length = len(data)
 
@@ -33,8 +33,10 @@ ax1.plot(data, color='black')
 ax1.set_xlim(0, length)
 
 ax2 = fig.add_subplot(2, 1, 2)
-spec, freq, jackknife, _, _  = mtspec(data, 4930., 3.5, number_of_tapers = 5,
-                                     statistics = True)
+#spec, freq, jackknife, _, _  = mtspec_pad(data, 312, 4930., 3.5, number_of_tapers=5,
+#                                          statistics = True)
+spec, freq, = mtspec_pad(data, 312, 4930., 3.5, number_of_tapers=5, 
+                         verbose=True)
 ax2.set_yscale('log')
 ax2.plot(freq, spec, color='black')
 try:
