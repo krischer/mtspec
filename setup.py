@@ -82,20 +82,15 @@ if platform.system() == "Windows":
             # Workaround Win32 and MSVC - see issue #64 
             extra_compile_args.append("/fp:strict")
 
-# Create the library directory if it does not exist.
-# XXX: Is this a good way?
-lib_directory = os.path.join(os.path.dirname(__file__), 'mtspec',
-                             'lib')
-if not os.path.exists(lib_directory):
-    os.mkdir(lib_directory)
-
+# Needed for version 4.2 for setting -L library path
+# with environment variable LIBRARY
 try:
     library_dirs = os.environ['LIBRARY'].split(':')
 except KeyError:
     library_dirs = []
 
 src = os.path.join('mtspec', 'src', 'src') + os.sep
-# Needed vor version 4.2
+# Needed for version 4.2
 #src = os.path.join('mtspec', 'src', 'mtspec', 'src') + os.sep
 #sp_src = os.path.join('mtspec', 'src', 'splines', 'src') + os.sep
 #symbols = [s.strip() for s in open(src + 'mtspec.def', 'r').readlines()[2:]
