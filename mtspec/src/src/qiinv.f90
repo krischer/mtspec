@@ -206,7 +206,7 @@ subroutine qiinv(npts,tbp,kspec,nf,lambda,vn,yk,wt,  &
    call zqrfac(m,nh,hk,Q,R)
    call zqrcov(nh,nh,R(1:nh,1:nh),cov)
 
-   print *, cov
+   !print *, cov
 
 !
 !  The least squares solution for the alpha vector
