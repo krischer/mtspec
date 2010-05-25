@@ -1,31 +1,28 @@
-# Makefile to compile the entire multitaper library, 
+# Windows Makefile to compile the entire multitaper library, 
 # including multitaper routines, plotting routines, 
 # and interactive programs. 
+# * Download (Unofficial) gfortran build from 
+#   http://gcc.gnu.org/wiki/GFortranBinaries#Windows, I used this link:
+#   http://quatramaran.ens.fr/~coudert/gfortran/gfortran-windows.exe
+# * Set PATH environment for gfortran binary
+# * execute make -f Makefile.win
 #
 # Last Modified:
 # 	March 26, 2008
 # 	German A. Prieto
-#
+# 	May 25, 2010
+# 	Moritz Beyreuther
 
 #---------------------------------------------------------------------
 # Compiler
 #--------------------------------------------------------------------
 
-# Absoft, Sun/Solaris
-#FC =      f90
-# G95 Free compiler
-#FC = g95
 # GFORTRAN
 FC = gfortran
-# Intel Compiler
-#FC = ifort
 
 #--------------------------------------------------------------------
 # Compiler flags
 #--------------------------------------------------------------------
-
-#   none
-#FFLAGS = 
 
 #   Optimize
 FFLAGS = -O 
@@ -33,10 +30,6 @@ FFLAGS = -O
 #   debug
 #FFLAGS = -g
  
-# Large memory needed (ifort)
-#FFLAGS = -O -heap-arrays 
-
-
 #--------------------------------------------------------------------
 # Location of files
 #--------------------------------------------------------------------
@@ -65,16 +58,6 @@ EXAMPLE =  ./examples/
 # Module flag
 #--------------------------------------------------------------------
 
-# Sun Compiler
-#MFLAG = -M
-
-# Nag Compiler
-#MFLAG = -i
-#MFLAG = -I
-
-# Absoft Compiler
-#MFLAG = -p
-
 # Intel or g95 compiler
 MFLAG = -I
 
@@ -90,20 +73,20 @@ MTFILES = spectra.f90      mtspec.f90      adaptspec.f90    \
           set_xint.f90     sft.f90         tinvit.f90       \
           tridib.f90       xint.f90        qtdis.f90        \
           qsnorm.f90       yule.f90        nnls.f90         \
-	  spline.f90       wv_spec.f90     jackspec.f90     \
-	  df_spec.f90      atanh2.f90      nearn.f90        \
+          spline.f90       wv_spec.f90     jackspec.f90     \
+          df_spec.f90      atanh2.f90      nearn.f90        \
           sine_psd.f90     sine_cohe.f90   dpss_spline.f90  \
-	  mt_cohe.f90      nsqi.f90        qrfac.f90        \
-	  tred1.f90        trbak1.f90      rsm_eig.f90	    \
-	  nsinv.f90        ftest.f90       fdis.f90         \
-	  psd_reshape.f90  qiinv.f90       zqrfac.f90       \
-	  mt_deconv.f90    mt_transfer.f90 oct_spec.f90     \
-	  sym_fft.f90 
+          mt_cohe.f90      nsqi.f90        qrfac.f90        \
+          tred1.f90        trbak1.f90      rsm_eig.f90      \
+          nsinv.f90        ftest.f90       fdis.f90         \
+          psd_reshape.f90  qiinv.f90       zqrfac.f90       \
+          mt_deconv.f90    mt_transfer.f90 oct_spec.f90     \
+          sym_fft.f90 
 
 PLFILES = gplot.f90
 
 MTPRFILES = mtpsd.f90      mtpad.f90   coherence.f90  deconv.f90 \
-	    trfunction.f90 wigner.f90  dual_freq.f90  nsqi_psd.f90
+        trfunction.f90 wigner.f90  dual_freq.f90  nsqi_psd.f90
 
 PLPRFILES = xyplot.f90
 
@@ -125,62 +108,17 @@ PLOBJS =  $(PLFILES:.f90=.o)
 # $? means all dependencies (OBJS) that are new.
 # $< similar to $? but just on dependency rules (%.o : %.f90)
 
+all : mtspec.pyd install
 
-all : gplot.a mwlib.a organize mt_progs pl_progs figs
+mtspec.pyd: $(MTOBJS) $(PLOBJS)
+	gfortran -shared *.o -o $@
 
-mwlib.a : $(MTOBJS)
-	ar cr $@ $(MTOBJS)
-	ranlib $@
-	rm *.o
+install: mtspec.pyd
+	copy $? ..\lib\    
 
-gplot.a : $(PLOBJS)
-	ar cr $@ $(PLOBJS)
-	ranlib $@
-	rm *.o
-
-%.o : $(PLSRC)%.f90
-	$(FC) $(FFLAGS) -c $< -o $@
-
-%.o : $(MTSRC)%.f90
-	$(FC) $(FFLAGS) -c $< -o $@
-
-plotxy : $(PLXY)/plotxy.f
-	$(FC) $(FFLAGS) $< -o $(PROG)$@
-
-organize : gplot.a mwlib.a
-	mv *.mod modules
-	mv *.a libraries
-
-#--------------------------------------------------------------------
-# Compile programs
-#--------------------------------------------------------------------
-
-mt_progs : mtpsd wigner dual_freq coherence nsqi_psd mtpad trfunction deconv
-
-%:      $(MTPROG)%.f90 $(LIB)gplot.a $(LIB)mwlib.a
-	$(FC) $(FFLAGS) $(MODULE) $< $(LIB)gplot.a $(LIB)mwlib.a -o $(PROG)$@
-	mv *.mod modules
-
-pl_progs : xyplot
-
-%:      $(PLPROG)%.f90 $(LIB)gplot.a
-	$(FC) $(FFLAGS) $(MODULE) $< $(LIB)gplot.a -o $(PROG)$@
-	mv *.mod modules
-
-figs : fig1_2 fig3 fig4_5 fig6 
-
-%:      $(FIGPROG)%.f90 $(LIB)gplot.a $(LIB)mwlib.a
-	$(FC) $(FFLAGS) $(MODULE) $< $(LIB)gplot.a $(LIB)mwlib.a \
-	-o $(EXAMPLE)$@
-
-#--------------------------------------------------------------------
+    #--------------------------------------------------------------------
 # Clean
 #--------------------------------------------------------------------
 
 clean:
-	rm $(MOD)*.mod $(LIB)*.a $(PROG)* $(EXAMPLE)fig*
-
-cleandata:
-	rm examples/*.dat examples/*.ps examples/*.txt
-
-
+	del *.o *.mod mtspec.pyd *.a
