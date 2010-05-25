@@ -4,6 +4,7 @@ from mtspec import mtspec, mtspec_pad, sine_psd
 import numpy as np
 import os
 import unittest
+import gzip
 
 
 class MtSpecTestCase(unittest.TestCase):
@@ -18,8 +19,9 @@ class MtSpecTestCase(unittest.TestCase):
         be correct because they are identical to the figures in the paper on
         the machine that created these.
         """
-        datafile = os.path.join(os.path.dirname(__file__), 'data', 'PASC.dat')
-        data = np.loadtxt(datafile)
+        datafile = os.path.join(os.path.dirname(__file__), 'data',
+                                'PASC.dat.gz')
+        data = np.loadtxt(gzip.open(datafile))
         # Calculate the spectra.
         spec, freq = mtspec(data, 1.0, 1.5, number_of_tapers=1)
         # Load the good data.
@@ -38,8 +40,9 @@ class MtSpecTestCase(unittest.TestCase):
         be correct because they are identical to the figures in the paper on
         the machine that created these.
         """
-        datafile = os.path.join(os.path.dirname(__file__), 'data', 'PASC.dat')
-        data = np.loadtxt(datafile)
+        datafile = os.path.join(os.path.dirname(__file__), 'data',
+                                'PASC.dat.gz')
+        data = np.loadtxt(gzip.open(datafile))
         # Calculate the spectra.
         spec, freq = mtspec(data, 1.0, 4.5, number_of_tapers=5)
         # Load the good data.
@@ -58,8 +61,9 @@ class MtSpecTestCase(unittest.TestCase):
         directory. This is assumed to be correct because they are identical to
         the figures in the paper on the machine that created these.
         """
-        datafile = os.path.join(os.path.dirname(__file__), 'data', 'v22_174_series.dat')
-        data = np.loadtxt(datafile)
+        datafile = os.path.join(os.path.dirname(__file__), 'data', 
+                                'v22_174_series.dat.gz')
+        data = np.loadtxt(gzip.open(datafile))
         # Calculate the spectra.
         spec, freq, jackknife, _, _ = mtspec_pad(data, 312, 4930., 3.5, number_of_tapers=5,
                                      statistics=True)
@@ -81,8 +85,9 @@ class MtSpecTestCase(unittest.TestCase):
         be correct because they are identical to the figures in the paper on
         the machine that created these.
         """
-        datafile = os.path.join(os.path.dirname(__file__), 'data', 'PASC.dat')
-        data = np.loadtxt(datafile)
+        datafile = os.path.join(os.path.dirname(__file__), 'data',
+                                'PASC.dat.gz')
+        data = np.loadtxt(gzip.open(datafile))
         # Calculate the spectra.
         spec, freq = mtspec(data, 1.0, 4.5, number_of_tapers=5,
                             quadratic=True)
@@ -102,8 +107,9 @@ class MtSpecTestCase(unittest.TestCase):
         directory. This is assumed to be correct because they are identical to
         the figures in the paper on the machine that created these.
         """
-        datafile = os.path.join(os.path.dirname(__file__), 'data', 'v22_174_series.dat')
-        data = np.loadtxt(datafile)
+        datafile = os.path.join(os.path.dirname(__file__), 'data', 
+                                'v22_174_series.dat.gz')
+        data = np.loadtxt(gzip.open(datafile))
         # Calculate the spectra.
         spec, freq, jackknife, fstatistics, _ = mtspec_pad(data, 312, 4930.,
                             3.5, number_of_tapers=5, statistics=True,
@@ -129,8 +135,9 @@ class MtSpecTestCase(unittest.TestCase):
         be correct because they are identical to the figures in the paper on
         the machine that created these.
         """
-        datafile = os.path.join(os.path.dirname(__file__), 'data', 'PASC.dat')
-        data = np.loadtxt(datafile)
+        datafile = os.path.join(os.path.dirname(__file__), 'data',
+                                'PASC.dat.gz')
+        data = np.loadtxt(gzip.open(datafile))
         # Calculate the spectra.
         spec, freq = sine_psd(data, 1.0)
         # Load the good data.
@@ -147,8 +154,9 @@ class MtSpecTestCase(unittest.TestCase):
         The quadratic and the normal multitaper spectra look quite similar.
         Check that they are different.
         """
-        datafile = os.path.join(os.path.dirname(__file__), 'data', 'v22_174_series.dat')
-        data = np.loadtxt(datafile)
+        datafile = os.path.join(os.path.dirname(__file__), 'data', 
+                                'v22_174_series.dat.gz')
+        data = np.loadtxt(gzip.open(datafile))
         # Calculate the spectra.
         spec, freq = mtspec(data, 1.0, 4.5, number_of_tapers=2)
         spec2, freq2 = mtspec(data, 1.0, 4.5, number_of_tapers=2,
