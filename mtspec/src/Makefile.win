@@ -5,7 +5,10 @@
 #   http://gcc.gnu.org/wiki/GFortranBinaries#Windows, I used this link:
 #   http://quatramaran.ens.fr/~coudert/gfortran/gfortran-windows.exe
 # * Set PATH environment for gfortran binary
-# * execute make -f Makefile.win
+# * Run make -f Makefile.win
+# * Replace [lib] by [] in line 174 in ../../setup.py 
+#   i.e. ext_modules=[lib], --> ext_modules=[], and run
+#   python setup.py develop -N
 #
 # Last Modified:
 # 	March 26, 2008
@@ -113,10 +116,16 @@ all : mtspec.pyd install
 mtspec.pyd: $(MTOBJS) $(PLOBJS)
 	gfortran -shared *.o -o $@
 
+%.o : $(PLSRC)%.f90
+	$(FC) $(FFLAGS) -c $< -o $@
+
+%.o : $(MTSRC)%.f90
+	$(FC) $(FFLAGS) -c $< -o $@
+
 install: mtspec.pyd
 	copy $? ..\lib\    
 
-    #--------------------------------------------------------------------
+#--------------------------------------------------------------------
 # Clean
 #--------------------------------------------------------------------
 
