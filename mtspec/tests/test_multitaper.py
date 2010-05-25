@@ -31,7 +31,7 @@ class MtSpecTestCase(unittest.TestCase):
         # Compare, normalize for subdigit comparision
         freq2 = files['freq']
         np.testing.assert_almost_equal(freq, freq2)
-        np.testing.assert_almost_equal(spec/spec.max(), spec2/spec.max())
+        np.testing.assert_almost_equal(spec/spec, spec2/spec)
 
     def test_multitaperSpectrum(self):
         """
@@ -52,7 +52,7 @@ class MtSpecTestCase(unittest.TestCase):
         freq2 = files['freq']
         # Compare, normalize for subdigit comparision
         np.testing.assert_almost_equal(freq, freq2)
-        np.testing.assert_almost_equal(spec/spec.max(), spec2/spec.max())
+        np.testing.assert_almost_equal(spec/spec, spec2/spec)
 
     def test_paddedMultitaperSpectrumWithErrors(self):
         """
@@ -75,8 +75,8 @@ class MtSpecTestCase(unittest.TestCase):
         jackknife2 = files['jackknife']
         # Compare.
         np.testing.assert_almost_equal(freq, freq2)
-        np.testing.assert_almost_equal(spec/spec.max(), spec2/spec.max())
-        np.testing.assert_almost_equal(jackknife/jackknife.max(), jackknife2/jackknife.max())
+        np.testing.assert_almost_equal(spec/spec, spec2/spec)
+        np.testing.assert_almost_equal(jackknife/jackknife, jackknife2/jackknife)
 
     def test_quadraticMultitaperSpectrum(self):
         """
@@ -98,7 +98,7 @@ class MtSpecTestCase(unittest.TestCase):
         freq2 = files['freq']
         # Compare.
         np.testing.assert_almost_equal(freq, freq2)
-        np.testing.assert_almost_equal(spec/spec.max(), spec2/spec.max())
+        np.testing.assert_almost_equal(spec/spec, spec2/spec)
 
     def test_fstatisticsAndReshapedSpectrum(self):
         """
@@ -124,9 +124,9 @@ class MtSpecTestCase(unittest.TestCase):
         fstatistics2 = files['fstatistics']
         # Compare.
         np.testing.assert_almost_equal(freq, freq2)
-        np.testing.assert_almost_equal(spec/spec.max(), spec2/spec.max())
-        np.testing.assert_almost_equal(jackknife/jackknife.max(), jackknife2/jackknife.max())
-        np.testing.assert_almost_equal(fstatistics/fstatistics.max(), fstatistics2/fstatistics.max())
+        np.testing.assert_almost_equal(spec/spec, spec2/spec)
+        np.testing.assert_almost_equal(jackknife/jackknife, jackknife2/jackknife)
+        np.testing.assert_almost_equal(fstatistics/fstatistics, fstatistics2/fstatistics)
 
     def test_sinePSD(self):
         """
@@ -147,7 +147,7 @@ class MtSpecTestCase(unittest.TestCase):
         freq2 = files['freq']
         # Compare.
         np.testing.assert_almost_equal(freq, freq2)
-        np.testing.assert_almost_equal(spec/spec.max(), spec2/spec.max())
+        np.testing.assert_almost_equal(spec/spec, spec2/spec)
 
     def test_quadraticMultitaperIsDifferent(self):
         """
@@ -170,7 +170,7 @@ class MtSpecTestCase(unittest.TestCase):
                               quadratic=True)
         # Test that these are not equal.
         self.assertRaises(AssertionError, np.testing.assert_almost_equal,
-                          spec/spec.max(), spec2/spec.max())
+                          spec/spec, spec2/spec)
 
 
 def suite():
