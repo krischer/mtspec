@@ -5,7 +5,7 @@ import sys
 try:
     from obspy.core import read
 except ImportError:
-    msg = "For this test ObsPy must be installed\n"
+    msg = "For this tutorial program ObsPy must be installed\n"
     sys.stderr.write(msg)
     sys.exit(1)
     
