@@ -1,13 +1,21 @@
 # -*- coding: utf-8 -*-
 
-from obspy.core import read
+import sys
+
+try:
+    from obspy.core import read
+except ImportError:
+    msg = "For this test ObsPy must be installed\n"
+    sys.stderr.write(msg)
+    sys.exit(1)
+    
+
 import matplotlib.pyplot as plt
 from mtspec import mtspec, sine_psd
 import numpy as np
 import os
 
-st = read(os.path.join(os.path.dirname(__file__), 'data',
-                       'test_file.gse2'))
+st = read("http://examples.obspy.org/test_file.gse2")
 st[0].data = np.require(st[0].data, 'float32')
 
 # Level and demean data.

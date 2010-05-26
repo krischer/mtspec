@@ -26,10 +26,9 @@ class MtSpecTestCase(unittest.TestCase):
         spec, freq = mtspec(data, 1.0, 1.5, number_of_tapers=1)
         # Load the good data.
         datafile = os.path.join(os.path.dirname(__file__), 'data', 'single_taper.npz')
-        files = np.load(datafile)
-        spec2 = files['spec']
+        spec2 = np.load(datafile)['spec']
+        freq2 = np.arange(43201)*1.15740741e-05
         # Compare, normalize for subdigit comparision
-        freq2 = files['freq']
         np.testing.assert_almost_equal(freq, freq2)
         np.testing.assert_almost_equal(spec/spec, spec2/spec, 5)
 
@@ -47,9 +46,8 @@ class MtSpecTestCase(unittest.TestCase):
         spec, freq = mtspec(data, 1.0, 4.5, number_of_tapers=5)
         # Load the good data.
         datafile = os.path.join(os.path.dirname(__file__), 'data', 'multitaper.npz')
-        files = np.load(datafile)
-        spec2 = files['spec']
-        freq2 = files['freq']
+        spec2 = np.load(datafile)['spec']
+        freq2 = np.arange(43201)*1.15740741e-05
         # Compare, normalize for subdigit comparision
         np.testing.assert_almost_equal(freq, freq2)
         np.testing.assert_almost_equal(spec/spec, spec2/spec, 5)
@@ -69,10 +67,10 @@ class MtSpecTestCase(unittest.TestCase):
                                      statistics=True)
         # Load the good data.
         datafile = os.path.join(os.path.dirname(__file__), 'data', 'mtspec_pad_with_errors.npz')
-        files = np.load(datafile)
-        spec2 = files['spec']
-        freq2 = files['freq']
-        jackknife2 = files['jackknife']
+        record = np.load(datafile)
+        spec2 = record['spec']
+        jackknife2 = record['jackknife']
+        freq2 = np.arange(157)*6.50127447e-07
         # Compare.
         np.testing.assert_almost_equal(freq, freq2)
         np.testing.assert_almost_equal(spec/spec, spec2/spec, 6)
@@ -93,9 +91,8 @@ class MtSpecTestCase(unittest.TestCase):
                             quadratic=True)
         # Load the good data.
         datafile = os.path.join(os.path.dirname(__file__), 'data', 'quadratic_multitaper.npz')
-        files = np.load(datafile)
-        spec2 = files['spec']
-        freq2 = files['freq']
+        spec2 = np.load(datafile)['spec']
+        freq2 = np.arange(43201)*1.15740741e-05
         # Compare.
         np.testing.assert_almost_equal(freq, freq2)
         np.testing.assert_almost_equal(spec/spec, spec2/spec, 5)
@@ -117,11 +114,11 @@ class MtSpecTestCase(unittest.TestCase):
         # Load the good data.
         datafile = os.path.join(os.path.dirname(__file__), 'data',
                                 'fstatistics.npz')
-        files = np.load(datafile)
-        spec2 = files['spec']
-        freq2 = files['freq']
-        jackknife2 = files['jackknife']
-        fstatistics2 = files['fstatistics']
+        record = np.load(datafile)
+        spec2 = record['spec']
+        jackknife2 = record['jackknife']
+        fstatistics2 = record['fstatistics']
+        freq2 = np.arange(157)*6.50127447e-07
         # Compare.
         np.testing.assert_almost_equal(freq, freq2)
         np.testing.assert_almost_equal(spec/spec, spec2/spec)
@@ -142,9 +139,8 @@ class MtSpecTestCase(unittest.TestCase):
         spec, freq = sine_psd(data, 1.0)
         # Load the good data.
         datafile = os.path.join(os.path.dirname(__file__), 'data', 'sine_psd.npz')
-        files = np.load(datafile)
-        spec2 = files['spec']
-        freq2 = files['freq']
+        spec2 = np.load(datafile)['spec']
+        freq2 = np.arange(43201)*1.15740741e-05
         # Compare.
         np.testing.assert_almost_equal(freq, freq2)
         np.testing.assert_almost_equal(spec/spec, spec2/spec, 3)
