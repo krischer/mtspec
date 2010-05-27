@@ -109,7 +109,7 @@ def mtspec_pad(data, nfft, delta, time_bandwidth, number_of_tapers = None,
                         'float32', ['F_CONTIGUOUS', 'ALIGNED', 'WRITEABLE'])
         eigenspectra_p = eigenspectra.ctypes.data_as(C.POINTER(C.c_float))
         eigencoefficients = np.empty((nfft, number_of_tapers),
-                        'float32', ['F_CONTIGUOUS', 'ALIGNED', 'WRITEABLE'])
+                        'complex64', ['F_CONTIGUOUS', 'ALIGNED', 'WRITEABLE'])
         eigencoefficients_p = eigencoefficients.ctypes.data_as(C.POINTER(C.c_float))
         weights = np.empty((number_of_frequency_bins,number_of_tapers),
                         'float32', ['F_CONTIGUOUS', 'ALIGNED', 'WRITEABLE'])
@@ -280,7 +280,7 @@ def mtspec(data, delta, time_bandwidth, number_of_tapers = None,
                         'float64', ['F_CONTIGUOUS', 'ALIGNED', 'WRITEABLE'])
         eigenspectra_p = eigenspectra.ctypes.data_as(C.POINTER(C.c_double))
         eigencoefficients = np.empty((npts, number_of_tapers),
-                        'float64', ['F_CONTIGUOUS', 'ALIGNED', 'WRITEABLE'])
+                        'complex128', ['F_CONTIGUOUS', 'ALIGNED', 'WRITEABLE'])
         eigencoefficients_p = eigencoefficients.ctypes.data_as(C.POINTER(C.c_double))
         weights = np.empty((number_of_frequency_bins,number_of_tapers),
                         'float64', ['F_CONTIGUOUS', 'ALIGNED', 'WRITEABLE'])
