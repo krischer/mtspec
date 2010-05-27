@@ -7,10 +7,10 @@ import ctypes as C
 from headers import mtspeclib
 import numpy as np
 
-def mtspec_pad(data, nfft, delta, time_bandwidth, number_of_tapers = None, 
-           quadratic = False, adaptive = True, verbose = False,
-           optional_output = False, statistics = False, rshape = False,
-           fcrit = False):
+def mtspec_pad(data, nfft, delta, time_bandwidth, number_of_tapers=None, 
+               quadratic=False, adaptive=True, verbose=False,
+               optional_output=False, statistics=False, rshape=False,
+               fcrit=False):
     """
     Wrapper method for the mtspec subroutine in the library by German A.
     Prieto.
@@ -182,10 +182,10 @@ def mtspec_pad(data, nfft, delta, time_bandwidth, number_of_tapers = None,
                               degrees_of_freedom])
     return return_values
 
-def mtspec(data, delta, time_bandwidth, number_of_tapers = None, 
-           quadratic = False, adaptive = True, verbose = False,
-           optional_output = False, statistics = False, rshape = False,
-           fcrit = False):
+def mtspec(data, delta, time_bandwidth, number_of_tapers=None, 
+           quadratic=False, adaptive=True, verbose=False,
+           optional_output=False, statistics=False, rshape=False,
+           fcrit=False):
     """
     Wrapper method for the mtspec subroutine in the library by German A.
     Prieto.

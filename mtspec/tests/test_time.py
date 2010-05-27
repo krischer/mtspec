@@ -33,22 +33,22 @@ print 'Approximated time for "Cold call":', d + (b-a)
 print '================================================='
 
 a = time.time()
-stuff = mtspec(data, delta, 4, optional_output = True)
+stuff=mtspec(data, delta, 4, optional_output=True)
 b = time.time()
 print 'Time for mtspec with optional output:', b-a
 print 'Approximated time for "Cold call":', d + (b-a)
 print '================================================='
 
 a = time.time()
-stuff = mtspec(data, delta, 4, statistics = True)
+stuff=mtspec(data, delta, 4, statistics=True)
 b = time.time()
 print 'Time for mtspec with statistics:', b-a
 print 'Approximated time for "Cold call":', d + (b-a)
 print '================================================='
 
 a = time.time()
-stuff = mtspec(data, delta, 4, optional_output = True,
-               statistics = True)
+stuff=mtspec(data, delta, 4, optional_output=True,
+             statistics=True)
 b = time.time()
 print 'Time for mtspec with optional stuff and statistics:', b-a
 print 'Approximated time for "Cold call":', d + (b-a)
