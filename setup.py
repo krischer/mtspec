@@ -26,7 +26,6 @@ mtspecPy installer.
 
 from distutils.ccompiler import get_default_compiler, CCompiler
 from distutils.unixccompiler import UnixCCompiler, _darwin_compiler_fixup
-#from distutils.msvccompiler import MSVCCompiler
 from distutils.errors import DistutilsExecError, CompileError
 from setuptools import find_packages, setup
 from setuptools.extension import Extension
@@ -36,12 +35,12 @@ import sys
 
 VERSION = open(os.path.join("mtspec", "VERSION.txt")).read()
 
-# Monkey patch Compiler for Unix, Linux and Windows
+# Monkey patch CCompiler for Unix, Linux and Windows
 # We pretend that .f90 is a C extension and overwrite
 # the corresponding compilation calls
-#CCompiler.language_map['.f90'] = "c"
+CCompiler.language_map['.f90'] = "c"
 
-# Monkey patch Compiler for Unix, Linux and darwin
+# Monkey patch UnixCCompiler for Unix, Linux and darwin
 UnixCCompiler.src_extensions.append(".f90")
 def _compile(self, obj, src, ext, cc_args, extra_postargs, pp_opts):
         compiler_so = self.compiler_so
@@ -58,43 +57,51 @@ def _compile(self, obj, src, ext, cc_args, extra_postargs, pp_opts):
             raise CompileError, msg
 UnixCCompiler._compile = _compile
 
-# Monkey patch Compiler for Windows
-# XXX: this will only work if the msvc compiler is default
-##MSVCCompiler._c_extensions.append(".f90")
-##def compile(self, sources, output_dir=None, macros=None, include_dirs=None,
-##        debug=0, extra_preargs=None, extra_postargs=None,
-##        depends=None):
-##    if output_dir:
-##        try:
-##            os.makedirs(output_dir)
-##        except OSError:
-##            pass
-##    objects = []
-##    for src in sources:
-##        file, ext = os.path.splitext(src)
-##        if output_dir:
-##            obj = os.path.join(output_dir, os.path.basename(file) + ".o")
-##        else:
-##            obj = file + ".o"
-##        if ext == ".f90":
-##            self.compiler_so = ["gfortran"]
-##            cc_args = ["-O", "-c", "-ffree-form"]
-##            extra_postargs = []
-##        try:
-##            self.spawn(self.compiler_so + cc_args + [src, '-o', obj] +
-##                       extra_postargs)
-##        except DistutilsExecError, msg:
-##            raise CompileError, msg
-##        objects.append(obj)
-##    return objects
-##
-##def link(self, target_desc, objects, output_filename, *args, **kwargs):
-##    self.spawn(self.compiler_so + ["-shared"] + objects + 
-##               ["-o", output_filename])
-##
-##MSVCCompiler.compile = compile
-##MSVCCompiler.link = link
-##
+# Monkey patch MSVCCompiler for Windows
+# XXX: Only work if the msvc compiler is default
+if platform.system() == "Windows":
+    # We only do this on windows, importing msvccompiler on linux produces the
+    # following warning:"
+    #      Warning: Can't read registry to find the necessary compiler setting
+    #      Make sure that Python modules _winreg, win32api or win32con are
+    #      installed.
+    from distutils.msvccompiler import MSVCCompiler
+    MSVCCompiler._c_extensions.append(".f90")
+    def compile(self, sources, output_dir=None, macros=None, include_dirs=None,
+            debug=0, extra_preargs=None, extra_postargs=None,
+            depends=None):
+        if output_dir:
+            try:
+                os.makedirs(output_dir)
+            except OSError:
+                pass
+        objects = []
+        for src in sources:
+            file, ext = os.path.splitext(src)
+            if output_dir:
+                obj = os.path.join(output_dir, os.path.basename(file) + ".o")
+            else:
+                obj = file + ".o"
+            if ext == ".f90":
+                self.compiler_so = ["gfortran"]
+                cc_args = ["-O", "-c", "-ffree-form"]
+                extra_postargs = []
+            try:
+                self.spawn(self.compiler_so + cc_args + [src, '-o', obj] +
+                           extra_postargs)
+            except DistutilsExecError, msg:
+                raise CompileError, msg
+            objects.append(obj)
+        return objects
+
+    def link(self, target_desc, objects, output_filename, *args, **kwargs):
+        self.spawn(self.compiler_so + ["-shared"] + objects + 
+                   ["-o", output_filename])
+
+    MSVCCompiler.compile = compile
+    MSVCCompiler.link = link
+
+
 ### Hack to prevent build_ext from trying to append "init" to the export symbols
 class finallist(list):
     def append(self, object):

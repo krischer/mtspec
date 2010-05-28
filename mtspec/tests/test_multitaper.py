@@ -180,7 +180,7 @@ class MtSpecTestCase(unittest.TestCase):
         freq2 = np.arange(43201)*1.15740741e-05
         # Compare.
         np.testing.assert_almost_equal(freq, freq2)
-        np.testing.assert_almost_equal(spec/spec, spec2/spec, 3)
+        np.testing.assert_almost_equal(spec/spec, spec2/spec, 2)
 
     def test_quadraticMultitaperIsDifferent(self):
         """
