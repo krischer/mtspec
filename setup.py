@@ -26,7 +26,7 @@ mtspecPy installer.
 
 from distutils.ccompiler import get_default_compiler, CCompiler
 from distutils.unixccompiler import UnixCCompiler, _darwin_compiler_fixup
-from distutils.msvccompiler import MSVCCompiler
+#from distutils.msvccompiler import MSVCCompiler
 from distutils.errors import DistutilsExecError, CompileError
 from setuptools import find_packages, setup
 from setuptools.extension import Extension
