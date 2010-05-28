@@ -39,7 +39,7 @@ VERSION = open(os.path.join("mtspec", "VERSION.txt")).read()
 # Monkey patch Compiler for Unix, Linux and Windows
 # We pretend that .f90 is a C extension and overwrite
 # the corresponding compilation calls
-CCompiler.language_map['.f90'] = "c"
+#CCompiler.language_map['.f90'] = "c"
 
 # Monkey patch Compiler for Unix, Linux and darwin
 UnixCCompiler.src_extensions.append(".f90")
@@ -60,42 +60,42 @@ UnixCCompiler._compile = _compile
 
 # Monkey patch Compiler for Windows
 # XXX: this will only work if the msvc compiler is default
-MSVCCompiler._c_extensions.append(".f90")
-def compile(self, sources, output_dir=None, macros=None, include_dirs=None,
-        debug=0, extra_preargs=None, extra_postargs=None,
-        depends=None):
-    if output_dir:
-        try:
-            os.makedirs(output_dir)
-        except OSError:
-            pass
-    objects = []
-    for src in sources:
-        file, ext = os.path.splitext(src)
-        if output_dir:
-            obj = os.path.join(output_dir, os.path.basename(file) + ".o")
-        else:
-            obj = file + ".o"
-        if ext == ".f90":
-            self.compiler_so = ["gfortran"]
-            cc_args = ["-O", "-c", "-ffree-form"]
-            extra_postargs = []
-        try:
-            self.spawn(self.compiler_so + cc_args + [src, '-o', obj] +
-                       extra_postargs)
-        except DistutilsExecError, msg:
-            raise CompileError, msg
-        objects.append(obj)
-    return objects
-
-def link(self, target_desc, objects, output_filename, *args, **kwargs):
-    self.spawn(self.compiler_so + ["-shared"] + objects + 
-               ["-o", output_filename])
-
-MSVCCompiler.compile = compile
-MSVCCompiler.link = link
-
-# Hack to prevent build_ext from trying to append "init" to the export symbols
+##MSVCCompiler._c_extensions.append(".f90")
+##def compile(self, sources, output_dir=None, macros=None, include_dirs=None,
+##        debug=0, extra_preargs=None, extra_postargs=None,
+##        depends=None):
+##    if output_dir:
+##        try:
+##            os.makedirs(output_dir)
+##        except OSError:
+##            pass
+##    objects = []
+##    for src in sources:
+##        file, ext = os.path.splitext(src)
+##        if output_dir:
+##            obj = os.path.join(output_dir, os.path.basename(file) + ".o")
+##        else:
+##            obj = file + ".o"
+##        if ext == ".f90":
+##            self.compiler_so = ["gfortran"]
+##            cc_args = ["-O", "-c", "-ffree-form"]
+##            extra_postargs = []
+##        try:
+##            self.spawn(self.compiler_so + cc_args + [src, '-o', obj] +
+##                       extra_postargs)
+##        except DistutilsExecError, msg:
+##            raise CompileError, msg
+##        objects.append(obj)
+##    return objects
+##
+##def link(self, target_desc, objects, output_filename, *args, **kwargs):
+##    self.spawn(self.compiler_so + ["-shared"] + objects + 
+##               ["-o", output_filename])
+##
+##MSVCCompiler.compile = compile
+##MSVCCompiler.link = link
+##
+### Hack to prevent build_ext from trying to append "init" to the export symbols
 class finallist(list):
     def append(self, object):
         return
