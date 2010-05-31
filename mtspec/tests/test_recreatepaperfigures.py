@@ -13,7 +13,7 @@ References:
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pylab as plt
-from mtspec import mtspec, sine_psd, mtspec_pad
+from mtspec import mtspec, sine_psd
 import numpy as np
 import os
 import gzip
@@ -42,8 +42,8 @@ class RecreateFigures(unittest.TestCase):
         data = np.loadtxt(gzip.open(datafile))
         length = len(data)
 
-        spec, freq, jackknife, _, _ = mtspec_pad(data, 312, 4930., 3.5, number_of_tapers=5, 
-                                                 statistics=True)
+        spec, freq, jackknife, _, _ = mtspec(data, 4930., 3.5, number_of_tapers=5, 
+                                             nfft=312, statistics=True)
 
         fig = plt.figure()
         ax1 = fig.add_subplot(2, 1, 1)
@@ -73,9 +73,9 @@ class RecreateFigures(unittest.TestCase):
         datafile = os.path.join(os.path.dirname(__file__), 'data', 
                                 'v22_174_series.dat.gz')
         data = np.loadtxt(gzip.open(datafile))
-        spec, freq, jackknife, fstatistics, _ = mtspec_pad(data, 312, 4930., 3.5, number_of_tapers=5,
-                                                           statistics=True, rshape=0,
-                                                           fcrit=0.9)
+        spec, freq, jackknife, fstatistics, _ = mtspec(data, 4930., 3.5,
+                number_of_tapers=5, nfft=312, statistics=True, rshape=0, 
+                fcrit=0.9)
 
         fig = plt.figure()
         ax1 = fig.add_subplot(2, 1, 1)
