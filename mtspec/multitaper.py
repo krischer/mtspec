@@ -31,66 +31,58 @@ def mtspec(data, delta, time_bandwidth, nfft=None, number_of_tapers=None,
     spheroidal sequences), multiplying each of the tapers with the data series,
     take the FFT, and using the adaptive scheme for a better estimation. 
 
-    Parameters
-    ----------
-    data : :class:`numpy.ndarray'
-        Array with the data.
-    delta : float
-        Sample spacing of the data.
-    time_bandwidth : float
-        Time-bandwidth product. Common values are 2, 3, 4 and numbers in
-        between.
-    nfft : int
-        Number of points for fft. If nfft == None, no zero padding
-        will be applied before the fft
-    number_of_tapers : integer, optional
-        Number of tapers to use. Defaults to int(2*time_bandwidth) - 1. This is
-        maximum senseful amount. More tapers will have no great influence on
-        the final spectrum but increase the calculation time. Use fewer tapers
-        for a faster calculation.
-    quadratic : bool, optional
-        Whether or not to caluclate a quadratic multitaper. Defaults to False.
-    adaptive : bool, optional
-        Whether to use adaptive or constant weighting of the eigenspectra.
-        Defaults to True(adaptive).
-    verbose : bool, optional
-        Passed to the fortran library. Defaults to False.
-    optional_output : bool, optional
-        Calculates and returns additional output parameters. See the notes in
-        the docstring for further details.
-    statistics : bool, optional
-        Calculates and returns statistics. See the notes in the docstring for
-        further details.
-    rshape : integer/None, optional
-        Determines whether or not to perform the F-test for lines. If rshape is
-        1 or 2, then don't put the lines back. If rshape is 2 only check around
-        60 Hz. See the fortran source code for more informations. Defaults to
-        None (do not perform the F-test).
-    fcrit : float/None, optional
-       The threshold probability for the F-test. If none is given, the mtspec
-       library calculates a default value. See the fortran source code for
-       details. Defaults to None.
+    :param data: :class:`numpy.ndarray`
+         Array with the data.
+    :param delta: float
+         Sample spacing of the data.
+    :param time_bandwidth: float
+         Time-bandwidth product. Common values are 2, 3, 4 and numbers in
+         between.
+    :param nfft: int
+         Number of points for fft. If nfft == None, no zero padding
+         will be applied before the fft
+    :param number_of_tapers: integer, optional
+         Number of tapers to use. Defaults to int(2*time_bandwidth) - 1. This is
+         maximum senseful amount. More tapers will have no great influence on
+         the final spectrum but increase the calculation time. Use fewer tapers
+         for a faster calculation.
+    :param quadratic: bool, optional
+         Whether or not to caluclate a quadratic multitaper. Defaults to False.
+    :param adaptive: bool, optional
+         Whether to use adaptive or constant weighting of the eigenspectra.
+         Defaults to True(adaptive).
+    :param verbose: bool, optional
+         Passed to the fortran library. Defaults to False.
+    :param optional_output: bool, optional
+         Calculates and returns additional output parameters. See the notes in
+         the docstring for further details.
+    :param statistics: bool, optional
+         Calculates and returns statistics. See the notes in the docstring for
+         further details.
+    :param rshape: integer/None, optional
+         Determines whether or not to perform the F-test for lines. If rshape is
+         1 or 2, then don't put the lines back. If rshape is 2 only check around
+         60 Hz. See the fortran source code for more informations. Defaults to
+         None (do not perform the F-test).
+    :param fcrit: float/None, optional
+         The threshold probability for the F-test. If none is given, the mtspec
+         library calculates a default value. See the fortran source code for
+         details. Defaults to None.
+    :return: Returns a list with :class:`numpy.ndarray`. See the note
+         below.
 
-    Notes
-    -----
-    This method will at return at least two arrays: The calculated spectrum and
-    the corresponding frequencies.
-    If optional_output is true it will also return (in the given order)
-    (multidimensional) arrays containing the eigenspectra, the corresponding
-    eigencoefficients and an array containing the weights for each eigenspectra
-    normalized so that the sum of squares over the eigenspectra is one. 
-    If statistics is True is will also return (in the given order)
-    (multidimensional) arrays containing the jackknife 5% and 95% confidence
-    intervals, the F statistics for single line and the number of degrees of
-    freedom for each frequency bin.
-    If both optional_output and statistics are true, the optional_outputs will
-    be returned before the statistics.
-
-    Returns
-    -------
-    list
-        Returns a list with :class:`numpy.ndarray`. See the notes section
-        in the docstring for details.
+    :note: This method will at return at least two arrays: The calculated spectrum and
+        the corresponding frequencies.  If optional_output is true it will
+        also return (in the given order) (multidimensional) arrays
+        containing the eigenspectra, the corresponding eigencoefficients
+        and an array containing the weights for each eigenspectra
+        normalized so that the sum of squares over the eigenspectra is one.
+        If statistics is True is will also return (in the given order)
+        (multidimensional) arrays containing the jackknife 5% and 95%
+        confidence intervals, the F statistics for single line and the
+        number of degrees of freedom for each frequency bin.  If both
+        optional_output and statistics are true, the optional_outputs will
+        be returned before the statistics.
     """
     npts = len(data)
 
@@ -223,40 +215,32 @@ def sine_psd(data, delta, number_of_tapers=None, number_of_iterations=2,
     sample sizes. Instead use Thomson multitaper in mtspec in this same
     library. 
 
-    Parameters
-    ----------
-    data : :class:`numpy.ndarray'
+    :param data: :class:`numpy.ndarray`
         Array with the data.
-    delta : float
+    :param delta: float
         Sample spacing of the data.
-    number_of_tapers : integer/None, optional
+    :param number_of_tapers: integer/None, optional
         Number of tapers to use. If none is given, the library will perform an
         adaptive taper estimation with a varying number of tapers for each
         frequency. Defaults to None.
-    number_of_iterations : integer, optional
+    :param number_of_iterations: integer, optional
         Number of iterations to perform. Values less than 2 will be set to 2.
         Defaults to 2.
-    degree_of_smoothing : float, optional
+    :param degree_of_smoothing: float, optional
         Degree of smoothing. Defaults to 1.0.
-    statistics : bool, optional
+    :param statistics: bool, optional
         Calculates and returns statistics. See the notes in the docstring for
         further details.
-    verbose : bool, optional
+    :param verbose: bool, optional
         Passed to the fortran library. Defaults to False.
+    :return: Returns a list with :class:`numpy.ndarray`. See the note below
+        for details.
 
-    Notes
-    -----
-    This method will at return at least two arrays: The calculated spectrum and
-    the corresponding frequencies.
-    If statistics is True is will also return (in the given order)
-    (multidimensional) arrays containing the 1-std errors (a simple dof
-    estimate) and the number of tapers used for each frequency point.
-
-    Returns
-    -------
-    list
-        Returns a list with :class:`numpy.ndarray`. See the notes in the
-        docstring for details.
+    :note: This method will at return at least two arrays: The calculated
+        spectrum and the corresponding frequencies.  If statistics is True
+        is will also return (in the given order) (multidimensional) arrays
+        containing the 1-std errors (a simple dof estimate) and the number
+        of tapers used for each frequency point.
     """
     # Verbose mode on or off.
     if verbose is True:
