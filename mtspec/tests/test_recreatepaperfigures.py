@@ -37,10 +37,7 @@ class RecreateFigures(unittest.TestCase):
         """
         Recreate Figure 1
         """
-        datafile = os.path.join(os.path.dirname(__file__), 'data', 
-                                'v22_174_series.dat.gz')
-        data = np.loadtxt(gzip.open(datafile))
-        length = len(data)
+        data = load_mtdata('v22_174_series.dat.gz')
 
         spec, freq, jackknife, _, _ = mtspec(data, 4930., 3.5, number_of_tapers=5, 
                                              nfft=312, statistics=True)
@@ -48,7 +45,7 @@ class RecreateFigures(unittest.TestCase):
         fig = plt.figure()
         ax1 = fig.add_subplot(2, 1, 1)
         ax1.plot(data, color='black')
-        ax1.set_xlim(0, length)
+        ax1.set_xlim(0, len(data))
 
         ax2 = fig.add_subplot(2, 1, 2)
         ax2.set_yscale('log')
@@ -70,9 +67,7 @@ class RecreateFigures(unittest.TestCase):
         """
         Recreate Figure 2
         """
-        datafile = os.path.join(os.path.dirname(__file__), 'data', 
-                                'v22_174_series.dat.gz')
-        data = np.loadtxt(gzip.open(datafile))
+        data = load_mtdata('v22_174_series.dat.gz')
         spec, freq, jackknife, fstatistics, _ = mtspec(data, 4930., 3.5,
                 number_of_tapers=5, nfft=312, statistics=True, rshape=0, 
                 fcrit=0.9)
@@ -97,15 +92,12 @@ class RecreateFigures(unittest.TestCase):
         """
         Recreate Figure 2
         """
-        datafile = os.path.join(os.path.dirname(__file__), 'data',
-                                'PASC.dat.gz')
-        data = np.loadtxt(gzip.open(datafile))
-        length = len(data)
+        data = load_mtdata('PASC.dat.gz')
 
         fig = plt.figure()
         ax1 = fig.add_subplot(3, 1, 1)
         ax1.plot(data, color='black')
-        ax1.set_xlim(0, length)
+        ax1.set_xlim(0, len(data))
 
         spec, freq = mtspec(data, 1.0, 1.5, number_of_tapers=1)
 

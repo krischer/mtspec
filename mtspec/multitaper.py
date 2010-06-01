@@ -14,7 +14,7 @@ Python Wrapper for multitaper `mtspec` f90 library of German A. Prieto.
 """
 
 import ctypes as C
-from headers import mtspeclib
+from util import mtspeclib
 import numpy as np
 
 

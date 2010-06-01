@@ -1,21 +1,40 @@
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-Welcome to the mtspecPy documentation!
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Welcome to mtspecPy Documentation
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+.. currentmodule:: mtspec
 .. automodule:: mtspec
 
-mtspec.mtspec
-=============
+    .. comment to end block
 
-.. currentmodule:: mtspec
+    Tutorial
+    --------
 
-.. autofunction:: mtspec
+    .. toctree::
+      :maxdepth: 1
+
+      tutorial.rst
+
+    .. comment to end block
 
 
-mtspec.sine_psd
-===============
+    Classes & functions
+    -------------------
+    .. autosummary::
+      :toctree: .
+      :nosignatures:
 
-.. currentmodule:: mtspec
+        ~multitaper.mtspec
+        ~multitaper.sine_psd
+        ~util.load_mtdata
 
-.. autofunction:: sine_psd
+    .. comment to end block
 
+    Modules
+    -------
+    .. autosummary::
+      :toctree: .
+      :nosignatures:
+
+        multitaper
+        util
