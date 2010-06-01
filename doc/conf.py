@@ -231,6 +231,6 @@ from sphinx.ext.autodoc import cut_lines
 
 # Attach this to the builder
 def setup(app):
-    app.connect('autodoc-process-docstring', cut_lines(2))
+    #app.connect('autodoc-process-docstring', cut_lines(2))
     app.connect('autodoc-process-docstring', process_inherited)
     app.connect('autodoc-skip-member', skip_underscore)
