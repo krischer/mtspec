@@ -28,8 +28,9 @@ def load_mtdata(gzfile):
     Helper function that finds the data in the directory tree and loads it
     using `gzip.open` and `np.loadtxt`
 
-    :param gzfile: String of file, either `v22_174_series.dat.gz` or
+    :param gzfile: String of filename, either `v22_174_series.dat.gz` or
         `PASC.dat.gz`
+    :returns: numpy.ndarray 1dim, containing the data
     """
     path = os.path.join(os.path.dirname(__file__), 'tests', 'data', gzfile)
     return np.loadtxt(gzip.open(path))

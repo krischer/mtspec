@@ -71,7 +71,9 @@ def mtspec(data, delta, time_bandwidth, nfft=None, number_of_tapers=None,
     :return: Returns a list with :class:`numpy.ndarray`. See the note
          below.
 
-    :note: This method will at return at least two arrays: The calculated spectrum and
+    .. note:: 
+        
+        This method will at return at least two arrays: The calculated spectrum and
         the corresponding frequencies.  If optional_output is true it will
         also return (in the given order) (multidimensional) arrays
         containing the eigenspectra, the corresponding eigencoefficients
@@ -236,7 +238,9 @@ def sine_psd(data, delta, number_of_tapers=None, number_of_iterations=2,
     :return: Returns a list with :class:`numpy.ndarray`. See the note below
         for details.
 
-    :note: This method will at return at least two arrays: The calculated
+    .. note:: 
+
+        This method will at return at least two arrays: The calculated
         spectrum and the corresponding frequencies.  If statistics is True
         is will also return (in the given order) (multidimensional) arrays
         containing the 1-std errors (a simple dof estimate) and the number
