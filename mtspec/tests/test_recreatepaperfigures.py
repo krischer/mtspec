@@ -13,7 +13,7 @@ References:
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pylab as plt
-from mtspec import mtspec, sine_psd
+from mtspec import mtspec, sine_psd, load_mtdata
 import numpy as np
 import os
 import gzip
