@@ -186,25 +186,6 @@ class MtSpecTestCase(unittest.TestCase):
         np.testing.assert_almost_equal(freq, freq2)
         np.testing.assert_almost_equal(spec/spec, spec2/spec, 2)
 
-    def test_sinePSDStatistics(self):
-        """
-        Test for the sine_psd spectra with optional output. The result is
-        compared to the output of test_recreatePaperFigures.py in the same
-        directory. This is assumed to be correct because they are identical
-        to the figures in the paper on the machine that created these.
-        """
-        data = load_mtdata('PASC.dat.gz')
-        # Calculate the spectra.
-        spec, freq, errors, tapers = sine_psd(data, 1.0, statistics=True)
-        #XXX: assert for errors and tapers is missing
-        # Load the good data.
-        datafile = os.path.join(os.path.dirname(__file__), 'data', 'sine_psd.npz')
-        spec2 = np.load(datafile)['spec']
-        freq2 = np.arange(43201)*1.15740741e-05
-        # Compare.
-        np.testing.assert_almost_equal(freq, freq2)
-        np.testing.assert_almost_equal(spec/spec, spec2/spec, 3)
-
     def test_quadraticMultitaperIsDifferent(self):
         """
         The quadratic and the normal multitaper spectra look quite similar.
