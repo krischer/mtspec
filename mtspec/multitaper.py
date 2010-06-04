@@ -257,7 +257,7 @@ def sine_psd(data, delta, number_of_tapers=None, number_of_iterations=2,
     # initialize _MtspecType to save some space
     mt = _MtspecType("float32")
     # Transform the data to work with the library.
-    data = np.require(data, 'float32', ['F_CONTIGUOUS', 'ALIGNED', 'WRITEABLE'])
+    data = np.require(data, mt.float, mt.required)
     # Some variables necessary to call the library.
     npts = len(data)
     number_of_frequency_bins = int(npts/2) + 1
