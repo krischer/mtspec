@@ -4,7 +4,7 @@
 mtspecPy installer.
 
 :copyright:
-    Lion Krischer, Moritz Beyreuther and German A. Prieto
+    Moritz Beyreuther, Lion Krischer and German A. Prieto
 :license:
     GNU General Public License (GPL)
     
@@ -25,7 +25,6 @@ mtspecPy installer.
 """
 
 from distutils.ccompiler import get_default_compiler, CCompiler
-from distutils.unixccompiler import UnixCCompiler, _darwin_compiler_fixup
 from distutils.errors import DistutilsExecError, CompileError
 from setuptools import find_packages, setup
 from setuptools.extension import Extension
@@ -33,33 +32,37 @@ import os, re
 import platform
 import sys
 
-VERSION = open(os.path.join("mtspec", "VERSION.txt")).read()
+VERSION = open(os.path.join("mtspec", "VERSION.txt")).read().strip()
 
 # Monkey patch CCompiler for Unix, Linux and Windows
 # We pretend that .f90 is a C extension and overwrite
 # the corresponding compilation calls
 CCompiler.language_map['.f90'] = "c"
 
-# Monkey patch UnixCCompiler for Unix, Linux and darwin
-UnixCCompiler.src_extensions.append(".f90")
-def _compile(self, obj, src, ext, cc_args, extra_postargs, pp_opts):
-        compiler_so = self.compiler_so
-        if sys.platform == 'darwin':
-            compiler_so = _darwin_compiler_fixup(compiler_so, cc_args + extra_postargs)
-        if ext == ".f90":
-            if sys.platform == 'darwin' or sys.platform == 'linux2':
-                compiler_so = ["gfortran"]
-                cc_args = ["-O", "-fPIC", "-c", "-ffree-form"]
-        try:
-            self.spawn(compiler_so + cc_args + [src, '-o', obj] +
-                       extra_postargs)
-        except DistutilsExecError, msg:
-            raise CompileError, msg
-UnixCCompiler._compile = _compile
+if platform.system() != "Windows":
+    from distutils.unixccompiler import UnixCCompiler, _darwin_compiler_fixup
+    # Monkey patch UnixCCompiler for Unix, Linux and darwin
+    UnixCCompiler.src_extensions.append(".f90")
+    def _compile(self, obj, src, ext, cc_args, extra_postargs, pp_opts):
+            compiler_so = self.compiler_so
+            if sys.platform == 'darwin':
+                compiler_so = _darwin_compiler_fixup(compiler_so, cc_args + extra_postargs)
+            if ext == ".f90":
+                if sys.platform == 'darwin' or sys.platform == 'linux2':
+                    compiler_so = ["gfortran"]
+                    cc_args = ["-O", "-fPIC", "-c", "-ffree-form"]
+            try:
+                self.spawn(compiler_so + cc_args + [src, '-o', obj] +
+                           extra_postargs)
+            except DistutilsExecError, msg:
+                raise CompileError, msg
+    UnixCCompiler._compile = _compile
+    # set library dir for mac and linux
+    libs=['gfortran']
 
-# Monkey patch MSVCCompiler for Windows
-# XXX: Only work if the msvc compiler is default
-if platform.system() == "Windows":
+else:
+    # Monkey patch MSVCCompiler for Windows
+    # XXX: Only work if the msvc compiler is default
     # We only do this on windows, importing msvccompiler on linux produces the
     # following warning:"
     #      Warning: Can't read registry to find the necessary compiler setting
@@ -100,6 +103,9 @@ if platform.system() == "Windows":
 
     MSVCCompiler.compile = compile
     MSVCCompiler.link = link
+    # do not include any libraries for windows
+    libs = []
+
 
 
 ### Hack to prevent build_ext from trying to append "init" to the export symbols
@@ -115,42 +121,9 @@ class MyExtension(Extension):
 macros = []
 extra_link_args = []
 extra_compile_args = []
-if platform.system() == "Windows":
-    macros.append(('WIN32', '1'))
-    # disable some warnings for MSVC
-    macros.append(('_CRT_SECURE_NO_WARNINGS', '1'))
-    if 'mingw32' in sys.argv or \
-        ('-c' not in sys.argv and get_default_compiler() == 'mingw32'):
-        # Workaround Win32 + MinGW + Python 2.6 
-        # :see: http://bugs.python.org/issue3308
-        macros.append(('time_t', '__int64'))
-        macros.append(('localtime', '_localtime64'))
-        macros.append(('gmtime', '_gmtime64'))
-    elif 'msvc' in sys.argv or \
-        ('-c' not in sys.argv and get_default_compiler() == 'msvc'):
-        if platform.architecture()[0] == '32bit':
-            # Workaround Win32 and MSVC - see issue #64 
-            extra_compile_args.append("/fp:strict")
-
-# Needed for version 4.2 for setting -L library path
-# with environment variable LIBRARY
-#try:
-#    library_dirs = os.environ['LIBRARY'].split(':')
-#except KeyError:
-#    library_dirs = []
 library_dirs = []
 
 src = os.path.join('mtspec', 'src', 'src') + os.sep
-# Needed for version 4.2
-#src = os.path.join('mtspec', 'src', 'mtspec', 'src') + os.sep
-#sp_src = os.path.join('mtspec', 'src', 'splines', 'src') + os.sep
-#symbols = [s.strip() for s in open(src + 'mtspec.def', 'r').readlines()[2:]
-#           if s.strip() != '']
-
-# Add libraries.
-libs=['gfortran']
-if platform.system() == "Windows":
-    libs = []
 
 lib = MyExtension('mtspec',
                   define_macros=macros,
@@ -192,8 +165,8 @@ setup(
     https://svn.geophysik.uni-muenchen.de/trac/mtspecpy/wiki
     """,
     url='https://svn.geophysik.uni-muenchen.de/trac/mtspecpy/wiki',
-    author='Lion Krischer, Moritz Beyreuther, German A. Prieto',
-    author_email='krischer@geophysik.uni-muenchen.de, beyreuth@geophysik.uni-muenchen.de',
+    author='Moritz Beyreuther, Lion Krischer, German A. Prieto',
+    author_email='beyreuth@geophysik.uni-muenchen.de',
     license='GNU General Public License (GPL)',
     platforms='OS Independent',
     classifiers=[
@@ -207,7 +180,7 @@ setup(
         'Topic :: Scientific/Engineering',
         'Topic :: Scientific/Engineering :: Physics',
     ],
-    keywords=['mtspecpy', 'multitaper', 'python', 'seismology', 'waveform',
+    keywords=['mtspec', 'mtspecpy', 'multitaper', 'python', 'seismology', 'waveform',
              'signal', 'processing'],
     packages=find_packages(),
     #namespace_packages=['mtspec'],
@@ -224,11 +197,8 @@ setup(
 )
 
 # Remove mod files.
-try:
-    os.remove('mvspectra.mod')
-except:
-    pass
-try:
-    os.remove('spectra.mod')
-except:
-    pass
+for file in ['mvspectra.mod', 'spectra.mod']:
+    try:
+        os.remove(file)
+    except:
+        pass
