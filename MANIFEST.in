@@ -1,0 +1,14 @@
+prune mtspec/src/bin
+prune mtspec/src/data
+prune mtspec/src/developing
+prune mtspec/src/doc
+prune mtspec/src/examples
+prune mtspec/src/gplot
+prune mtspec/src/libraries
+prune mtspec/src/makefiles
+prune mtspec/src/matlab
+prune mtspec/src/modules
+prune mtspec/src/plot
+prune mtspec/src/plotxy
+prune mtspec/src/programs
+prune mtspec/src/splines
