@@ -158,14 +158,20 @@ setup(
     name='mtspec',
     version=VERSION,
     description="Python Bindings for multitaper `mtspec` f90 Library",
-    long_description="""Python Bindings for multitaper Library
+    long_description="""
 
-    Python ctypes bindings for multitaper `mtspec` f90 Library.
+    Python-ctypes wrapper for multitaper `mtspec` f90 Library of German A.
+    Prieto::
+
+        Prieto, G. A., R. L. Parker, F. L. Vernon. (2009),
+        A Fortran 90 library for multitaper spectrum analysis,
+        Computers and Geosciences, 35, pp. 1701-1710.
+
     For more information see:
     https://svn.geophysik.uni-muenchen.de/trac/mtspecpy/wiki
     """,
     url='https://svn.geophysik.uni-muenchen.de/trac/mtspecpy/wiki',
-    author='Moritz Beyreuther, Lion Krischer, German A. Prieto',
+    author='Moritz Beyreuther, Lion Krischer',
     author_email='beyreuth@geophysik.uni-muenchen.de',
     license='GNU General Public License (GPL)',
     platforms='OS Independent',
@@ -180,8 +186,8 @@ setup(
         'Topic :: Scientific/Engineering',
         'Topic :: Scientific/Engineering :: Physics',
     ],
-    keywords=['mtspec', 'mtspecpy', 'multitaper', 'python', 'seismology', 'waveform',
-             'signal', 'processing'],
+    keywords=['mtspec', 'mtspecpy', 'multitaper', 'seismology', 'waveform',
+              'signal', 'processing', 'taper'],
     packages=find_packages(),
     #namespace_packages=['mtspec'],
     zip_safe=False,
