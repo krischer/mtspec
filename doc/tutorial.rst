@@ -36,7 +36,6 @@ Recreate Fig. 1
 
 ::
 
-    #!/usr/bin/python
     import matplotlib.pyplot as plt
     from mtspec import load_mtdata, mtspec
 
@@ -84,7 +83,6 @@ Recreate Fig. 2
 
 ::
 
-    #!/usr/bin/python
     import matplotlib.pyplot as plt
     from mtspec import load_mtdata, mtspec
 
@@ -154,7 +152,6 @@ Recreate Fig. 3
 
 ::
 
-    #!/usr/bin/env python
     import matplotlib.pyplot as plt
     from mtspec import load_mtdata, mtspec, sine_psd
 
