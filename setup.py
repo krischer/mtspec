@@ -171,7 +171,7 @@ setup(
     https://svn.geophysik.uni-muenchen.de/trac/mtspecpy/wiki
     """,
     url='https://svn.geophysik.uni-muenchen.de/trac/mtspecpy/wiki',
-    author='Moritz Beyreuther, Lion Krischer',
+    author='Moritz Beyreuther, Lion Krischer and German A. Prieto',
     author_email='beyreuth@geophysik.uni-muenchen.de',
     license='GNU General Public License (GPL)',
     platforms='OS Independent',
