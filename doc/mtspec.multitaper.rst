@@ -10,6 +10,7 @@ mtspec.multitaper
    .. autosummary::
    
       mtspec
+      dpss
       sine_psd
    
    

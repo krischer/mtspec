@@ -2,8 +2,9 @@ Tutorial
 ========
 
 This tutorial gives source code and examples as well as figures how to
-create the first three Figures of the multitaper paper of Prieto. More
-Information can be found in the Prieto paper itself (reference_).
+create the first three Figures of the multitaper paper of Prieto. 
+A simple example for the dpss method is included as well. More information
+can be found in the Prieto paper itself (reference_).
 
 .. _reference: http://svn.geophysik.uni-muenchen.de/trac/mtspecpy/wiki
 
@@ -32,7 +33,6 @@ Recreate Fig. 1
     ax2.plot(freq, jackknife[:, 0], '--', color = 'red')
     ax2.plot(freq, jackknife[:, 1], '--', color = 'red')
     ax2.set_xlim(freq[0], freq[-1])
-    plt.show()
 
 ::
 
@@ -100,6 +100,7 @@ Recreate Fig. 2
     ax2.set_yscale('log')
     ax2.plot(freq, spec, color='black')
     ax2.set_xlim(freq[0], freq[-1])
+    plt.show()
 
 
 Recreate Fig. 3
@@ -191,3 +192,33 @@ Recreate Fig. 3
     ax5.set_xscale('log')
     ax5.plot(freq, spec, color='black')
     ax5.set_xlim(freq[0], freq[-1])
+    plt.show()
+
+
+dpss Example
+------------
+
+.. plot::
+
+    import matplotlib.pyplot as plt
+    from mtspec import dpss
+
+    tapers, lamb, theta = dpss(512, 2.5, 10)
+
+    ax = plt.figure().add_subplot(111)
+    for i in xrange(10):
+        ax.plot(tapers[:,i])
+    ax.set_xlim(0, len(tapers[:,0]))
+
+::
+
+    import matplotlib.pyplot as plt
+    from mtspec import dpss
+
+    tapers, lamb, theta = dpss(512, 2.5, 10)
+
+    ax = plt.figure().add_subplot(111)
+    for i in xrange(10):
+        ax.plot(tapers[:,i])
+    ax.set_xlim(0, len(tapers[:,0]))
+    plt.show()

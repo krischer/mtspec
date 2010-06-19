@@ -291,6 +291,44 @@ def sine_psd(data, delta, number_of_tapers=None, number_of_iterations=2,
     return return_values
 
 
+def dpss(npts, fw, nev):
+    """
+    Wrapper method for the dpss subroutine in the library by German A.
+    Prieto.
+
+    Calculation of the Discrete Prolate Spheroidal Sequences, and 
+    the correspondent eigenvalues. Also, the (1 - eigenvalue) terms
+    are calculated. 
+    
+    :param npts: The number of points in the series
+    :param fw: the time-bandwidth product (number of Rayleigh bins)
+    :param nev: the desired number of tapers
+    :return: (v, lamb, theta) with v(npts,nev) the eigenvectors (tapers)
+        lamb the eigenvalues of the v's and theta the 1-lambda (energy
+        outside the bandwidth) values.
+
+    .. note::
+
+        The tapers are the eigenvectors of the tridiagonal matrix sigma(i,j)
+        [see Slepian(1978) eq 14 and 25.] They are also the eigenvectors of
+        the Toeplitz matrix eq. 18. We solve the tridiagonal system in
+        tridib and tinvit for the tapers and use them in the integral 
+        equation in the frequency domain (dpss_ev subroutine) to get the
+        eigenvalues more accurately, by performing Chebychev Gaussian 
+        Quadrature following Thomson's codes.
+    """
+    mt = _MtspecType("float64")
+
+    v = mt.empty((npts, nev))
+    lamb = mt.empty(nev)
+    theta = mt.empty(nev)
+
+    mtspeclib.dpss_(C.byref(C.c_int(npts)), C.byref(C.c_double(fw)),
+                    C.byref(C.c_int(nev)), mt.p(v), mt.p(lamb), mt.p(theta))
+
+    return (v, lamb, theta)
+
+
 class _MtspecType(object):
     """
     Simple class that stores type definition for interfacing with

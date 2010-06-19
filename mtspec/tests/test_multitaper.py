@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from mtspec import mtspec, sine_psd, load_mtdata
+from mtspec import mtspec, sine_psd, load_mtdata, dpss
 import numpy as np
 import os
 import unittest
@@ -206,6 +206,23 @@ class MtSpecTestCase(unittest.TestCase):
         # Test that these are not equal.
         self.assertRaises(AssertionError, np.testing.assert_almost_equal,
                           spec/spec, spec2/spec)
+
+
+    def test_dpss(self):
+        """
+        Tests case for dpss. The resulting v tapers are tested. There is
+        no test for theta or lambda.
+        """
+        v = np.load
+
+        datafile = os.path.join(os.path.dirname(__file__), 'data', 'dpss.npz')
+        v = np.load(datafile)['v']
+
+        v2, lamb, theta = dpss(512, 2.5, 2)
+        # Taper 1, normalize for precision
+        np.testing.assert_almost_equal(v2[:,0]/v[:,0], v[:,0]/v[:,0])
+        # Taper 2, normalize for precision
+        np.testing.assert_almost_equal(v2[:,1]/v[:,1], v[:,1]/v[:,1])
 
 
 def suite():

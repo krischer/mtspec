@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# mtspecPy documentation build configuration file, created by
+# mtspec documentation build configuration file, created by
 # sphinx-quickstart on Sat Dec 26 11:55:06 2009.
 # :note: major modification of original version at the end
 #
@@ -40,7 +40,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General substitutions.
-project = 'mtspecPy'
+project = 'mtspec'
 copyright = '2009-2010, Moritz Beyreuther, Lion Krischer'
 
 # The default replacements for |version| and |release|, also used in various
@@ -92,7 +92,7 @@ html_style = 'default.css'
 
 # The name for this set of Sphinx documents.  If None, it defaults to
 # "<project> v<release> documentation".
-html_title = "mtspecPy documentation"
+html_title = "mtspec documentation"
 
 # A shorter title for the navigation bar.  Default is the same as html_title.
 #html_short_title = None
@@ -147,7 +147,7 @@ html_copy_source = True
 #html_file_suffix = ''
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'mtspecPydoc'
+htmlhelp_basename = 'mtspecdoc'
 
 
 # Options for LaTeX output
@@ -162,7 +162,7 @@ htmlhelp_basename = 'mtspecPydoc'
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, document class [howto/manual]).
 latex_documents = [
-  ('index', 'mtspecPy.tex', 'mtspecPy Documentation',
+  ('index', 'mtspec.tex', 'mtspec Documentation',
    'Moritz Beyreuther, Lion Krischer', 'manual'),
 ]
 

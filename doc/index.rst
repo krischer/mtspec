@@ -1,6 +1,6 @@
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-Welcome to mtspecPy Documentation
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Welcome to mtspec Documentation
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 .. currentmodule:: mtspec
 .. automodule:: mtspec
@@ -25,6 +25,7 @@ Welcome to mtspecPy Documentation
       :nosignatures:
 
         ~multitaper.mtspec
+        ~multitaper.dpss
         ~multitaper.sine_psd
         ~util.load_mtdata
 
