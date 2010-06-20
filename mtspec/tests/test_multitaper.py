@@ -84,7 +84,27 @@ class MtSpecTestCase(unittest.TestCase):
         np.testing.assert_almost_equal(spec / spec, spec2 / spec, 5)
         #np.testing.assert_almost_equal(eigspec/eigspec, eigspec2/eigspec, 5)
         #np.testing.assert_almost_equal(eigcoef/eigcoef, eigcoef2/eigcoef, 5)
-        #np.testing.assert_almost_equal(weights/weights, weights2/weights, 5)
+
+    def test_eigenspectraOutput(self):
+        """
+        Tests the eigenspectra output using a nonadaptive spectra. This also at
+        least somewhat tests the weights.
+        """
+        data = load_mtdata('PASC.dat.gz')
+        # Calculate the spectra.
+        spec, freq, eigspec, eigcoef, weights = \
+                mtspec(data, 1.0, 4.5, number_of_tapers=5, adaptive=False,
+                optional_output=True)
+        # The weights should all be one for the nonadaptive spectrum.
+        np.testing.assert_almost_equal(weights, np.ones((43201, 5),
+                                                         'float64'))
+        # Sum over the eigenspectra to get the nonadaptive spectrum.
+        new_spec = eigspec.sum(axis=1) / float(eigspec.shape[1])
+        new_spec[1:] *= 2.0
+        # Compare the output and the newly calculated spectrum. Normalize with
+        # the maximum values to avoid scaling issues.
+        np.testing.assert_almost_equal(spec[:10] / spec.max(),
+                                   new_spec[:10] / new_spec.max())
 
     def test_paddedMultitaperSpectrumWithErrors(self):
         """
