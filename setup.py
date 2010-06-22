@@ -195,7 +195,7 @@ setup(
         'numpy',
     ],
     download_url="https://svn.geophysik.uni-muenchen.de" + \
-        "/svn/mtspecpy/trunk#egg=mtspecpy-dev",
+        "/svn/mtspecpy/trunk#egg=mtspec-dev",
     ext_package='mtspec.lib',
     ext_modules=[lib],
     include_package_data=True,
