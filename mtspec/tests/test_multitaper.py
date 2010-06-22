@@ -255,10 +255,10 @@ class MtSpecTestCase(unittest.TestCase):
         np.testing.assert_almost_equal(v2[:,1] / v[:,1], v[:,1] / v[:,1])
 
         # Do the same but with spline interpolation.
-        v3, lamb2, thetha2 = dpss(512, 2.5, 2, nmax=256)
+        v3, lamb2, thetha2 = dpss(512, 2.5, 2, nmax=400)
         # Test both tapers. They are not exactly equal therefore only two
         # digits are compared.
-        np.testing.assert_almost_equal(v3 / v3.max(), v2 / v2.max(), 2)
+        np.testing.assert_almost_equal(v3 / v3, v2 / v3, 2)
 
 
 def suite():
