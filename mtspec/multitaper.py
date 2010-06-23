@@ -113,7 +113,7 @@ def mtspec(data, delta, time_bandwidth, nfft=None, number_of_tapers=None,
         eigenspectra = eigencoefficients = weights = None
     # Create statistics.
     if statistics is True:
-        jackknife_interval = mt.empty((number_of_frequency_bins,2))
+        jackknife_interval = mt.empty((number_of_frequency_bins, 2))
         f_statistics = mt.empty(number_of_frequency_bins)
         degrees_of_freedom = mt.empty(number_of_frequency_bins)
     else:
@@ -271,7 +271,7 @@ def sine_psd(data, delta, number_of_tapers=None, number_of_iterations=2,
                                          'int32', mt.required)
         tapers_per_freq_point_p = \
                 tapers_per_freq_point.ctypes.data_as(C.POINTER(C.c_int))
-        errors = mt.empty((number_of_frequency_bins,2))
+        errors = mt.empty((number_of_frequency_bins, 2))
     else:
         tapers_per_freq_point_p = errors = None
     # Call the library. Fortran passes pointers!
@@ -348,6 +348,34 @@ def dpss(npts, fw, nev, auto_spline=True, nmax=None):
                         mt.p(theta))
 
     return (v, lamb, theta)
+
+
+def wigner_ville_spectrum(data, dt):
+    """
+    Very simple wrapper of a wigner ville spectrum. Not for productive use.
+
+    Will produce two output files: 'wv.dat' which contains the Wigner-Ville
+    spectrum and 'df.dat' which contains the dual frequency spectrum.
+
+    The 'wv.dat' file can be read with numpy.loadtxt() and plotted with
+    matplotlib.imshow().
+
+    It is very slow for large arrays so try with a small one (~ 500 samples)
+    first.
+    """
+    mt = _MtspecType("float32")
+    data = np.require(data, 'float32')
+
+    npts = len(data)
+
+    tbp = 3.5
+    kspec = 2
+    filter = 0
+    fbox = 0
+
+    mtspeclib.wv_spec_to_array_(C.byref(C.c_int(npts)), C.byref(C.c_float(dt)),
+                mt.p(data), C.byref(C.c_float(tbp)), C.byref(C.c_int(kspec)),
+                C.byref(C.c_int(filter)), C.byref(C.c_float(fbox)))
 
 
 class _MtspecType(object):

@@ -8,5 +8,5 @@ A Python wrapper for the multitaper library of German A. Prieto (see link_).
 .. _link: http://wwwprof.uniandes.edu.co/~gprieto/software/mwlib.html.
 """
 
-from multitaper import mtspec, sine_psd, dpss
+from multitaper import mtspec, sine_psd, dpss, wigner_ville_spectrum
 from util import load_mtdata
