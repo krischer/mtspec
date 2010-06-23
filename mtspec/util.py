@@ -25,8 +25,8 @@ mtspeclib = C.CDLL(os.path.join(os.path.dirname(__file__), 'lib',
 
 def load_mtdata(gzfile):
     """
-    Helper function that finds the data in the directory tree and loads it
-    using `gzip.open` and `np.loadtxt`
+    Simple helper function that finds the test data in the directory tree
+    and loads it using `gzip.open` and `numpy.loadtxt`
 
     :param gzfile: String of filename, either `v22_174_series.dat.gz` or
         `PASC.dat.gz`
