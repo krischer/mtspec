@@ -1,19 +1,20 @@
 subroutine wv_spec_to_array ( npts,dt,x, tbp,kspec,                   &
-                     filter, fbox)
-           
+                     filter, fbox, verb)
 
-!
 !  Construct the Wigner-Ville spectrum from the dual-frequency 
 !  spectrum, by taking the inverse FFT, to the 45 degrees
 !  rotated df_spectrum.
-!  Both df_spec and the Wigner-Ville spectrum are save in a file.
+!  Only the Wigner-Ville spectrum are save in a file.
 !  
 !  Filter	0	No filter
 !		1	Boxcar filter
 !		2	Guassian Filter
 !
 !  fbox		Width of the filter to use (for boxcar and Gaussian)
-!
+! 
+!  Modified the original routine to allow for a variable number of
+!  frequency points. Does no more seperately calculate the dual
+!  frequency spectrum.
 
 !********************************************************************
 
@@ -33,12 +34,11 @@ subroutine wv_spec_to_array ( npts,dt,x, tbp,kspec,                   &
 
    integer :: nf, nf2, nfft 
 
-   real(4), dimension(:), allocatable :: speci, specj
+   real(4), dimension(:), allocatable :: spec
 
-   real(4), dimension(:,:), allocatable :: wt_i, wt_j 
+   real(4), dimension(:,:), allocatable :: wt
 
-!   complex(4), dimension(2*(npts+mod(npts,2))-1,kspec) :: yk_i, yk_j
-   complex(4), dimension(:,:), allocatable :: yk_i, yk_j
+   complex(4), dimension(:,:), allocatable :: yk
 
    real(4), dimension(:), allocatable              :: wt_scale
 
@@ -48,17 +48,19 @@ subroutine wv_spec_to_array ( npts,dt,x, tbp,kspec,                   &
 
 !  Dual freq matrices
 
-   complex(4), dimension(:,:), allocatable     :: dyk_i, dyk_j 
+   complex(4), dimension(:,:), allocatable     :: dyk
    
-   real(4), dimension(:), allocatable              :: df_cohe
- 
-   complex(4), dimension(:), allocatable           :: df_spec
-
 !  Others
 
    integer :: i, j, k
 
-   character (len = 100) :: fmt, fmt2, file1, file2
+!  Verbose
+
+   character (len=1),                optional  :: verb
+   integer                                     :: v
+
+!   character (len = 100) :: fmt, fmt2, file1, file2
+   character (len = 100) :: fmt, fmt2, file1
 
 !  Matrix rotation
 
@@ -74,25 +76,27 @@ subroutine wv_spec_to_array ( npts,dt,x, tbp,kspec,                   &
 
 !********************************************************************
 
+   ! Determine whether or not to use verbose mode.
+   if (present(verb)) then 
+      if (index(verb,'n') == 0) then
+         v = 1 
+      endif
+   else
+      v = 0
+   endif
+
    nf2 = npts
 
    nfft = 2*npts
    nf   = nfft/2 + 1
 
-   allocate(speci(nf))
-   allocate(specj(nf))
-   allocate(wt_i(nf,kspec))
-   allocate(wt_j(nf,kspec))
+   allocate(spec(nf))
+   allocate(wt(nf,kspec))
    allocate(wt_scale(nf))
-   allocate(yk_i(nfft,kspec))
-   allocate(yk_j(nfft,kspec))
+   allocate(yk(nfft,kspec))
 
    allocate(freq(nf))
-   allocate(dyk_i(nf,kspec))
-   allocate(dyk_j(nf,kspec))
-
-   allocate(df_cohe(nf))
-   allocate(df_spec(nf))
+   allocate(dyk(nf,kspec))
 
    allocate(x2(npts))
    allocate(x_filt(nf))
@@ -106,33 +110,25 @@ subroutine wv_spec_to_array ( npts,dt,x, tbp,kspec,                   &
 !
 
  call mtspec ( npts,nfft,dt,x,tbp,kspec,nf,freq,          &
-                  speci,yk=yk_i,wt=wt_i)
- specj = speci
- yk_j = yk_i
- wt_j = wt_i
+                  spec,yk=yk,wt=wt)
+ deallocate(spec)
 
 !
 !  Create the spectra (cannot use spec output, normalized different)
 !
 
-   wt_i = min(wt_i,wt_j)
-   wt_j = min(wt_i,wt_j)
-
-   wt_scale = sum(wt_i**2, dim=2)  ! Scale weights to keep power 
+   wt_scale = sum(wt**2, dim=2)  ! Scale weights to keep power 
    do i = 1,kspec
-      wt_i(:,i) = wt_i(:,i)/sqrt(wt_scale)
-      wt_j(:,i) = wt_j(:,i)/sqrt(wt_scale)
+      wt(:,i) = wt(:,i)/sqrt(wt_scale)
    enddo
+
+   deallocate(wt_scale)
 
    do i = 1,nf
       do j = 1,kspec
-         dyk_i(i,j) = wt_i(i,j) * yk_i(i,j)
-         dyk_j(i,j) = wt_j(i,j) * yk_j(i,j)
+         dyk(i,j) = wt(i,j) * yk(i,j)
       enddo
    enddo
-
-   speci = sum(abs(dyk_i)**2, dim=2) 
-   specj = sum(abs(dyk_j)**2, dim=2) 
 
 !  Filter vector
 
@@ -142,7 +138,9 @@ subroutine wv_spec_to_array ( npts,dt,x, tbp,kspec,                   &
 
    if (filter==2) then
    
-      write(6,'(a)') 'Applying Gaussian filter'
+      if (v == 1) then
+         write(6,'(a)') 'Applying Gaussian filter'
+      endif
       
    ! Guassian Curve
 
@@ -153,7 +151,9 @@ subroutine wv_spec_to_array ( npts,dt,x, tbp,kspec,                   &
 
    elseif (filter==1) then
  
-      write(6,'(a)') 'Applying Boxcar filter'
+      if (v == 1) then
+         write(6,'(a)') 'Applying Boxcar filter'
+      endif
 
    ! Boxcar filter
   
@@ -183,41 +183,19 @@ subroutine wv_spec_to_array ( npts,dt,x, tbp,kspec,                   &
    endif
 
    file1 = 'wv.dat'
-   file2 = 'df.dat'
 
    open(12,file=file1,form='formatted')
- 
-   open(13,file=file2,form='formatted')
 
    write(fmt,'(i12)') npts
    fmt = '(' // trim(adjustl(fmt)) // 'E16.7)'
 
-   write(fmt2,'(i12)') nf
-   fmt2 = '(' // trim(adjustl(fmt2)) // 'E16.7)'
+   do i=1, nf, 2
 
-   do i=1,nf
-
-      if (mod(i,1000) == 0) then
-         write(6,'(a,i5,a,i5)') 'Loop ',i , ' of ', nf 
+      if (v == 1) then
+          if (mod(i,101) == 0) then
+             write(6,'(a,i5,a,i5)') 'Loop ',i , ' of ', nf 
+          endif
       endif
-
-   ! df_spectrum and coherence
-   
-      do j = 1,nf
-        
-         df_spec(j) = sum ( dyk_i(i,:) * conjg(dyk_j(j,:)) )   
-
-         df_cohe(j) = (abs(df_spec(j)))**2 / (speci(i)*specj(j))
- 
-	 ! Filter
-
-         k = nint( sign(0.5,real(j-i))-sign(0.5,-real(j-i)) ) * (j-i) +1 
-
-         df_cohe(j) = df_cohe(j) * df_filt(k)
-
-      enddo
-      
-      write(13,fmt2) ( real(df_cohe(:)) )
 
    ! Wigner-Vlle
 
@@ -231,7 +209,7 @@ subroutine wv_spec_to_array ( npts,dt,x, tbp,kspec,                   &
          
          indices = mod(npts+j,npts) + 1
 
-         x2(indices) = sum ( dyk_i(ncol+j,:) * conjg(dyk_j(ncol-j,:)) ) 
+         x2(indices) = sum ( dyk(ncol+j,:) * conjg(dyk(ncol-j,:)) ) 
 
          x2(indices) = x2(indices) * x_filt((nf/2)+1 + j)
 
@@ -245,10 +223,9 @@ subroutine wv_spec_to_array ( npts,dt,x, tbp,kspec,                   &
    enddo
 
    close(12)
-   close(13)
 
-   deallocate(speci, specj, wt_i, wt_j, wt_scale, yk_i, yk_j)
-   deallocate(freq,dyk_i,dyk_j,df_cohe, df_spec)
+   deallocate(wt, yk)
+   deallocate(freq,dyk)
    deallocate(x2,x_filt,i_filt, df_filt)   
 
 end subroutine wv_spec_to_array

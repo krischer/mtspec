@@ -350,32 +350,53 @@ def dpss(npts, fw, nev, auto_spline=True, nmax=None):
     return (v, lamb, theta)
 
 
-def wigner_ville_spectrum(data, dt):
+def wigner_ville_spectrum(data, delta, time_bandwidth=3.5,
+                          number_of_tapers=None, verbose='False',
+                          smoothing_filter=None, filter_width=100):
     """
     Very simple wrapper of a wigner ville spectrum. Not for productive use.
 
-    Will produce two output files: 'wv.dat' which contains the Wigner-Ville
-    spectrum and 'df.dat' which contains the dual frequency spectrum.
+    Will produce one output file: 'wv.dat' which contains the Wigner-Ville
+    distribution.
 
     The 'wv.dat' file can be read with numpy.loadtxt() and plotted with
     matplotlib.imshow().
 
-    It is very slow for large arrays so try with a small one (~ 500 samples)
+    It is very slow for large arrays so try with a small one (< 5000 samples)
     first.
     """
-    mt = _MtspecType("float32")
     data = np.require(data, 'float32')
+    mt = _MtspecType("float32")
 
     npts = len(data)
 
-    tbp = 3.5
-    kspec = 2
-    filter = 0
-    fbox = 0
+    # Use the optimal number of tapers in case no number is specified.
+    if number_of_tapers is None:
+        number_of_tapers = int(2 * time_bandwidth) - 1
 
-    mtspeclib.wv_spec_to_array_(C.byref(C.c_int(npts)), C.byref(C.c_float(dt)),
-                mt.p(data), C.byref(C.c_float(tbp)), C.byref(C.c_int(kspec)),
-                C.byref(C.c_int(filter)), C.byref(C.c_float(fbox)))
+    # Determine filter.
+    if not smoothing_filter:
+        smoothing_filter = 0
+    elif smoothing_filter == 'boxcar':
+        smoothing_filter = 1
+    elif smoothing_filter == 'gauss':
+        smoothing_filter = 2
+    else:
+        msg = 'Invalid value for smoothing filter.'
+        raise Exception(msg)
+
+    # Verbose mode on or off.
+    if verbose is True:
+        verbose = C.byref(C.c_char('y'))
+    else:
+        verbose = None
+
+    mtspeclib.wv_spec_to_array_(C.byref(C.c_int(npts)),
+                                C.byref(C.c_float(delta)), mt.p(data),
+                                C.byref(C.c_float(time_bandwidth)),
+                                C.byref(C.c_int(number_of_tapers)),
+                                C.byref(C.c_int(smoothing_filter)),
+                                C.byref(C.c_float(filter_width)), verbose)
 
 
 class _MtspecType(object):
