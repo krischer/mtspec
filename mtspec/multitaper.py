@@ -351,19 +351,33 @@ def dpss(npts, fw, nev, auto_spline=True, nmax=None):
 
 
 def wigner_ville_spectrum(data, delta, time_bandwidth=3.5,
-                          number_of_tapers=None, verbose='False',
-                          smoothing_filter=None, filter_width=100):
+                          number_of_tapers=None, smoothing_filter=None, 
+                          filter_width=100, frac=1, verbose=False):
     """
-    Very simple wrapper of a wigner ville spectrum. Not for productive use.
-
-    Will produce one output file: 'wv.dat' which contains the Wigner-Ville
-    distribution.
-
-    The 'wv.dat' file can be read with numpy.loadtxt() and plotted with
-    matplotlib.imshow().
+    Wrapper method of the modified wv_spec (wv_spec_to_array) subroutine in
+    the library of German A. Prieto.
 
     It is very slow for large arrays so try with a small one (< 5000 samples)
-    first.
+    first, or adapt frac respectively.
+
+    :param data: numpy.ndarray;
+        The input signal
+    :param data: integer;
+        The input sampling interval
+    :param time_bandwidth: float;
+        Time bandwith product
+    :param number_of_tapers: int;
+        Number of tapers to use. If None the number will be automatically
+        determined
+    :param smoothing_filter: string;
+        On of 'boxcar', 'gauss' or just None
+    :param filter_width: int;
+        Filter width in samples
+    :param frac: int;
+        Fraction of output frequencies. E.g. 1 means output every frequency
+        point, 3 means output every second frequency point
+    :param verbose: bool;
+        If True turn on verbose output
     """
     data = np.require(data, 'float32')
     mt = _MtspecType("float32")
@@ -386,17 +400,18 @@ def wigner_ville_spectrum(data, delta, time_bandwidth=3.5,
         raise Exception(msg)
 
     # Verbose mode on or off.
-    if verbose is True:
+    if verbose:
         verbose = C.byref(C.c_char('y'))
     else:
         verbose = None
 
     # Allocate the output array
-    output = mt.empty((npts/2, 2*npts/2 + 1), complex=True)
+    output = mt.empty((npts//frac, npts), complex=True)
 
     mtspeclib.wv_spec_to_array_(C.byref(C.c_int(npts)),
                                 C.byref(C.c_float(delta)), 
-                                mt.p(data), mt.p(output),
+                                mt.p(data), mt.p(output), 
+                                C.byref(C.c_int(frac)),
                                 C.byref(C.c_float(time_bandwidth)),
                                 C.byref(C.c_int(number_of_tapers)),
                                 C.byref(C.c_int(smoothing_filter)),

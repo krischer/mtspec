@@ -34,3 +34,30 @@ def load_mtdata(gzfile):
     """
     path = os.path.join(os.path.dirname(__file__), 'tests', 'data', gzfile)
     return np.loadtxt(gzip.open(path))
+
+def chirp():
+    """
+    Function which returns a signal (numpy.ndarray) with two chirps inside.
+    """
+    np.random.seed(815)
+    length = 5 * 512
+
+    # Baseline low frequency plut noise.
+    data = np.sin(np.linspace(0, 80 * np.pi, length))
+    noise = np.random.ranf(length)
+    noise /= noise.max()
+    noise /= 15
+    data += noise
+
+    # Double last two fifths of the signal.
+    data[-2 * 512:] *= 2.0
+    chirp1 = 2.5 * np.sin(np.linspace(0, 400 * np.pi, 512))
+    chirp1 *= np.linspace(1, 0, 512)
+    data[512:2 * 512] += chirp1
+
+    # Add second transient signal.
+    chirp2 = 5.0 * np.sin(np.linspace(0, 200 * np.pi, 512))
+    chirp2 *= np.linspace(1, 0, 512)
+    data[3 * 512:4 * 512] += chirp2
+
+    return data

@@ -9,4 +9,3 @@ A Python wrapper for the multitaper library of German A. Prieto (see link_).
 """
 
 from multitaper import mtspec, sine_psd, dpss, wigner_ville_spectrum
-from util import load_mtdata

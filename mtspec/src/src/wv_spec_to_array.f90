@@ -1,4 +1,4 @@
-subroutine wv_spec_to_array ( npts,dt,x,x3, tbp,kspec,                &
+subroutine wv_spec_to_array ( npts,dt,x,x3, frac, tbp,kspec,     &
                      filter, fbox, verb)
 
 !  Construct the Wigner-Ville spectrum from the dual-frequency 
@@ -14,7 +14,8 @@ subroutine wv_spec_to_array ( npts,dt,x,x3, tbp,kspec,                &
 ! 
 !  Modified the original routine to allow for a variable number of
 !  frequency points. Does no more seperately calculate the dual
-!  frequency spectrum.
+!  frequency spectrum. frac specifies the number of frequency 
+!  points to use as a fraction of npts.
 
 !********************************************************************
 
@@ -24,7 +25,7 @@ subroutine wv_spec_to_array ( npts,dt,x,x3, tbp,kspec,                &
 
 !  Inputs
 
-   integer, intent(in) :: npts, kspec, filter
+   integer, intent(in) :: npts, kspec, filter, frac
 
    real(4), intent(in) :: dt, tbp, fbox
 
@@ -32,7 +33,7 @@ subroutine wv_spec_to_array ( npts,dt,x,x3, tbp,kspec,                &
 
 !  spectra and frequency
 
-   integer :: nf, nf2, nfft 
+   integer :: nf, nf2, nfft
 
    real(4), dimension(:), allocatable :: spec
 
@@ -72,7 +73,7 @@ subroutine wv_spec_to_array ( npts,dt,x,x3, tbp,kspec,                &
 
 ! Output
 
-   complex(4), dimension(npts/2, 2*npts/2 + 1) :: x3
+   complex(4), dimension(int(npts/2), npts) :: x3
 
 !********************************************************************
 
@@ -103,7 +104,9 @@ subroutine wv_spec_to_array ( npts,dt,x,x3, tbp,kspec,                &
    allocate(i_filt(nf))
    allocate(df_filt(nf))
 
-   write(6,'(a,2i5)') 'Data points and frequency points', npts, nf2
+   if (v == 1) then
+   write(6,'(a,3i5)') 'Data points and frequency points and steps', npts, nf2, frac
+   endif
 
 !
 !  Get the spectrum estimate
@@ -182,7 +185,8 @@ subroutine wv_spec_to_array ( npts,dt,x,x3, tbp,kspec,                &
 
    endif
 
-   do i=1, nf, 2
+   k = 1
+   do i=1, nf, frac
 
       if (v == 1) then
           if (mod(i,101) == 0) then
@@ -211,7 +215,8 @@ subroutine wv_spec_to_array ( npts,dt,x,x3, tbp,kspec,                &
       call ifft4(x2,npts)
 
       ! Copy to output array
-      x3((i+1)/2,:) = x2(:)
+      x3(k,:) = x2(:)
+      k = k + 1
 
  
    enddo

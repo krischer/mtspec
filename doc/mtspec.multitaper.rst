@@ -1,6 +1,7 @@
 mtspec.multitaper
 =================
 
+.. currentmodule:: mtspec.multitaper
 .. automodule:: mtspec.multitaper
 
    
@@ -8,10 +9,13 @@ mtspec.multitaper
    .. rubric:: Functions
 
    .. autosummary::
+      :toctree: .
+      :nosignatures:
    
-      mtspec
       dpss
+      mtspec
       sine_psd
+      wigner_ville_spectrum
    
    
 

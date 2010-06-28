@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
-from mtspec import mtspec, sine_psd, load_mtdata, dpss
+from mtspec import mtspec, sine_psd, dpss, wigner_ville_spectrum
+from mtspec.util import chirp, load_mtdata
 import numpy as np
 import os
 import unittest
@@ -259,6 +260,22 @@ class MtSpecTestCase(unittest.TestCase):
         # Test both tapers. They are not exactly equal therefore only two
         # digits are compared.
         np.testing.assert_almost_equal(v3 / v3, v2 / v3, 2)
+
+    def test_wignerVille(self):
+        """
+        Test for wigner_ville_spectrum. Test uses only a fraction of the
+        whole spectrum due to space consumtions.
+        """
+        datafile = os.path.join(os.path.dirname(__file__), 'data', 'wv.npz')
+        rec = np.load(datafile)
+        wv_500_1000_50 = rec['wv_500_1000_50']
+        wv_1500_2000_50 = rec['wv_1500_2000_50']
+        wv = abs(wigner_ville_spectrum(chirp(), 10, 3.5, smoothing_filter='gauss',
+                                       verbose=False, frac=2))
+        np.testing.assert_almost_equal(wv_500_1000_50/wv_500_1000_50, 
+                                       wv[500:1000:50]/wv_500_1000_50, 5)
+        np.testing.assert_almost_equal(wv_1500_2000_50/wv_1500_2000_50, 
+                                       wv[1500:2000:50]/wv_1500_2000_50, 5)
 
 
 def suite():

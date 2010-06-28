@@ -27,7 +27,7 @@ Welcome to mtspec Documentation
         ~multitaper.mtspec
         ~multitaper.dpss
         ~multitaper.sine_psd
-        ~util.load_mtdata
+        ~multitaper.wigner_ville_spectrum
 
     .. comment to end block
 
