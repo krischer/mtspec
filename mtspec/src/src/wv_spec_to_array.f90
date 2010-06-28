@@ -1,4 +1,4 @@
-subroutine wv_spec_to_array ( npts,dt,x, tbp,kspec,                   &
+subroutine wv_spec_to_array ( npts,dt,x,x3, tbp,kspec,                &
                      filter, fbox, verb)
 
 !  Construct the Wigner-Ville spectrum from the dual-frequency 
@@ -59,9 +59,6 @@ subroutine wv_spec_to_array ( npts,dt,x, tbp,kspec,                   &
    character (len=1),                optional  :: verb
    integer                                     :: v
 
-!   character (len = 100) :: fmt, fmt2, file1, file2
-   character (len = 100) :: fmt, fmt2, file1
-
 !  Matrix rotation
 
    integer :: indices, ncol, gmax
@@ -73,6 +70,9 @@ subroutine wv_spec_to_array ( npts,dt,x, tbp,kspec,                   &
    real(4) :: sigma
    real(4), dimension(:), allocatable :: x_filt, i_filt, df_filt
 
+! Output
+
+   complex(4), dimension(npts/2, 2*npts/2 + 1) :: x3
 
 !********************************************************************
 
@@ -182,13 +182,6 @@ subroutine wv_spec_to_array ( npts,dt,x, tbp,kspec,                   &
 
    endif
 
-   file1 = 'wv.dat'
-
-   open(12,file=file1,form='formatted')
-
-   write(fmt,'(i12)') npts
-   fmt = '(' // trim(adjustl(fmt)) // 'E16.7)'
-
    do i=1, nf, 2
 
       if (v == 1) then
@@ -197,7 +190,7 @@ subroutine wv_spec_to_array ( npts,dt,x, tbp,kspec,                   &
           endif
       endif
 
-   ! Wigner-Vlle
+   ! Wigner-Ville
 
       gmax = min(i-1,nf-i,nint(nf/2.)-1)
 
@@ -217,12 +210,11 @@ subroutine wv_spec_to_array ( npts,dt,x, tbp,kspec,                   &
 
       call ifft4(x2,npts)
 
-      write(12,fmt) ( real(x2(:)) )
+      ! Copy to output array
+      x3((i+1)/2,:) = x2(:)
 
  
    enddo
-
-   close(12)
 
    deallocate(wt, yk)
    deallocate(freq,dyk)

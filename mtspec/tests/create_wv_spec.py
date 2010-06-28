@@ -1,6 +1,7 @@
 import matplotlib.pylab as plt
 from mtspec import mtspec, wigner_ville_spectrum
 import numpy as np
+import sys
 
 length = 5 * 512
 
@@ -38,8 +39,8 @@ ax2.set_yticks([])
 ax2.set_xticks([])
 
 # Create the wigner ville spectrum.
-wigner_ville_spectrum(data, 10, 3.5, smoothing_filter='gauss', verbose=True)
-wv = np.loadtxt('wv.dat')
+wv = wigner_ville_spectrum(data, 10, 3.5, smoothing_filter='gauss', verbose=True)
+wv = abs(wv)
 wv[wv < 0.0] = 0.0
 
 # Plot the WV.

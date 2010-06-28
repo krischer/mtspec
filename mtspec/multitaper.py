@@ -391,12 +391,18 @@ def wigner_ville_spectrum(data, delta, time_bandwidth=3.5,
     else:
         verbose = None
 
+    # Allocate the output array
+    output = mt.empty((npts/2, 2*npts/2 + 1), complex=True)
+
     mtspeclib.wv_spec_to_array_(C.byref(C.c_int(npts)),
-                                C.byref(C.c_float(delta)), mt.p(data),
+                                C.byref(C.c_float(delta)), 
+                                mt.p(data), mt.p(output),
                                 C.byref(C.c_float(time_bandwidth)),
                                 C.byref(C.c_int(number_of_tapers)),
                                 C.byref(C.c_int(smoothing_filter)),
                                 C.byref(C.c_float(filter_width)), verbose)
+
+    return output
 
 
 class _MtspecType(object):
