@@ -269,7 +269,7 @@ class MtSpecTestCase(unittest.TestCase):
         datafile = os.path.join(os.path.dirname(__file__), 'data', 'wv.npz')
         rec = np.load(datafile)
         wv = abs(wigner_ville_spectrum(chirp(), 10, 3.5, smoothing_filter='gauss',
-                                       verbose=False, frac=2))
+                                       verbose=False, frac=1))
         rms1 = rms(rec['wv_500_1000_50'], wv[500:1000:50])
         rms2 = rms(rec['wv_1500_2000_50'], wv[1500:2000:50])
         self.assertEqual(True, rms1 < 1e-3)

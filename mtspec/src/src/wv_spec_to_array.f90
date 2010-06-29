@@ -1,4 +1,4 @@
-subroutine wv_spec_to_array ( npts,dt,x,x3, frac, tfrac, tbp,kspec,   &
+subroutine wv_spec_to_array ( npts,dt,x,x3, frac,tfrac,nfmin,nfmax, tbp,kspec,&
                      filter, fbox, verb)
 
 !  Construct the Wigner-Ville spectrum from the dual-frequency 
@@ -25,7 +25,7 @@ subroutine wv_spec_to_array ( npts,dt,x,x3, frac, tfrac, tbp,kspec,   &
 
 !  Inputs
 
-   integer, intent(in) :: npts, kspec, filter, frac, tfrac
+   integer, intent(in) :: npts, kspec, filter, frac, tfrac, nfmin, nfmax
 
    real(4), intent(in) :: dt, tbp, fbox
 
@@ -73,7 +73,7 @@ subroutine wv_spec_to_array ( npts,dt,x,x3, frac, tfrac, tbp,kspec,   &
 
 ! Output
 
-   complex(4), dimension(int(npts/frac), int(npts/tfrac)) :: x3
+   complex(4), dimension(int((nfmax - nfmin)/(2*frac)), int(npts/tfrac)) :: x3
 
 !********************************************************************
 
@@ -185,8 +185,9 @@ subroutine wv_spec_to_array ( npts,dt,x,x3, frac, tfrac, tbp,kspec,   &
 
    endif
 
+   ! Discretize/downsample in frequency space
    k = 1
-   do i=1, nf, frac
+   do i= nfmin, nfmax, 2 * frac
 
       if (v == 1) then
           if (mod(i,101) == 0) then
@@ -214,6 +215,7 @@ subroutine wv_spec_to_array ( npts,dt,x,x3, frac, tfrac, tbp,kspec,   &
 
       call ifft4(x2,npts)
 
+      ! Discretize/downsample in time space
       ! Copy to output array
       n = 1
       do l=1, npts, tfrac
