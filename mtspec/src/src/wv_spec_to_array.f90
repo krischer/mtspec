@@ -1,4 +1,4 @@
-subroutine wv_spec_to_array ( npts,dt,x,x3, frac, tbp,kspec,     &
+subroutine wv_spec_to_array ( npts,dt,x,x3, frac, tfrac, tbp,kspec,   &
                      filter, fbox, verb)
 
 !  Construct the Wigner-Ville spectrum from the dual-frequency 
@@ -25,7 +25,7 @@ subroutine wv_spec_to_array ( npts,dt,x,x3, frac, tbp,kspec,     &
 
 !  Inputs
 
-   integer, intent(in) :: npts, kspec, filter, frac
+   integer, intent(in) :: npts, kspec, filter, frac, tfrac
 
    real(4), intent(in) :: dt, tbp, fbox
 
@@ -53,7 +53,7 @@ subroutine wv_spec_to_array ( npts,dt,x,x3, frac, tbp,kspec,     &
    
 !  Others
 
-   integer :: i, j, k
+   integer :: i, j, k, l, m, n, tind
 
 !  Verbose
 
@@ -68,12 +68,12 @@ subroutine wv_spec_to_array ( npts,dt,x,x3, frac, tbp,kspec,     &
 
 !  Filtering matrix
 
-   real(4) :: sigma
+   real(4) :: sigma, tmax
    real(4), dimension(:), allocatable :: x_filt, i_filt, df_filt
 
 ! Output
 
-   complex(4), dimension(int(npts/2), npts) :: x3
+   complex(4), dimension(int(npts/frac), int(npts/tfrac)) :: x3
 
 !********************************************************************
 
@@ -215,7 +215,18 @@ subroutine wv_spec_to_array ( npts,dt,x,x3, frac, tbp,kspec,     &
       call ifft4(x2,npts)
 
       ! Copy to output array
-      x3(k,:) = x2(:)
+      n = 1
+      do l=1, npts, tfrac
+          tmax = 0.0
+          do m=0, tfrac - 1
+              if ((real(x2(l+m))**2 + aimag(x2(l+m))**2) > tmax) then
+                  tind = l+m
+                  tmax = x2(tind)
+              endif
+          enddo
+          x3(k,n) = x2(tind)
+          n = n + 1
+      enddo
       k = k + 1
 
  

@@ -204,8 +204,8 @@ setup(
 )
 
 # Remove mod files.
-for file in ['mvspectra.mod', 'spectra.mod']:
-    try:
-        os.remove(file)
-    except:
-        pass
+#for file in ['mvspectra.mod', 'spectra.mod']:
+#    try:
+#        os.remove(file)
+#    except:
+#        pass

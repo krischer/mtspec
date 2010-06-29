@@ -352,7 +352,7 @@ def dpss(npts, fw, nev, auto_spline=True, nmax=None):
 
 def wigner_ville_spectrum(data, delta, time_bandwidth=3.5,
                           number_of_tapers=None, smoothing_filter=None, 
-                          filter_width=100, frac=1, verbose=False):
+                          filter_width=100, frac=1, tfrac=1, verbose=False):
     """
     Wrapper method of the modified wv_spec (wv_spec_to_array) subroutine in
     the library of German A. Prieto.
@@ -375,7 +375,11 @@ def wigner_ville_spectrum(data, delta, time_bandwidth=3.5,
         Filter width in samples
     :param frac: int;
         Fraction of output frequencies. E.g. 1 means output every frequency
-        point, 3 means output every second frequency point
+        point, 3 means output every third frequency point
+    :param tfrac: int;
+        Fraction of output samples. E.g. 1 means output every sample
+        point, 3 means output every third sample point (takes the maximum
+        of the absolute fft sample value)
     :param verbose: bool;
         If True turn on verbose output
     """
@@ -406,12 +410,12 @@ def wigner_ville_spectrum(data, delta, time_bandwidth=3.5,
         verbose = None
 
     # Allocate the output array
-    output = mt.empty((npts//frac, npts), complex=True)
+    output = mt.empty((npts//frac, npts//tfrac), complex=True)
 
     mtspeclib.wv_spec_to_array_(C.byref(C.c_int(npts)),
                                 C.byref(C.c_float(delta)), 
                                 mt.p(data), mt.p(output), 
-                                C.byref(C.c_int(frac)),
+                                C.byref(C.c_int(frac)), C.byref(C.c_int(tfrac)),
                                 C.byref(C.c_float(time_bandwidth)),
                                 C.byref(C.c_int(number_of_tapers)),
                                 C.byref(C.c_int(smoothing_filter)),
