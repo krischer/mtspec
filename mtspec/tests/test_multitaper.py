@@ -268,14 +268,20 @@ class MtSpecTestCase(unittest.TestCase):
         """
         datafile = os.path.join(os.path.dirname(__file__), 'data', 'wv.npz')
         rec = np.load(datafile)
-        wv_500_1000_50 = rec['wv_500_1000_50']
-        wv_1500_2000_50 = rec['wv_1500_2000_50']
         wv = abs(wigner_ville_spectrum(chirp(), 10, 3.5, smoothing_filter='gauss',
                                        verbose=False, frac=2))
-        np.testing.assert_almost_equal(wv_500_1000_50/wv_500_1000_50, 
-                                       wv[500:1000:50]/wv_500_1000_50, 5)
-        np.testing.assert_almost_equal(wv_1500_2000_50/wv_1500_2000_50, 
-                                       wv[1500:2000:50]/wv_1500_2000_50, 5)
+        rms1 = rms(rec['wv_500_1000_50'], wv[500:1000:50])
+        rms2 = rms(rec['wv_1500_2000_50'], wv[1500:2000:50])
+        self.assertEqual(True, rms1 < 1e-3)
+        self.assertEqual(True, rms2 < 1e-3)
+
+
+def rms(x, y):
+    """Normalized RMS"""
+    value = np.sqrt( (x**2 - y**2).mean() / (x**2).mean() )
+    if np.isnan(value):
+        return 0.0
+    return value
 
 
 def suite():
