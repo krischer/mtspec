@@ -442,6 +442,76 @@ def wigner_ville_spectrum(data, delta, time_bandwidth=3.5,
     return output
 
 
+def mt_coherence(dt, xi, xj, tbp, kspec, nf, p, freq=None, cohe=None,
+                 phase=None, speci=None, specj=None, conf=None, cohe_ci=None,
+                 phase_ci=None, iadapt=None):
+    """
+    CURRENTLY NOT FOR PRODUCTIVE USE
+    
+    Construct the coherence spectrum from the yk's and the 
+    weights of the usual multitaper spectrum estimation. 
+    Note this code uses the real(4) multitaper code. 
+    
+    INPUT
+    
+     npts        integer number of points in time series
+     dt          real, sampling rate of time series
+     xi(npts)    real, data for first series
+     xj(npts)     real, data for second series
+     tbp         the time-bandwidth product
+     kspec       integer, number of tapers to use
+     nf          integer, number of freq points in spectrum
+     p           confidence for null hypothesis test
+    
+    
+    OPTIONAL INPUT
+    
+     iadapt  integer 0 - adaptive, 1 - constant weights
+             default adapt = 1
+    
+    OPTIONAL OUTPUTS
+    
+     freq(nf)       real vector with frequency bins
+     cohe(nf)       real, coherence of the two series (0 - 1)
+     phase(nf)      the phase at each frequency
+     speci(nf)      real vector with spectrum of first series
+     specj(nf)      real vector with spectrum of second
+     conf(nf)       p confidence value for each freq.
+     cohe_ci(nf,2)  95% bounds on coherence (not larger than 1)
+     phase_ci(nf,2) 95% bounds on phase estimates
+
+    If confidence intervals are requested, then both phase and
+    cohe variables need to be requested as well. 
+    """
+    npts = len(xi)
+    mt = _MtspecType('float32')
+    if freq:
+        freq = mt.empty(nf)
+    if cohe:
+        cohe = mp.empty(nf)
+    if phase:
+        phase = mt.empty(nf)
+    if speci:
+        speci = mt.empty(nf)
+    if specj:
+        specj = mt.empty(nf)
+    if conf:
+        conf = mt.empty(nf)
+    if cohe_ci:
+        cohe_ci = mt.empty(nf,2)
+    if phase_ci:
+        phase_ci = mt.empty(nf,2)
+    if iadapt is not None:
+        iadapt = C.byref(C.c_int(idadapt))
+    mtspeclib.mt_cohe_(C.byref(C.c_int(npts)), C.byref(C.c_float(dt)),
+                       mt.p(xi), mt.p(xj), C.byref(C.c_int(tbp)),
+                       C.byref(C.c_int(kspec), C.byref(C.c_int(nf)),
+                       C.byref(C.c_float(p)), mt.p(freq),
+                       mt.p(cohe), mt.p(phase),mt.p(speci),
+                       mt.p(specj), mt.p(conf), mt.p(cohe_ci), 
+                       mt.p(phase_ci), iadapt))  
+
+
 class _MtspecType(object):
     """
     Simple class that stores type definition for interfacing with
