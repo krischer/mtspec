@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from mtspec import mtspec, sine_psd, dpss, wigner_ville_spectrum
+from mtspec import mtspec, sine_psd, dpss, wigner_ville_spectrum, mt_coherence
 from mtspec.util import chirp, load_mtdata
 import numpy as np
 import os
@@ -274,6 +274,29 @@ class MtSpecTestCase(unittest.TestCase):
         rms2 = rms(rec['wv_1500_2000_50'], wv[1500:2000:50])
         self.assertEqual(True, rms1 < 1e-3)
         self.assertEqual(True, rms2 < 1e-3)
+
+    def test_mtCoherence(self):
+        """
+        Coherence test case.
+        """
+        datafile = os.path.join(os.path.dirname(__file__), 'data', 'mt_cohe.npz')
+        np.random.seed(815)
+        npts = 256
+        sampling_rate = 10.0
+        # one sine wave in one second (sampling_rate samples)
+        one_hz_sin = np.sin(np.arange(0, sampling_rate, dtype='float32') / \
+                            sampling_rate * 2 * np.pi)
+        # repeat this until npts is reached
+        one_hz_sin = np.tile(one_hz_sin, npts//sampling_rate + 1)[:npts]
+        xi = np.random.randn(npts) + one_hz_sin * .5
+        xj = np.random.randn(npts) + one_hz_sin * .5
+        dt, tbp, kspec, nf, p = 1.0/sampling_rate, 3.5, 5, npts/2, .90
+        out = mt_coherence(dt, xi, xj, tbp, kspec, nf, p, freq=True,
+                           cohe=True, iadapt=1)
+        freq = np.linspace(0, sampling_rate/2, npts/2).astype('float32')
+        cohe = np.load(datafile)['cohe']
+        np.testing.assert_almost_equal(freq, out['freq'], 5)
+        np.testing.assert_almost_equal(cohe/cohe, out['cohe']/cohe, 4)
 
 
 def rms(x, y):

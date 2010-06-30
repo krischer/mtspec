@@ -442,12 +442,8 @@ def wigner_ville_spectrum(data, delta, time_bandwidth=3.5,
     return output
 
 
-def mt_coherence(dt, xi, xj, tbp, kspec, nf, p, freq=None, cohe=None,
-                 phase=None, speci=None, specj=None, conf=None, cohe_ci=None,
-                 phase_ci=None, iadapt=None):
+def mt_coherence(dt, xi, xj, tbp, kspec, nf, p, **kwargs):
     """
-    CURRENTLY NOT FOR PRODUCTIVE USE
-    
     Construct the coherence spectrum from the yk's and the 
     weights of the usual multitaper spectrum estimation. 
     Note this code uses the real(4) multitaper code. 
@@ -457,7 +453,7 @@ def mt_coherence(dt, xi, xj, tbp, kspec, nf, p, freq=None, cohe=None,
      npts        integer number of points in time series
      dt          real, sampling rate of time series
      xi(npts)    real, data for first series
-     xj(npts)     real, data for second series
+     xj(npts)    real, data for second series
      tbp         the time-bandwidth product
      kspec       integer, number of tapers to use
      nf          integer, number of freq points in spectrum
@@ -484,32 +480,37 @@ def mt_coherence(dt, xi, xj, tbp, kspec, nf, p, freq=None, cohe=None,
     cohe variables need to be requested as well. 
     """
     npts = len(xi)
+    if len(xj) != npts:
+        raise Exception("Inpurt ndarrays have mismatching length")
     mt = _MtspecType('float32')
-    if freq:
-        freq = mt.empty(nf)
-    if cohe:
-        cohe = mp.empty(nf)
-    if phase:
-        phase = mt.empty(nf)
-    if speci:
-        speci = mt.empty(nf)
-    if specj:
-        specj = mt.empty(nf)
-    if conf:
-        conf = mt.empty(nf)
-    if cohe_ci:
-        cohe_ci = mt.empty(nf,2)
-    if phase_ci:
-        phase_ci = mt.empty(nf,2)
-    if iadapt is not None:
-        iadapt = C.byref(C.c_int(idadapt))
+
+    # convert type of input arguments if necessary
+    xi = np.require(xi, mt.float, mt.required)
+    xj = np.require(xj, mt.float, mt.required)
+
+    # fill up optional arguments, if not given set them None
+    args = []
+    for key in ('freq', 'cohe', 'phase', 'speci', 'specj', 'conf',
+                'cohe_ci' , 'phase_ci', 'iadapt'):
+        kwargs.setdefault(key, None)
+        if key in ('cohe_ci', 'phase_ci') and kwargs[key]:
+            kwargs[key] = mt.empty(nf,2)
+            args.append(mt.p(kwargs[key]))
+        elif key == 'iadapt' and kwargs[key]:
+            args.append(C.byref(C.c_int(kwargs[key])))
+        elif kwargs[key]:
+            kwargs[key] = mt.empty(nf)
+            args.append(mt.p(kwargs[key]))
+        else:
+            args.append(kwargs[key])
+
     mtspeclib.mt_cohe_(C.byref(C.c_int(npts)), C.byref(C.c_float(dt)),
-                       mt.p(xi), mt.p(xj), C.byref(C.c_int(tbp)),
-                       C.byref(C.c_int(kspec), C.byref(C.c_int(nf)),
-                       C.byref(C.c_float(p)), mt.p(freq),
-                       mt.p(cohe), mt.p(phase),mt.p(speci),
-                       mt.p(specj), mt.p(conf), mt.p(cohe_ci), 
-                       mt.p(phase_ci), iadapt))  
+                       mt.p(xi), mt.p(xj), C.byref(C.c_float(tbp)),
+                       C.byref(C.c_int(kspec)), C.byref(C.c_int(nf)),
+                       C.byref(C.c_float(p)), *args)
+
+    # remove None values from dictionary
+    return dict([(k, v) for k, v in kwargs.iteritems() if v is not None])
 
 
 class _MtspecType(object):
