@@ -25,9 +25,10 @@ Welcome to mtspec Documentation
       :nosignatures:
 
         ~multitaper.mtspec
-        ~multitaper.dpss
         ~multitaper.sine_psd
         ~multitaper.wigner_ville_spectrum
+        ~multitaper.mt_coherence
+        ~multitaper.dpss
 
     .. comment to end block
 

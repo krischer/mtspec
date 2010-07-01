@@ -13,6 +13,7 @@ mtspec.multitaper
       :nosignatures:
    
       dpss
+      mt_coherence
       mtspec
       sine_psd
       wigner_ville_spectrum

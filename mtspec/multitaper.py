@@ -442,7 +442,7 @@ def wigner_ville_spectrum(data, delta, time_bandwidth=3.5,
     return output
 
 
-def mt_coherence(dt, xi, xj, tbp, kspec, nf, p, **kwargs):
+def mt_coherence(df, xi, xj, tbp, kspec, nf, p, **kwargs):
     """
     Construct the coherence spectrum from the yk's and the 
     weights of the usual multitaper spectrum estimation. 
@@ -450,31 +450,33 @@ def mt_coherence(dt, xi, xj, tbp, kspec, nf, p, **kwargs):
     
     INPUT
     
-     npts        integer number of points in time series
-     dt          real, sampling rate of time series
-     xi(npts)    real, data for first series
-     xj(npts)    real, data for second series
-     tbp         the time-bandwidth product
-     kspec       integer, number of tapers to use
-     nf          integer, number of freq points in spectrum
-     p           confidence for null hypothesis test
+    :param df: float; sampling rate of time series
+    :param xi: numpy.ndarray; data for first series
+    :param xj: numpy.ndarray; data for second series
+    :param tbp: float; the time-bandwidth product
+    :param kspec: integer; number of tapers to use
+    :param nf: integer; number of freq points in spectrum
+    :param p:  float; confidence for null hypothesis test, e.g. .95
     
     
     OPTIONAL INPUT
     
-     iadapt  integer 0 - adaptive, 1 - constant weights
+    :param iadapt:  integer 0 - adaptive, 1 - constant weights
              default adapt = 1
     
-    OPTIONAL OUTPUTS
+    OPTIONAL OUTPUTS, the outputs are returned as dictionary, with keys as
+    specified below and values as numpy.ndarrays. In order to activate the
+    output set the corresponding kwarg in the argument list, e.g. 
+    ``mt_coherence(df, xi, xj, tbp, kspec, nf, p, freq=True, cohe=True)``
     
-     freq(nf)       real vector with frequency bins
-     cohe(nf)       real, coherence of the two series (0 - 1)
-     phase(nf)      the phase at each frequency
-     speci(nf)      real vector with spectrum of first series
-     specj(nf)      real vector with spectrum of second
-     conf(nf)       p confidence value for each freq.
-     cohe_ci(nf,2)  95% bounds on coherence (not larger than 1)
-     phase_ci(nf,2) 95% bounds on phase estimates
+    :param freq:     the frequency bins
+    :param cohe:     coherence of the two series (0 - 1)
+    :param phase:    the phase at each frequency
+    :param speci:    spectrum of first series
+    :param specj:    spectrum of second series
+    :param conf:     p confidence value for each freq.
+    :param cohe_ci:  95% bounds on coherence (not larger than 1)
+    :param phase_ci: 95% bounds on phase estimates
 
     If confidence intervals are requested, then both phase and
     cohe variables need to be requested as well. 
@@ -504,7 +506,7 @@ def mt_coherence(dt, xi, xj, tbp, kspec, nf, p, **kwargs):
         else:
             args.append(kwargs[key])
 
-    mtspeclib.mt_cohe_(C.byref(C.c_int(npts)), C.byref(C.c_float(dt)),
+    mtspeclib.mt_cohe_(C.byref(C.c_int(npts)), C.byref(C.c_float(df)),
                        mt.p(xi), mt.p(xj), C.byref(C.c_float(tbp)),
                        C.byref(C.c_int(kspec)), C.byref(C.c_int(nf)),
                        C.byref(C.c_float(p)), *args)

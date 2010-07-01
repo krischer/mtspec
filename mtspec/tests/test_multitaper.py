@@ -283,7 +283,7 @@ class MtSpecTestCase(unittest.TestCase):
         np.random.seed(815)
         npts = 256
         sampling_rate = 10.0
-        # one sine wave in one second (sampling_rate samples)
+        # 1Hz: one sine wave in one second (sampling_rate samples)
         one_hz_sin = np.sin(np.arange(0, sampling_rate, dtype='float32') / \
                             sampling_rate * 2 * np.pi)
         # repeat this until npts is reached
