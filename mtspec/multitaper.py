@@ -370,7 +370,7 @@ def wigner_ville_spectrum(data, delta, time_bandwidth=3.5,
         Number of tapers to use. If None the number will be automatically
         determined
     :param smoothing_filter: string;
-        On of 'boxcar', 'gauss' or just None
+        One of 'boxcar', 'gauss' or just None
     :param filter_width: int;
         Filter width in samples
     :param verbose: bool;

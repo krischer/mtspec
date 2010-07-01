@@ -13,14 +13,6 @@ mtspec.util
       :nosignatures:
    
       signal_bursts
+      linear_chirp
+      exponential_chirp
       load_mtdata
-   
-   
-
-   
-   
-   
-
-   
-   
-   

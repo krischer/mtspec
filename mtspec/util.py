@@ -61,3 +61,19 @@ def signal_bursts():
     data[3 * 512:4 * 512] += chirp2
 
     return data
+
+def linear_chirp():
+    """
+    Returns a simple linear chirp with length 2000.
+    """
+    time = np.linspace(0, 20, 2000)
+    chirp = np.sin(0.2* np.pi * (0.1 + 24/2*time) * time)
+    return chirp
+
+def exponential_chirp():
+    """
+    Returns an exponential chirp with length 2000.
+    """
+    time = np.linspace(0, 20, 2000)
+    chirp = np.sin(2*np.pi*0.2*(1.3**time - 1)/np.log(1.3))
+    return chirp
