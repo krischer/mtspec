@@ -352,8 +352,7 @@ def dpss(npts, fw, nev, auto_spline=True, nmax=None):
 
 def wigner_ville_spectrum(data, delta, time_bandwidth=3.5,
                           number_of_tapers=None, smoothing_filter=None, 
-                          filter_width=100, frac=1, tfrac=1, 
-                          min_freq=None, max_freq=None, verbose=False):
+                          filter_width=100, verbose=False):
     """
     Wrapper method of the modified wv_spec (wv_spec_to_array) subroutine in
     the library of German A. Prieto.
@@ -374,13 +373,6 @@ def wigner_ville_spectrum(data, delta, time_bandwidth=3.5,
         On of 'boxcar', 'gauss' or just None
     :param filter_width: int;
         Filter width in samples
-    :param frac: int;
-        Fraction of output frequencies. E.g. 1 means output every frequency
-        point, 3 means output every third frequency point
-    :param tfrac: int;
-        Fraction of output samples. E.g. 1 means output every sample
-        point, 3 means output every third sample point (takes the maximum
-        of the absolute fft sample value)
     :param verbose: bool;
         If True turn on verbose output
     """
@@ -410,30 +402,14 @@ def wigner_ville_spectrum(data, delta, time_bandwidth=3.5,
     else:
         verbose = None
 
-    # Calculate corresponding frequency borders
-    nyquist = 1.0 / ( 2 * delta)
-    # nfft = 2 * npts in f90 code
-    freq_steps = int(nyquist / (npts+1))
-    if not min_freq:
-        nfmin = 1
-    else:
-        nfmin = min_freq // freq_steps
-    if not max_freq:
-        nfmax = npts + 1
-    else:
-        nfmax = max_freq // freq_steps
-        
-
     # Allocate the output array
     # f90 code internally pads zeros to 2*npts. That is we only return
     # every second frequency point, thus decrease the size of the array
-    output = mt.empty(((nfmax - nfmin)//(2*frac), npts//tfrac), complex=True)
+    output = mt.empty((npts/2, npts))
 
     mtspeclib.wv_spec_to_array_(C.byref(C.c_int(npts)),
                                 C.byref(C.c_float(delta)), 
                                 mt.p(data), mt.p(output), 
-                                C.byref(C.c_int(frac)), C.byref(C.c_int(tfrac)),
-                                C.byref(C.c_int(nfmin)), C.byref(C.c_int(nfmax)),
                                 C.byref(C.c_float(time_bandwidth)),
                                 C.byref(C.c_int(number_of_tapers)),
                                 C.byref(C.c_int(smoothing_filter)),

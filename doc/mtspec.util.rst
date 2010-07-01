@@ -12,7 +12,7 @@ mtspec.util
       :toctree: .
       :nosignatures:
    
-      chirp
+      signal_bursts
       load_mtdata
    
    

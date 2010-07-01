@@ -14,6 +14,8 @@ Recreate Fig. 1
 ---------------
 .. plot::
 
+    import matplotlib as mpl
+    mpl.rcParams['font.size'] = 9.0
     import matplotlib.pyplot as plt
     from mtspec import mtspec
     from mtspec.util import load_mtdata
@@ -64,6 +66,8 @@ Recreate Fig. 2
 ---------------
 .. plot::
 
+    import matplotlib as mpl
+    mpl.rcParams['font.size'] = 9.0
     import matplotlib.pyplot as plt
     from mtspec import mtspec
     from mtspec.util import load_mtdata
@@ -110,6 +114,8 @@ Recreate Fig. 3
 ---------------
 .. plot::
 
+    import matplotlib as mpl
+    mpl.rcParams['font.size'] = 9.0
     import matplotlib.pyplot as plt
     from mtspec import mtspec, sine_psd
     from mtspec.util import load_mtdata
@@ -203,6 +209,8 @@ dpss Example
 ------------
 .. plot::
 
+    import matplotlib as mpl
+    mpl.rcParams['font.size'] = 9.0
     import matplotlib.pyplot as plt
     from mtspec import dpss
 
@@ -231,13 +239,15 @@ Wigner Ville Spectrum Example
 -----------------------------
 .. plot::
 
+    import matplotlib as mpl
+    mpl.rcParams['font.size'] = 9.0
     import matplotlib.pyplot as plt
     from mtspec import mtspec, wigner_ville_spectrum
-    from mtspec.util import chirp
+    from mtspec.util import signal_bursts
     import numpy as np
 
     fig = plt.figure()
-    data = chirp()
+    data = signal_bursts()
 
     # Plot the data
     ax1 = fig.add_axes([0.2,0.75, 0.79, 0.24])
@@ -245,32 +255,32 @@ Wigner Ville Spectrum Example
     ax1.set_xlim(0, len(data))
 
     # Plot multitaper spectrum
-    ax2 = fig.add_axes([0.01,0.01,0.18,0.69])
+    ax2 = fig.add_axes([0.06,0.02,0.13,0.69])
     spec, freq = mtspec(data, 10, 3.5)
-    ax2.plot(spec[::-1], freq)
+    ax2.plot(spec, freq)
     ax2.set_xlim(0, spec.max())
     ax2.set_ylim(freq[0], freq[-1])
-    ax2.set_yticks([])
     ax2.set_xticks([])
 
     # Create the wigner ville spectrum
-    wv = wigner_ville_spectrum(data, 10, 3.5, smoothing_filter='gauss', frac=2)
+    wv = wigner_ville_spectrum(data, 10, 3.5, smoothing_filter='gauss')
 
     # Plot the WV
-    ax3 = fig.add_axes([0.2, 0.01, 0.79, 0.69])
+    ax3 = fig.add_axes([0.2, 0.02, 0.79, 0.69])
     ax3.set_yticks([])
     ax3.set_xticks([])
     ax3.imshow(abs(wv), interpolation='nearest', aspect='auto')
+    plt.show()
 
 ::
 
     import matplotlib.pyplot as plt
     from mtspec import mtspec, wigner_ville_spectrum
-    from mtspec.util import chirp
+    from mtspec.util import signal_bursts
     import numpy as np
 
     fig = plt.figure()
-    data = chirp()
+    data = signal_bursts()
 
     # Plot the data
     ax1 = fig.add_axes([0.2,0.75, 0.79, 0.24])
@@ -278,19 +288,18 @@ Wigner Ville Spectrum Example
     ax1.set_xlim(0, len(data))
 
     # Plot multitaper spectrum
-    ax2 = fig.add_axes([0.01,0.01,0.18,0.69])
+    ax2 = fig.add_axes([0.06,0.02,0.13,0.69])
     spec, freq = mtspec(data, 10, 3.5)
-    ax2.plot(spec[::-1], freq)
+    ax2.plot(spec, freq)
     ax2.set_xlim(0, spec.max())
     ax2.set_ylim(freq[0], freq[-1])
-    ax2.set_yticks([])
     ax2.set_xticks([])
 
     # Create the wigner ville spectrum
-    wv = wigner_ville_spectrum(data, 10, 3.5, smoothing_filter='gauss', frac=2)
+    wv = wigner_ville_spectrum(data, 10, 3.5, smoothing_filter='gauss')
 
     # Plot the WV
-    ax3 = fig.add_axes([0.2, 0.01, 0.79, 0.69])
+    ax3 = fig.add_axes([0.2, 0.02, 0.79, 0.69])
     ax3.set_yticks([])
     ax3.set_xticks([])
     ax3.imshow(abs(wv), interpolation='nearest', aspect='auto')
@@ -300,6 +309,8 @@ Multitaper coherence example
 ----------------------------
 .. plot::
 
+    import matplotlib as mpl
+    mpl.rcParams['font.size'] = 9.0
     import matplotlib.pyplot as plt
     from mtspec import mt_coherence
     import numpy as np

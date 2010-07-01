@@ -1,4 +1,4 @@
-subroutine wv_spec_to_array ( npts,dt,x,x3, frac,tfrac,nfmin,nfmax, tbp,kspec,&
+subroutine wv_spec_to_array ( npts, dt, x, x3, tbp, kspec,            &
                      filter, fbox, verb)
 
 !  Construct the Wigner-Ville spectrum from the dual-frequency 
@@ -25,7 +25,7 @@ subroutine wv_spec_to_array ( npts,dt,x,x3, frac,tfrac,nfmin,nfmax, tbp,kspec,&
 
 !  Inputs
 
-   integer, intent(in) :: npts, kspec, filter, frac, tfrac, nfmin, nfmax
+   integer, intent(in) :: npts, kspec, filter
 
    real(4), intent(in) :: dt, tbp, fbox
 
@@ -53,7 +53,7 @@ subroutine wv_spec_to_array ( npts,dt,x,x3, frac,tfrac,nfmin,nfmax, tbp,kspec,&
    
 !  Others
 
-   integer :: i, j, k, l, m, n, tind
+   integer :: i, j
 
 !  Verbose
 
@@ -68,12 +68,12 @@ subroutine wv_spec_to_array ( npts,dt,x,x3, frac,tfrac,nfmin,nfmax, tbp,kspec,&
 
 !  Filtering matrix
 
-   real(4) :: sigma, tmax
+   real(4) :: sigma
    real(4), dimension(:), allocatable :: x_filt, i_filt, df_filt
 
 ! Output
 
-   complex(4), dimension(int((nfmax - nfmin)/(2*frac)), int(npts/tfrac)) :: x3
+   real(4), dimension(npts/2, npts) :: x3
 
 !********************************************************************
 
@@ -105,7 +105,7 @@ subroutine wv_spec_to_array ( npts,dt,x,x3, frac,tfrac,nfmin,nfmax, tbp,kspec,&
    allocate(df_filt(nf))
 
    if (v == 1) then
-   write(6,'(a,3i5)') 'Data points and frequency points and steps', npts, nf2, frac
+   write(6,'(a,2i5)') 'Data points and frequency points', npts, nf2
    endif
 
 !
@@ -186,11 +186,10 @@ subroutine wv_spec_to_array ( npts,dt,x,x3, frac,tfrac,nfmin,nfmax, tbp,kspec,&
    endif
 
    ! Discretize/downsample in frequency space
-   k = 1
-   do i= nfmin, nfmax, 2 * frac
+   do i= 1, nf, 2
 
       if (v == 1) then
-          if (mod(i,101) == 0) then
+          if (mod(i,100) == 0) then
              write(6,'(a,i5,a,i5)') 'Loop ',i , ' of ', nf 
           endif
       endif
@@ -215,22 +214,8 @@ subroutine wv_spec_to_array ( npts,dt,x,x3, frac,tfrac,nfmin,nfmax, tbp,kspec,&
 
       call ifft4(x2,npts)
 
-      ! Discretize/downsample in time space
-      ! Copy to output array
-      n = 1
-      do l=1, npts, tfrac
-          tmax = 0.0
-          do m=0, tfrac - 1
-              if ((real(x2(l+m))**2 + aimag(x2(l+m))**2) > tmax) then
-                  tind = l+m
-                  tmax = x2(tind)
-              endif
-          enddo
-          x3(k,n) = x2(tind)
-          n = n + 1
-      enddo
-      k = k + 1
-
+      ! Copy to output array. Fill upside down.
+      x3((npts-i)/2,:) = real(x2(:))
  
    enddo
 

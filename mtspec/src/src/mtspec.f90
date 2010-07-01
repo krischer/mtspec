@@ -666,10 +666,14 @@ subroutine mtspec_r (npts,dt,x,tbp,kspec,nf,freq,spec,               &
    xvar = (sum((dble(x) - xmean)**2))/dble(npts-1)
 
    if (present(nodemean)) then
-      print *, 'No demean'
+      if (v == 1) then
+         print *, 'No demean'
+      endif
       x2 = dble(x) 
    else
-      print *, 'Demeaned'
+      if (v == 1) then
+          print *, 'Demeaned'
+      endif
       x2 = dble(x) - xmean 
    endif
 

@@ -158,7 +158,7 @@ subroutine mt_cohe ( npts,dt,xi,xj,tbp,kspec,nf,p,                   &
    if (p>=1. .or. p<=0.) then
       p = 0.95
    endif
-   write(6,'(a,f10.7)') 'Confidence for null hypothesis testing ', p
+   !write(6,'(a,f10.7)') 'Confidence for null hypothesis testing ', p
 
 
    xmean(1) = sum(xi)/real(npts)

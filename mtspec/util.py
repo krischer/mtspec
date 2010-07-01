@@ -35,9 +35,9 @@ def load_mtdata(gzfile):
     path = os.path.join(os.path.dirname(__file__), 'tests', 'data', gzfile)
     return np.loadtxt(gzip.open(path))
 
-def chirp():
+def signal_bursts():
     """
-    Function which returns a signal (numpy.ndarray) with two chirps inside.
+    Function which returns a signal (numpy.ndarray) with two signal bursts inside.
     """
     np.random.seed(815)
     length = 5 * 512

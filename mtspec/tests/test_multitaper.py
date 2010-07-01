@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from mtspec import mtspec, sine_psd, dpss, wigner_ville_spectrum, mt_coherence
-from mtspec.util import chirp, load_mtdata
+from mtspec.util import signal_bursts, load_mtdata
 import numpy as np
 import os
 import unittest
@@ -268,8 +268,8 @@ class MtSpecTestCase(unittest.TestCase):
         """
         datafile = os.path.join(os.path.dirname(__file__), 'data', 'wv.npz')
         rec = np.load(datafile)
-        wv = abs(wigner_ville_spectrum(chirp(), 10, 3.5, smoothing_filter='gauss',
-                                       verbose=False, frac=1))
+        wv = abs(wigner_ville_spectrum(signal_bursts(), 10, 3.5, smoothing_filter='gauss',
+                                       verbose=False))
         rms1 = rms(rec['wv_500_1000_50'], wv[500:1000:50])
         rms2 = rms(rec['wv_1500_2000_50'], wv[1500:2000:50])
         self.assertEqual(True, rms1 < 1e-3)
