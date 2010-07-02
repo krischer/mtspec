@@ -31,13 +31,13 @@ FC = gfortran
 #FFLAGS = -O 
  
 #   debug
-#FFLAGS = -g
+FFLAGS = -g
  
 # Large memory needed (ifort)
 #FFLAGS = -O -heap-arrays 
 
 # Large memory needed (ifort)
-FFLAGS = -O  
+#FFLAGS = -O  
 
 
 #--------------------------------------------------------------------
@@ -101,7 +101,7 @@ MTFILES = spectra.f90      mtspec.f90      adaptspec.f90    \
 	  nsinv.f90        ftest.f90       fdis.f90         \
 	  psd_reshape.f90  qiinv.f90       zqrfac.f90       \
 	  mt_deconv.f90    mt_transfer.f90 oct_spec.f90     \
-	  sym_fft.f90 
+	  sym_fft.f90     wv_spec_to_array.f90
 
 PLFILES = gplot.f90
 
@@ -128,6 +128,8 @@ PLOBJS =  $(PLFILES:.f90=.o)
 # $? means all dependencies (OBJS) that are new.
 # $< similar to $? but just on dependency rules (%.o : %.f90)
 
+shared: $(MTOBJS)
+	gcc -g -shared *.o -lgfortran -o mtspec.so
 
 all : gplot.a mwlib.a organize mt_progs pl_progs figs
 
