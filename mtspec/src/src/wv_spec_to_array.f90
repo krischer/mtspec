@@ -73,7 +73,7 @@ subroutine wv_spec_to_array ( npts, dt, x, x3, tbp, kspec,            &
 
 ! Output
 
-   real(4), dimension(npts/2, npts) :: x3
+   real(4), dimension(npts/2+1, npts) :: x3
 
 !********************************************************************
 
@@ -186,7 +186,7 @@ subroutine wv_spec_to_array ( npts, dt, x, x3, tbp, kspec,            &
    endif
 
    ! Discretize/downsample in frequency space
-   k = 1
+   k = npts/2 + 1
    do i= 1, nf, 2
 
       if (v == 1) then
@@ -217,7 +217,7 @@ subroutine wv_spec_to_array ( npts, dt, x, x3, tbp, kspec,            &
 
       ! Copy to output array. Fill upside down.
       x3(k,:) = real(x2(:))
-      k = k + 1
+      k = k - 1
  
    enddo
 

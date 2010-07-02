@@ -405,7 +405,7 @@ def wigner_ville_spectrum(data, delta, time_bandwidth=3.5,
     # Allocate the output array
     # f90 code internally pads zeros to 2*npts. That is we only return
     # every second frequency point, thus decrease the size of the array
-    output = mt.empty((npts/2, npts))
+    output = mt.empty((npts/2+1, npts))
 
     mtspeclib.wv_spec_to_array_(C.byref(C.c_int(npts)),
                                 C.byref(C.c_float(delta)), 
