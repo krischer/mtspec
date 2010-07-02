@@ -53,7 +53,7 @@ subroutine wv_spec_to_array ( npts, dt, x, x3, tbp, kspec,            &
    
 !  Others
 
-   integer :: i, j
+   integer :: i, j, k
 
 !  Verbose
 
@@ -186,6 +186,7 @@ subroutine wv_spec_to_array ( npts, dt, x, x3, tbp, kspec,            &
    endif
 
    ! Discretize/downsample in frequency space
+   k = 1
    do i= 1, nf, 2
 
       if (v == 1) then
@@ -215,7 +216,8 @@ subroutine wv_spec_to_array ( npts, dt, x, x3, tbp, kspec,            &
       call ifft4(x2,npts)
 
       ! Copy to output array. Fill upside down.
-      x3((npts-i)/2,:) = real(x2(:))
+      x3(k,:) = real(x2(:))
+      k = k + 1
  
    enddo
 
