@@ -1,5 +1,5 @@
 subroutine wv_spec_to_array ( npts, dt, x, x3, tbp, kspec,            &
-                     filter, fbox, verb)
+                     filter, fbox, freq_div, verb)
 
 !  Construct the Wigner-Ville spectrum from the dual-frequency 
 !  spectrum, by taking the inverse FFT, to the 45 degrees
@@ -33,7 +33,7 @@ subroutine wv_spec_to_array ( npts, dt, x, x3, tbp, kspec,            &
 
 !  spectra and frequency
 
-   integer :: nf, nf2, nfft
+   integer :: nf, nf2, nfft, freq_div
 
    real(4), dimension(:), allocatable :: spec
 
@@ -73,7 +73,7 @@ subroutine wv_spec_to_array ( npts, dt, x, x3, tbp, kspec,            &
 
 ! Output
 
-   real(4), dimension(npts/2+1, npts) :: x3
+   real(4), dimension(npts/2/freq_div+1, npts) :: x3
 
 !********************************************************************
 
@@ -186,8 +186,8 @@ subroutine wv_spec_to_array ( npts, dt, x, x3, tbp, kspec,            &
    endif
 
    ! Discretize/downsample in frequency space
-   k = npts/2 + 1
-   do i= 1, nf, 2
+   k = npts/2/freq_div+1
+   do i= 1, nf/freq_div, 2
 
       if (v == 1) then
           if (mod(i,100) == 0) then

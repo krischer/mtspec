@@ -352,7 +352,8 @@ def dpss(npts, fw, nev, auto_spline=True, nmax=None):
 
 def wigner_ville_spectrum(data, delta, time_bandwidth=3.5,
                           number_of_tapers=None, smoothing_filter=None, 
-                          filter_width=100, verbose=False):
+                          filter_width=100, frequency_divider=1,
+                          verbose=False):
     """
     Wrapper method of the modified wv_spec (wv_spec_to_array) subroutine in
     the library of German A. Prieto.
@@ -373,6 +374,11 @@ def wigner_ville_spectrum(data, delta, time_bandwidth=3.5,
         One of 'boxcar', 'gauss' or just None
     :param filter_width: int;
         Filter width in samples
+    :param frequency_divider: int,
+        This method will always calculate all frequencies from 0..nyquist_freq.
+        This parameter allows the adjustment of the maximum frequency, so that
+        the frequencies range from 0..nyquist_freq/int(frequency_divider).
+        Defaults to 1.
     :param verbose: bool;
         If True turn on verbose output
     """
@@ -405,7 +411,7 @@ def wigner_ville_spectrum(data, delta, time_bandwidth=3.5,
     # Allocate the output array
     # f90 code internally pads zeros to 2*npts. That is we only return
     # every second frequency point, thus decrease the size of the array
-    output = mt.empty((npts/2+1, npts))
+    output = mt.empty((npts//2//int(frequency_divider)+1, npts))
 
     mtspeclib.wv_spec_to_array_(C.byref(C.c_int(npts)),
                                 C.byref(C.c_float(delta)), 
@@ -413,7 +419,8 @@ def wigner_ville_spectrum(data, delta, time_bandwidth=3.5,
                                 C.byref(C.c_float(time_bandwidth)),
                                 C.byref(C.c_int(number_of_tapers)),
                                 C.byref(C.c_int(smoothing_filter)),
-                                C.byref(C.c_float(filter_width)), verbose)
+                                C.byref(C.c_float(filter_width)),
+                                C.byref(C.c_int(frequency_divider)), verbose)
 
     return output
 
