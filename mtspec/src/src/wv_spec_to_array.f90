@@ -25,15 +25,19 @@ subroutine wv_spec_to_array ( npts, dt, x, x3, tbp, kspec,            &
 
 !  Inputs
 
-   integer, intent(in) :: npts, kspec, filter
+   integer, intent(in) :: npts, kspec, filter, freq_div
 
    real(4), intent(in) :: dt, tbp, fbox
 
    real(4), dimension(npts), intent(in) :: x
 
+! Output
+
+   real(4), dimension(npts/2/freq_div+1, npts), intent(out):: x3
+
 !  spectra and frequency
 
-   integer :: nf, nf2, nfft, freq_div
+   integer :: nf, nf2, nfft
 
    real(4), dimension(:), allocatable :: spec
 
@@ -53,7 +57,7 @@ subroutine wv_spec_to_array ( npts, dt, x, x3, tbp, kspec,            &
    
 !  Others
 
-   integer :: i, j, k
+   integer :: i, j, k, m
 
 !  Verbose
 
@@ -70,11 +74,6 @@ subroutine wv_spec_to_array ( npts, dt, x, x3, tbp, kspec,            &
 
    real(4) :: sigma
    real(4), dimension(:), allocatable :: x_filt, i_filt, df_filt
-
-! Output
-
-   real(4), dimension(npts/2/freq_div+1, npts) :: x3
-
 !********************************************************************
 
    ! Determine whether or not to use verbose mode.
@@ -114,7 +113,6 @@ subroutine wv_spec_to_array ( npts, dt, x, x3, tbp, kspec,            &
 
  call mtspec ( npts,nfft,dt,x,tbp,kspec,nf,freq,          &
                   spec,yk=yk,wt=wt)
- deallocate(spec)
 
 !
 !  Create the spectra (cannot use spec output, normalized different)
@@ -125,7 +123,6 @@ subroutine wv_spec_to_array ( npts, dt, x, x3, tbp, kspec,            &
       wt(:,i) = wt(:,i)/sqrt(wt_scale)
    enddo
 
-   deallocate(wt_scale)
 
    do i = 1,nf
       do j = 1,kspec
@@ -216,12 +213,14 @@ subroutine wv_spec_to_array ( npts, dt, x, x3, tbp, kspec,            &
       call ifft4(x2,npts)
 
       ! Copy to output array. Fill upside down.
-      x3(k,:) = real(x2(:))
+      do m = 1, npts
+          x3(k,m) = real(x2(m))
+      enddo
       k = k - 1
  
    enddo
 
-   deallocate(wt, yk)
+   deallocate(spec, wt, wt_scale, yk)
    deallocate(freq,dyk)
    deallocate(x2,x_filt,i_filt, df_filt)   
 

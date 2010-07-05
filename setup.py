@@ -34,33 +34,37 @@ import sys
 
 VERSION = open(os.path.join("mtspec", "VERSION.txt")).read().strip()
 
+macros = []
+extra_link_args = []
+extra_compile_args = []
+library_dirs = []
+
 # Monkey patch CCompiler for Unix, Linux and Windows
 # We pretend that .f90 is a C extension and overwrite
 # the corresponding compilation calls
 CCompiler.language_map['.f90'] = "c"
 
-if platform.system() != "Windows":
-    from distutils.unixccompiler import UnixCCompiler, _darwin_compiler_fixup
-    # Monkey patch UnixCCompiler for Unix, Linux and darwin
-    UnixCCompiler.src_extensions.append(".f90")
-    def _compile(self, obj, src, ext, cc_args, extra_postargs, pp_opts):
-            compiler_so = self.compiler_so
-            if sys.platform == 'darwin':
-                compiler_so = _darwin_compiler_fixup(compiler_so, cc_args + extra_postargs)
-            if ext == ".f90":
-                if sys.platform == 'darwin' or sys.platform == 'linux2':
-                    compiler_so = ["gfortran"]
-                    cc_args = ["-O", "-fPIC", "-c", "-ffree-form"]
-            try:
-                self.spawn(compiler_so + cc_args + [src, '-o', obj] +
-                           extra_postargs)
-            except DistutilsExecError, msg:
-                raise CompileError, msg
-    UnixCCompiler._compile = _compile
-    # set library dir for mac and linux
-    libs=['gfortran']
+from distutils.unixccompiler import UnixCCompiler, _darwin_compiler_fixup
+# Monkey patch UnixCCompiler for Unix, Linux and darwin
+UnixCCompiler.src_extensions.append(".f90")
+def _compile(self, obj, src, ext, cc_args, extra_postargs, pp_opts):
+        compiler_so = self.compiler_so
+        if sys.platform == 'darwin':
+            compiler_so = _darwin_compiler_fixup(compiler_so, cc_args + extra_postargs)
+        if ext == ".f90":
+            if sys.platform == 'darwin' or sys.platform == 'linux2':
+                compiler_so = ["gfortran"]
+                cc_args = ["-O", "-fPIC", "-c", "-ffree-form"]
+        try:
+            self.spawn(compiler_so + cc_args + [src, '-o', obj] +
+                       extra_postargs)
+        except DistutilsExecError, msg:
+            raise CompileError, msg
+UnixCCompiler._compile = _compile
+# set library dir for mac and linux
+libs=['gfortran']
 
-else:
+if platform.system() == "Windows":
     # Monkey patch MSVCCompiler for Windows
     # XXX: Only work if the msvc compiler is default
     # We only do this on windows, importing msvccompiler on linux produces the
@@ -87,7 +91,8 @@ else:
                 obj = file + ".o"
             if ext == ".f90":
                 self.compiler_so = ["gfortran"]
-                cc_args = ["-O", "-c", "-ffree-form"]
+                #cc_args = ["-O", "-c", "-ffree-form"]
+                cc_args = ["-c"]
                 extra_postargs = []
             try:
                 self.spawn(self.compiler_so + cc_args + [src, '-o', obj] +
@@ -98,6 +103,7 @@ else:
         return objects
 
     def link(self, target_desc, objects, output_filename, *args, **kwargs):
+        os.mkdir(os.path.dirname(output_filename))
         self.spawn(self.compiler_so + ["-shared"] + objects + 
                    ["-o", output_filename])
 
@@ -105,6 +111,17 @@ else:
     MSVCCompiler.link = link
     # do not include any libraries for windows
     libs = []
+    # include macros
+    macros = []
+    extra_link_args = []
+    extra_compile_args = []
+    macros.append(('WIN32', '1'))
+    # Workaround Win32 + MinGW + Python 2.6
+    # :see: http://bugs.python.org/issue3308
+    macros.append(('time_t', '__int64'))
+    macros.append(('localtime', '_localtime64'))
+    macros.append(('gmtime', '_gmtime64'))
+
 
 
 
@@ -117,11 +134,6 @@ class MyExtension(Extension):
     def __init__(self, *args, **kwargs):
         Extension.__init__(self, *args, **kwargs)
         self.export_symbols = finallist(self.export_symbols)
-
-macros = []
-extra_link_args = []
-extra_compile_args = []
-library_dirs = []
 
 src = os.path.join('mtspec', 'src', 'src') + os.sep
 
