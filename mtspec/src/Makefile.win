@@ -28,10 +28,11 @@ FC = gfortran
 #--------------------------------------------------------------------
 
 #   Optimize
-FFLAGS = -O 
+#FFLAGS = -O -ffree-form -Wall -Wextra -Wconversion -pedantic -std=f95 
  
 #   debug
-#FFLAGS = -g
+#FFLAGS = -g -ffree-form -Wall -Wextra -Wconversion -pedantic -std=f95 -fcheck=all -fbacktrace
+FFLAGS = -g -ffree-form -fcheck=all -fbacktrace
  
 #--------------------------------------------------------------------
 # Location of files
@@ -84,7 +85,7 @@ MTFILES = spectra.f90      mtspec.f90      adaptspec.f90    \
           nsinv.f90        ftest.f90       fdis.f90         \
           psd_reshape.f90  qiinv.f90       zqrfac.f90       \
           mt_deconv.f90    mt_transfer.f90 oct_spec.f90     \
-	  sym_fft.f90 wv_spec_to_array.f90
+	  sym_fft.f90      wv_spec_to_array.f90
 
 PLFILES = gplot.f90
 
@@ -114,7 +115,7 @@ PLOBJS =  $(PLFILES:.f90=.o)
 all : mtspec.pyd install
 
 mtspec.pyd: $(MTOBJS) $(PLOBJS)
-	gfortran -shared *.o -o $@
+	gfortran $(FFLAGS) -Wl,-O1 -Wl,-Bsymbolic-functions -shared *.o -o $@
 
 %.o : $(PLSRC)%.f90
 	$(FC) $(FFLAGS) -c $< -o $@

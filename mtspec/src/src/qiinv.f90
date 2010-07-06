@@ -112,7 +112,7 @@ subroutine qiinv(npts,tbp,kspec,nf,lambda,vn,yk,wt,  &
 
 !  Others
 
-   integer                                :: nh, n
+   integer                                :: nh, n, nf_clip
    integer                                :: L, i, j, k, m 
 
    real(8), parameter :: pi=3.141592653589793d0, tpi = 2.d0*pi
@@ -125,6 +125,10 @@ subroutine qiinv(npts,tbp,kspec,nf,lambda,vn,yk,wt,  &
       !stop
    endif
 
+   if (nf > npts) then
+      write(6,*) 'Error: Value of nf > npts, revise! *****'
+      stop
+   endif
    do k = 1,kspec
       xk(:,k) = wt(:,k)*yk(1:nf,k)
    enddo

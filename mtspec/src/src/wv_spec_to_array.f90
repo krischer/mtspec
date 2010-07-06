@@ -76,6 +76,7 @@ subroutine wv_spec_to_array ( npts, dt, x, x3, tbp, kspec,            &
    real(4), dimension(:), allocatable :: x_filt, i_filt, df_filt
 !********************************************************************
 
+   v = 0
    ! Determine whether or not to use verbose mode.
    if (present(verb)) then 
       if (index(verb,'n') == 0) then

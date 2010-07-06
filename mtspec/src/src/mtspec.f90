@@ -400,16 +400,21 @@ subroutine mtspec_d (npts,dt,x,tbp,kspec,nf,freq,spec,             &
 !  Calcuate adaptive weigthed spectrum
 !
 
-   if (present(adapt)) then
-      if (adapt==1) then
-         call noadaptspec(npts,nf,kspec,yk_o,spec,se_o,wt_o)
-      else
-         call adaptspec(npts,nf,kspec,theta,yk_o, &
-                      spec,se_o,wt_o)
-      endif
+   if (kspec == 1) then
+           wt_o = 1.d0
+           se_o = 2.d0
    else
-      call adaptspec(npts,nf,kspec,theta,yk_o, &
-                   spec,se_o,wt_o)
+       if (present(adapt)) then
+          if (adapt==1) then
+             call noadaptspec(npts,nf,kspec,yk_o,spec,se_o,wt_o)
+          else
+             call adaptspec(npts,nf,kspec,theta,yk_o, &
+                          spec,se_o,wt_o)
+          endif
+       else
+          call adaptspec(npts,nf,kspec,theta,yk_o, &
+                       spec,se_o,wt_o)
+       endif
    endif
 
 !
@@ -1413,7 +1418,7 @@ subroutine mtspec_pad (npts,nfft,dt,x,tbp,kspec,nf,freq,spec,           &
    if (present(qispec)) then 
       if (qispec==1) then
          !write(6,'(a)') 'No quadratic multitaper supported yet'
-         call qiinv(npts,dble(tbp),kspec,nf,lambda,vn,yk_o,  &
+         call qiinv(nfft,dble(tbp),kspec,nf,lambda,vn,yk_o,  &
                     wt_o,spec8,slope) 
       endif  
    endif
