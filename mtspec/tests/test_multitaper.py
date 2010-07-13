@@ -231,13 +231,6 @@ class MtSpecTestCase(unittest.TestCase):
         # Test that these are not equal.
         self.assertRaises(AssertionError, np.testing.assert_almost_equal,
                           spec, spec2)
-        # Do the same with the mtspec_pad method.
-        spec, freq = mtspec(data, 1.0, 4.5, nfft=312, number_of_tapers=2)
-        spec2, freq2 = mtspec(data, 1.0, 4.5, nfft=312, number_of_tapers=2,
-                                  quadratic=True)
-        # Test that these are not equal.
-        self.assertRaises(AssertionError, np.testing.assert_almost_equal,
-                          spec / spec, spec2 / spec)
 
     def test_dpss(self):
         """

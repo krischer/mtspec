@@ -1417,9 +1417,9 @@ subroutine mtspec_pad (npts,nfft,dt,x,tbp,kspec,nf,freq,spec,           &
 
    if (present(qispec)) then 
       if (qispec==1) then
-         !write(6,'(a)') 'No quadratic multitaper supported yet'
-         call qiinv(nfft,dble(tbp),kspec,nf,lambda,vn,yk_o,  &
-                    wt_o,spec8,slope) 
+         write(6,'(a)') 'No quadratic multitaper supported yet'
+         !call qiinv(nfft,dble(tbp),kspec,nf,lambda,vn,yk_o,  &
+         !           wt_o,spec8,slope) 
       endif  
    endif
 

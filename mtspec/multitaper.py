@@ -47,7 +47,9 @@ def mtspec(data, delta, time_bandwidth, nfft=None, number_of_tapers=None,
          on the final spectrum but increase the calculation time. Use fewer
          tapers for a faster calculation.
     :param quadratic: bool, optional
-         Whether or not to caluclate a quadratic multitaper. Defaults to False.
+         Whether or not to caluclate a quadratic multitaper. Will only work
+         if nfft is False or equal to the sample count. The nfft parameter
+         will overwrite the quadratic paramter. Defaults to False.
     :param adaptive: bool, optional
          Whether to use adaptive or constant weighting of the eigenspectra.
          Defaults to True(adaptive).
@@ -89,11 +91,12 @@ def mtspec(data, delta, time_bandwidth, nfft=None, number_of_tapers=None,
 
     # Depending if nfft is specified or not initialte MtspecTytpe
     # for mtspec_pad_ or mtspec_d_
-    if nfft is None:
+    if nfft is None or nfft == npts:
         nfft = npts
         mt = _MtspecType("float64")  # mtspec_d_
     else:
         mt = _MtspecType("float32")  # mtspec_pad_
+	quadratic = False
     # Use the optimal number of tapers in case no number is specified.
     if number_of_tapers is None:
         number_of_tapers = int(2 * time_bandwidth) - 1
