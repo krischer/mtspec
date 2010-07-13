@@ -401,8 +401,7 @@ subroutine mtspec_d (npts,dt,x,tbp,kspec,nf,freq,spec,             &
 !
 
    if (kspec == 1) then
-           wt_o = 1.d0
-           se_o = 2.d0
+           call noadaptspec(npts,nf,kspec,yk_o,spec,se_o,wt_o)
    else
        if (present(adapt)) then
           if (adapt==1) then
