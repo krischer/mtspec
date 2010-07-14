@@ -22,6 +22,9 @@ class MtSpecTestCase(unittest.TestCase):
         data = load_mtdata('PASC.dat.gz')
         # Calculate the spectra.
         spec, freq = mtspec(data, 1.0, 1.5, number_of_tapers=1)
+        # No NaNs are supposed to be in the output.
+        self.assertEqual(np.isnan(spec).any(), False)
+        self.assertEqual(np.isnan(spec).any(), False)
         # Load the good data.
         datafile = os.path.join(os.path.dirname(__file__), 'data',
                                 'single_taper.npz')
@@ -41,6 +44,9 @@ class MtSpecTestCase(unittest.TestCase):
         data = load_mtdata('PASC.dat.gz')
         # Calculate the spectra.
         spec, freq = mtspec(data, 1.0, 4.5, number_of_tapers=5)
+        # No NaNs are supposed to be in the output.
+        self.assertEqual(np.isnan(spec).any(), False)
+        self.assertEqual(np.isnan(spec).any(), False)
         # Load the good data.
         datafile = os.path.join(os.path.dirname(__file__), 'data',
                                 'multitaper.npz')
@@ -62,6 +68,12 @@ class MtSpecTestCase(unittest.TestCase):
         spec, freq, eigspec, eigcoef, weights = \
                 mtspec(data, 1.0, 4.5, number_of_tapers=5,
                 optional_output=True)
+        # No NaNs are supposed to be in the output.
+        self.assertEqual(np.isnan(spec).any(), False)
+        self.assertEqual(np.isnan(spec).any(), False)
+        self.assertEqual(np.isnan(eigspec).any(), False)
+        self.assertEqual(np.isnan(eigcoef).any(), False)
+        self.assertEqual(np.isnan(weights).any(), False)
         #XXX: Verify if this is correct, if so savez the data
         #import matplotlib.pyplot as plt
         #plt.plot(np.abs(eigcoef[:,0]))
@@ -96,6 +108,12 @@ class MtSpecTestCase(unittest.TestCase):
         spec, freq, eigspec, eigcoef, weights = \
                 mtspec(data, 1.0, 4.5, number_of_tapers=5, adaptive=False,
                 optional_output=True)
+        # No NaNs are supposed to be in the output.
+        self.assertEqual(np.isnan(spec).any(), False)
+        self.assertEqual(np.isnan(spec).any(), False)
+        self.assertEqual(np.isnan(eigspec).any(), False)
+        self.assertEqual(np.isnan(eigcoef).any(), False)
+        self.assertEqual(np.isnan(weights).any(), False)
         # The weights should all be one for the nonadaptive spectrum.
         np.testing.assert_almost_equal(weights, np.ones((43201, 5),
                                                          'float64'))
@@ -118,6 +136,10 @@ class MtSpecTestCase(unittest.TestCase):
         # Calculate the spectra.
         spec, freq, jackknife, _, _ = mtspec(data, 4930., 3.5, nfft=312,
                                       number_of_tapers=5, statistics=True)
+        # No NaNs are supposed to be in the output.
+        self.assertEqual(np.isnan(spec).any(), False)
+        self.assertEqual(np.isnan(spec).any(), False)
+        self.assertEqual(np.isnan(jackknife).any(), False)
         # Load the good data.
         datafile = os.path.join(os.path.dirname(__file__), 'data',
                                 'mtspec_pad_with_errors.npz')
@@ -142,6 +164,9 @@ class MtSpecTestCase(unittest.TestCase):
         # Calculate the spectra.
         spec, freq = mtspec(data, 1.0, 4.5, number_of_tapers=5,
                             quadratic=True)
+        # No NaNs are supposed to be in the output.
+        self.assertEqual(np.isnan(spec).any(), False)
+        self.assertEqual(np.isnan(spec).any(), False)
         # Load the good data.
         datafile = os.path.join(os.path.dirname(__file__), 'data',
                                 'quadratic_multitaper.npz')
@@ -163,6 +188,11 @@ class MtSpecTestCase(unittest.TestCase):
         spec, freq, jackknife, fstatistics, _ = mtspec(data, 4930., 3.5,
                            nfft=312, number_of_tapers=5, statistics=True,
                            rshape=0, fcrit=0.9)
+        # No NaNs are supposed to be in the output.
+        self.assertEqual(np.isnan(spec).any(), False)
+        self.assertEqual(np.isnan(freq).any(), False)
+        self.assertEqual(np.isnan(jackknife).any(), False)
+        self.assertEqual(np.isnan(fstatistics).any(), False)
         # Load the good data.
         datafile = os.path.join(os.path.dirname(__file__), 'data',
                                 'fstatistics.npz')
@@ -189,6 +219,9 @@ class MtSpecTestCase(unittest.TestCase):
         data = load_mtdata('PASC.dat.gz')
         # Calculate the spectra.
         spec, freq = sine_psd(data, 1.0)
+        # No NaNs are supposed to be in the output.
+        self.assertEqual(np.isnan(spec).any(), False)
+        self.assertEqual(np.isnan(freq).any(), False)
         # Load the good data.
         datafile = os.path.join(os.path.dirname(__file__), 'data',
                                 'sine_psd.npz')
@@ -208,6 +241,11 @@ class MtSpecTestCase(unittest.TestCase):
         data = load_mtdata('PASC.dat.gz')
         # Calculate the spectra.
         spec, freq, errors, tapers = sine_psd(data, 1.0, statistics=True)
+        # No NaNs are supposed to be in the output.
+        self.assertEqual(np.isnan(spec).any(), False)
+        self.assertEqual(np.isnan(freq).any(), False)
+        self.assertEqual(np.isnan(errors).any(), False)
+        self.assertEqual(np.isnan(tapers).any(), False)
         #XXX: assert for errors and tapers is missing
         # Load the good data.
         datafile = os.path.join(os.path.dirname(__file__), 'data',
@@ -226,8 +264,14 @@ class MtSpecTestCase(unittest.TestCase):
         data = load_mtdata('v22_174_series.dat.gz')
         # Calculate the spectra.
         spec, freq = mtspec(data, 1.0, 4.5, number_of_tapers=2)
+        # No NaNs are supposed to be in the output.
+        self.assertEqual(np.isnan(spec).any(), False)
+        self.assertEqual(np.isnan(freq).any(), False)
         spec2, freq2 = mtspec(data, 1.0, 4.5, number_of_tapers=2,
                               quadratic=True)
+        # No NaNs are supposed to be in the output.
+        self.assertEqual(np.isnan(spec2).any(), False)
+        self.assertEqual(np.isnan(freq2).any(), False)
         # Test that these are not equal.
         self.assertRaises(AssertionError, np.testing.assert_almost_equal,
                           spec, spec2)
@@ -243,6 +287,10 @@ class MtSpecTestCase(unittest.TestCase):
         v = np.load(datafile)['v']
 
         v2, lamb, theta = dpss(512, 2.5, 2)
+        # No NaNs are supposed to be in the output.
+        self.assertEqual(np.isnan(v2).any(), False)
+        self.assertEqual(np.isnan(lamb).any(), False)
+        self.assertEqual(np.isnan(theta).any(), False)
         # Taper 1, normalize for precision
         np.testing.assert_almost_equal(v2[:,0] / v[:,0], v[:,0] / v[:,0])
         # Taper 2, normalize for precision
@@ -263,6 +311,8 @@ class MtSpecTestCase(unittest.TestCase):
         rec = np.load(datafile)
         wv = abs(wigner_ville_spectrum(signal_bursts(), 10, 3.5, smoothing_filter='gauss',
                                        verbose=False))
+        # No NaNs are supposed to be in the output.
+        self.assertEqual(np.isnan(wv).any(), False)
         rms1 = rms(rec['wv_500_1000_50'], wv[500:1000:50])
         rms2 = rms(rec['wv_1500_2000_50'], wv[1500:2000:50])
         self.assertEqual(True, rms1 < 1e-3)
@@ -288,6 +338,8 @@ class MtSpecTestCase(unittest.TestCase):
                            cohe=True, iadapt=1)
         freq = np.linspace(0, sampling_rate/2, npts/2).astype('float32')
         cohe = np.load(datafile)['cohe']
+        # No NaNs are supposed to be in the output.
+        self.assertEqual(np.isnan(cohe).any(), False)
         np.testing.assert_almost_equal(freq, out['freq'], 5)
         np.testing.assert_almost_equal(cohe/cohe, out['cohe']/cohe, 4)
 
