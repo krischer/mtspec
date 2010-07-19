@@ -313,10 +313,10 @@ class MtSpecTestCase(unittest.TestCase):
                                        verbose=False))
         # No NaNs are supposed to be in the output.
         self.assertEqual(np.isnan(wv).any(), False)
-        rms1 = rms(rec['wv_500_1000_50'], wv[500:1000:50])
-        rms2 = rms(rec['wv_1500_2000_50'], wv[1500:2000:50])
-        self.assertEqual(True, rms1 < 1e-3)
-        self.assertEqual(True, rms2 < 1e-3)
+        rms1 = rms(rec['wv_250_500_25'], wv[250:500:25])
+        rms2 = rms(rec['wv_750_1000_25'], wv[750:1000:25])
+        self.assertEqual(True, rms1 < 1e-6)
+        self.assertEqual(True, rms2 < 1e-6)
 
     def test_mtCoherence(self):
         """
@@ -346,10 +346,7 @@ class MtSpecTestCase(unittest.TestCase):
 
 def rms(x, y):
     """Normalized RMS"""
-    value = np.sqrt( (x**2 - y**2).mean() / (x**2).mean() )
-    if np.isnan(value):
-        return 0.0
-    return value
+    return np.sqrt( ((x - y)**2).mean() / (x**2).mean() )
 
 
 def suite():
