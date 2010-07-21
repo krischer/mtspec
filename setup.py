@@ -182,6 +182,14 @@ setup(
 
     For more information see:
     https://svn.geophysik.uni-muenchen.de/trac/mtspecpy/wiki
+
+    Main Changes in 2.6.0
+    ---------------------
+
+    * Bugfix #6, access violation on windows
+    * Refactoring parts of the underlying fortran code, now memchecked
+    * Bugfix for NaNs in spectra
+    * Bugfix RMS calculation in tests
     """,
     url='https://svn.geophysik.uni-muenchen.de/trac/mtspecpy/wiki',
     author='Moritz Beyreuther, Lion Krischer and German A. Prieto',
@@ -199,8 +207,8 @@ setup(
         'Topic :: Scientific/Engineering',
         'Topic :: Scientific/Engineering :: Physics',
     ],
-    keywords=['mtspec', 'mtspecpy', 'multitaper', 'seismology', 'waveform',
-              'signal', 'processing', 'taper'],
+    keywords=['mtspec', 'multitaper', 'seismology', 'waveform',
+              'signal', 'processing', 'taper', 'wigner', 'ville'],
     packages=find_packages(),
     #namespace_packages=['mtspec'],
     zip_safe=False,
