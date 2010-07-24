@@ -183,13 +183,14 @@ setup(
     For more information see:
     https://svn.geophysik.uni-muenchen.de/trac/mtspecpy/wiki
 
-    Main Changes in 2.6.0
-    ---------------------
+    ::
 
-    * Bugfix #6, access violation on windows
-    * Refactoring parts of the underlying fortran code, now memchecked
-    * Bugfix for NaNs in spectra
-    * Bugfix RMS calculation in tests
+        Main Changes in 0.2.6
+        ---------------------
+        * Bugfix #6, access violation on windows
+        * Refactoring parts of the underlying fortran code, now memchecked
+        * Bugfix for NaNs in spectra
+        * Bugfix RMS calculation in tests
     """,
     url='https://svn.geophysik.uni-muenchen.de/trac/mtspecpy/wiki',
     author='Moritz Beyreuther, Lion Krischer and German A. Prieto',
