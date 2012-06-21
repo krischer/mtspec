@@ -190,7 +190,7 @@ setup(
         Computers and Geosciences, 35, pp. 1701-1710.
 
     For more information see:
-    https://svn.geophysik.uni-muenchen.de/trac/mtspecpy/wiki
+    https://github.com/krischer/mtspec
 
     ::
 
@@ -201,7 +201,7 @@ setup(
         * Bugfix for NaNs in spectra
         * Bugfix RMS calculation in tests
     """,
-    url='https://svn.geophysik.uni-muenchen.de/trac/mtspecpy/wiki',
+    url='https://github.com/krischer/mtspec',
     author='Moritz Beyreuther, Lion Krischer and German A. Prieto',
     author_email='beyreuth@geophysik.uni-muenchen.de',
     license='GNU General Public License (GPL)',

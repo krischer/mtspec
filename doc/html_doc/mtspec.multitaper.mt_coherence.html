@@ -1,0 +1,190 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>mtspec.multitaper.mt_coherence &mdash; mtspec documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="mtspec documentation" href="index.html" />
+    <link rel="up" title="mtspec.multitaper" href="mtspec.multitaper.html" />
+    <link rel="next" title="mtspec.multitaper.mtspec" href="mtspec.multitaper.mtspec.html" />
+    <link rel="prev" title="mtspec.multitaper.dpss" href="mtspec.multitaper.dpss.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="mtspec.multitaper.mtspec.html" title="mtspec.multitaper.mtspec"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="mtspec.multitaper.dpss.html" title="mtspec.multitaper.dpss"
+             accesskey="P">previous</a> |</li>
+<!--<li class="right"><a href="index.html"
+    title="Global Package Index" accesskey="M">packages</a> |</li> -->
+  <li><a href="https://github.com/krischer/mtspec">https://github.com/krischer/mtspec</a></li>
+
+
+          <li><a href="mtspec.multitaper.html" accesskey="U">mtspec.multitaper</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="mtspec-multitaper-mt-coherence">
+<h1>mtspec.multitaper.mt_coherence<a class="headerlink" href="#mtspec-multitaper-mt-coherence" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="mtspec.multitaper.mt_coherence">
+<tt class="descclassname">mtspec.multitaper.</tt><tt class="descname">mt_coherence</tt><big>(</big><em>df</em>, <em>xi</em>, <em>xj</em>, <em>tbp</em>, <em>kspec</em>, <em>nf</em>, <em>p</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#mtspec.multitaper.mt_coherence" title="Permalink to this definition">¶</a></dt>
+<dd><p>Construct the coherence spectrum from the yk&#8217;s and the 
+weights of the usual multitaper spectrum estimation. 
+Note this code uses the real(4) multitaper code.</p>
+<p>INPUT</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>df</strong> &#8211; float; sampling rate of time series</li>
+<li><strong>xi</strong> &#8211; numpy.ndarray; data for first series</li>
+<li><strong>xj</strong> &#8211; numpy.ndarray; data for second series</li>
+<li><strong>tbp</strong> &#8211; float; the time-bandwidth product</li>
+<li><strong>kspec</strong> &#8211; integer; number of tapers to use</li>
+<li><strong>nf</strong> &#8211; integer; number of freq points in spectrum</li>
+<li><strong>p</strong> &#8211; float; confidence for null hypothesis test, e.g. .95</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>OPTIONAL INPUT</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>iadapt</strong> &#8211; integer 0 - adaptive, 1 - constant weights
+default adapt = 1</td>
+</tr>
+</tbody>
+</table>
+<p>OPTIONAL OUTPUTS, the outputs are returned as dictionary, with keys as
+specified below and values as numpy.ndarrays. In order to activate the
+output set the corresponding kwarg in the argument list, e.g. 
+<tt class="docutils literal"><span class="pre">mt_coherence(df,</span> <span class="pre">xi,</span> <span class="pre">xj,</span> <span class="pre">tbp,</span> <span class="pre">kspec,</span> <span class="pre">nf,</span> <span class="pre">p,</span> <span class="pre">freq=True,</span> <span class="pre">cohe=True)</span></tt></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>freq</strong> &#8211; the frequency bins</li>
+<li><strong>cohe</strong> &#8211; coherence of the two series (0 - 1)</li>
+<li><strong>phase</strong> &#8211; the phase at each frequency</li>
+<li><strong>speci</strong> &#8211; spectrum of first series</li>
+<li><strong>specj</strong> &#8211; spectrum of second series</li>
+<li><strong>conf</strong> &#8211; p confidence value for each freq.</li>
+<li><strong>cohe_ci</strong> &#8211; 95% bounds on coherence (not larger than 1)</li>
+<li><strong>phase_ci</strong> &#8211; 95% bounds on phase estimates</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>If confidence intervals are requested, then both phase and
+cohe variables need to be requested as well.</p>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="mtspec.multitaper.dpss.html"
+                        title="previous chapter">mtspec.multitaper.dpss</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="mtspec.multitaper.mtspec.html"
+                        title="next chapter">mtspec.multitaper.mtspec</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/mtspec.multitaper.mt_coherence.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="mtspec.multitaper.mtspec.html" title="mtspec.multitaper.mtspec"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="mtspec.multitaper.dpss.html" title="mtspec.multitaper.dpss"
+             >previous</a> |</li>
+<!--<li class="right"><a href="index.html"
+    title="Global Package Index" accesskey="M">packages</a> |</li> -->
+  <li><a href="https://github.com/krischer/mtspec">https://github.com/krischer/mtspec</a></li>
+
+
+          <li><a href="mtspec.multitaper.html" >mtspec.multitaper</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2009-2010, Moritz Beyreuther, Lion Krischer.
+      Last updated on Jun 22, 2012.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

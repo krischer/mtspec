@@ -1,0 +1,208 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>mtspec.multitaper.mtspec &mdash; mtspec documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="mtspec documentation" href="index.html" />
+    <link rel="up" title="mtspec.multitaper" href="mtspec.multitaper.html" />
+    <link rel="next" title="mtspec.multitaper.sine_psd" href="mtspec.multitaper.sine_psd.html" />
+    <link rel="prev" title="mtspec.multitaper.mt_coherence" href="mtspec.multitaper.mt_coherence.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="mtspec.multitaper.sine_psd.html" title="mtspec.multitaper.sine_psd"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="mtspec.multitaper.mt_coherence.html" title="mtspec.multitaper.mt_coherence"
+             accesskey="P">previous</a> |</li>
+<!--<li class="right"><a href="index.html"
+    title="Global Package Index" accesskey="M">packages</a> |</li> -->
+  <li><a href="https://github.com/krischer/mtspec">https://github.com/krischer/mtspec</a></li>
+
+
+          <li><a href="mtspec.multitaper.html" accesskey="U">mtspec.multitaper</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="mtspec-multitaper-mtspec">
+<h1>mtspec.multitaper.mtspec<a class="headerlink" href="#mtspec-multitaper-mtspec" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="mtspec.multitaper.mtspec">
+<tt class="descclassname">mtspec.multitaper.</tt><tt class="descname">mtspec</tt><big>(</big><em>data</em>, <em>delta</em>, <em>time_bandwidth</em>, <em>nfft=None</em>, <em>number_of_tapers=None</em>, <em>quadratic=False</em>, <em>adaptive=True</em>, <em>verbose=False</em>, <em>optional_output=False</em>, <em>statistics=False</em>, <em>rshape=False</em>, <em>fcrit=False</em><big>)</big><a class="headerlink" href="#mtspec.multitaper.mtspec" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wrapper method for the mtspec subroutine in the library by German A.
+Prieto.</p>
+<p>This method estimates the adaptive weighted multitaper spectrum, as in
+Thomson 1982.  This is done by estimating the DPSS (discrete prolate
+spheroidal sequences), multiplying each of the tapers with the data series,
+take the FFT, and using the adaptive scheme for a better estimation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>data</strong> &#8211; <tt class="xref py py-class docutils literal"><span class="pre">numpy.ndarray</span></tt>
+Array with the data.</li>
+<li><strong>delta</strong> &#8211; float
+Sample spacing of the data.</li>
+<li><strong>time_bandwidth</strong> &#8211; float
+Time-bandwidth product. Common values are 2, 3, 4 and numbers in
+between.</li>
+<li><strong>nfft</strong> &#8211; int
+Number of points for fft. If nfft == None, no zero padding
+will be applied before the fft</li>
+<li><strong>number_of_tapers</strong> &#8211; integer, optional
+Number of tapers to use. Defaults to int(2*time_bandwidth) - 1. This
+is maximum senseful amount. More tapers will have no great influence
+on the final spectrum but increase the calculation time. Use fewer
+tapers for a faster calculation.</li>
+<li><strong>quadratic</strong> &#8211; bool, optional
+Whether or not to caluclate a quadratic multitaper. Will only work
+if nfft is False or equal to the sample count. The nfft parameter
+will overwrite the quadratic paramter. Defaults to False.</li>
+<li><strong>adaptive</strong> &#8211; bool, optional
+Whether to use adaptive or constant weighting of the eigenspectra.
+Defaults to True(adaptive).</li>
+<li><strong>verbose</strong> &#8211; bool, optional
+Passed to the fortran library. Defaults to False.</li>
+<li><strong>optional_output</strong> &#8211; bool, optional
+Calculates and returns additional output parameters. See the notes in
+the docstring for further details.</li>
+<li><strong>statistics</strong> &#8211; bool, optional
+Calculates and returns statistics. See the notes in the docstring for
+further details.</li>
+<li><strong>rshape</strong> &#8211; integer/None, optional
+Determines whether or not to perform the F-test for lines. If rshape
+is 1 or 2, then don&#8217;t put the lines back. If rshape is 2 only check
+around 60 Hz. See the fortran source code for more informations.
+Defaults to None (do not perform the F-test).</li>
+<li><strong>fcrit</strong> &#8211; float/None, optional
+The threshold probability for the F-test. If none is given, the mtspec
+library calculates a default value. See the fortran source code for
+details. Defaults to None.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Returns a list with <tt class="xref py py-class docutils literal"><span class="pre">numpy.ndarray</span></tt>. See the note
+below.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This method will at return at least two arrays: The calculated spectrum
+and the corresponding frequencies.  If optional_output is true it will
+also return (in the given order) (multidimensional) arrays containing
+the eigenspectra, the corresponding eigencoefficients and an array
+containing the weights for each eigenspectra normalized so that the sum
+of squares over the eigenspectra is one.  If statistics is True is will
+also return (in the given order) (multidimensional) arrays containing
+the jackknife 5% and 95% confidence intervals, the F statistics for
+single line and the number of degrees of freedom for each frequency
+bin.  If both optional_output and statistics are true, the
+optional_outputs will be returned before the statistics.</p>
+</div>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="mtspec.multitaper.mt_coherence.html"
+                        title="previous chapter">mtspec.multitaper.mt_coherence</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="mtspec.multitaper.sine_psd.html"
+                        title="next chapter">mtspec.multitaper.sine_psd</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/mtspec.multitaper.mtspec.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="mtspec.multitaper.sine_psd.html" title="mtspec.multitaper.sine_psd"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="mtspec.multitaper.mt_coherence.html" title="mtspec.multitaper.mt_coherence"
+             >previous</a> |</li>
+<!--<li class="right"><a href="index.html"
+    title="Global Package Index" accesskey="M">packages</a> |</li> -->
+  <li><a href="https://github.com/krischer/mtspec">https://github.com/krischer/mtspec</a></li>
+
+
+          <li><a href="mtspec.multitaper.html" >mtspec.multitaper</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2009-2010, Moritz Beyreuther, Lion Krischer.
+      Last updated on Jun 22, 2012.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>
