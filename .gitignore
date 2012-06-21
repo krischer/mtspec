@@ -1,0 +1,5 @@
+build
+mtspec.egg-info
+mtspec/lib/*
+mtspec/tests/output/*
+
