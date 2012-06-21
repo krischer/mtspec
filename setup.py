@@ -40,6 +40,7 @@ extra_compile_args = []
 # XXX: Linking happens with gcc and if gfortran was installed seperately it
 # might not be able to find the gfortran library. In that case but the path to
 # libgfortan.a here ("locate libgfortran.a").
+# Maybe just do the linking also with gfortran?
 library_dirs = []
 
 # Monkey patch CCompiler for Unix, Linux and Windows
