@@ -26,9 +26,9 @@ import sys, os
 # Add any Sphinx extension module names here, as strings. They can be extensions
 # coming with Sphinx (named 'sphinx.ext.*') or your custom ones.
 extensions = ['sphinx.ext.autodoc',
-              'sphinx.ext.autosummary',
-              'matplotlib.sphinxext.plot_directive',
-              'matplotlib.sphinxext.only_directives']
+              'sphinx.ext.autosummary')
+              #'matplotlib.sphinxext.plot_directive',
+              #'matplotlib.sphinxext.only_directives']
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -185,8 +185,8 @@ latex_documents = [
 
 # Redefine how to process inherited methods/members
 def process_inherited(app, what, name, obj, options, docstringlines):
-    """ 
-    If we're including inherited members, omit their docstrings. 
+    """
+    If we're including inherited members, omit their docstrings.
     """
     if not options.get('inherited-members'):
         return
@@ -217,15 +217,15 @@ def process_inherited(app, what, name, obj, options, docstringlines):
 #       trac_7549-doc_inheritance_underscore_v3.patch
 
 # Do not skip private members
-def skip_underscore(app, what, name, obj, skip, options): 
-    """ 
-    Conditionally include docstrings for objects whose names begin 
-    with one underscore ('_'). 
-    """ 
+def skip_underscore(app, what, name, obj, skip, options):
+    """
+    Conditionally include docstrings for objects whose names begin
+    with one underscore ('_').
+    """
     name = name.split('.')[-1]
     if name.startswith('_') and not name.startswith('__'):
-        return False 
-    return skip 
+        return False
+    return skip
 
 from sphinx.ext.autodoc import cut_lines
 
