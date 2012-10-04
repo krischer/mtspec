@@ -279,25 +279,24 @@ class MtSpecTestCase(unittest.TestCase):
     def test_dpss(self):
         """
         Tests case for dpss. The resulting v tapers are tested. There is
-        no test for theta or lambda.
+        for the eigenvalues.
         """
         v = np.load
 
         datafile = os.path.join(os.path.dirname(__file__), 'data', 'dpss.npz')
-        v = np.load(datafile)['v']
+        v = np.load(datafile)['v'].transpose()
 
-        v2, lamb, theta = dpss(512, 2.5, 2)
+        v2, lamb = dpss(512, 2.5, 2)
         # No NaNs are supposed to be in the output.
         self.assertEqual(np.isnan(v2).any(), False)
         self.assertEqual(np.isnan(lamb).any(), False)
-        self.assertEqual(np.isnan(theta).any(), False)
         # Taper 1, normalize for precision
-        np.testing.assert_almost_equal(v2[:,0] / v[:,0], v[:,0] / v[:,0])
+        np.testing.assert_almost_equal(v2[0] / v[0], v[0] / v[0])
         # Taper 2, normalize for precision
-        np.testing.assert_almost_equal(v2[:,1] / v[:,1], v[:,1] / v[:,1])
+        np.testing.assert_almost_equal(v2[1] / v[1], v[1] / v[1])
 
         # Do the same but with spline interpolation.
-        v3, lamb2, thetha2 = dpss(512, 2.5, 2, nmax=400)
+        v3, lamb2 = dpss(512, 2.5, 2, spline_interpolation=400)
         # Test both tapers. They are not exactly equal therefore only two
         # digits are compared.
         np.testing.assert_almost_equal(v3 / v3, v2 / v3, 2)

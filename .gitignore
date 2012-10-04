@@ -1,5 +1,4 @@
 build
 mtspec.egg-info
-mtspec/lib/*
 mtspec/tests/output/*
-
+mtspec/_mtspec_lib*

@@ -1,0 +1,278 @@
+!    -*- f90 -*-
+! Note: the context of this file is case sensitive.
+
+python module _mtspec_lib ! in
+    interface  ! in :_mtspec_lib
+        subroutine df_spec(npts,dt,xi,xj,tbp,kspec,nf,freq,df_spectra,df_cohe,df_phase) ! in :_mtspec_lib:df_spec.f90
+            use spectra
+            integer, optional,intent(in),check(len(xi)>=npts),depend(xi) :: npts=len(xi)
+            real(kind=4) intent(in) :: dt
+            real(kind=4) dimension(npts),intent(in) :: xi
+            real(kind=4) dimension(npts),intent(in),depend(npts) :: xj
+            real(kind=4) intent(in) :: tbp
+            integer intent(in) :: kspec
+            integer intent(in) :: nf
+            real(kind=4) dimension(nf),intent(out),depend(nf) :: freq
+            complex(kind=4) dimension(nf,nf),intent(out),depend(nf,nf) :: df_spectra
+            real(kind=4) dimension(nf,nf),intent(out),depend(nf,nf) :: df_cohe
+            real(kind=4) dimension(nf,nf),intent(out),depend(nf,nf) :: df_phase
+        end subroutine df_spec
+        subroutine dpss(npts,fw,nev,v,lambda,theta) ! in :_mtspec_lib:dpss.f90
+            integer intent(in) :: npts
+            real(kind=8) intent(in) :: fw
+            integer intent(in) :: nev
+            real(kind=8) dimension(npts,nev),intent(out),depend(npts,nev) :: v
+            real(kind=8) dimension(nev),intent(out),depend(nev) :: lambda
+            real(kind=8) dimension(nev),intent(out),depend(nev) :: theta
+        end subroutine dpss
+        subroutine dpss_spline(nmax,npts,fw,nev,v_sp,lambda,theta) ! in :mtspec2:dpss_spline.f90
+            integer intent(in) :: nmax
+            integer intent(in) :: npts
+            real(kind=8) intent(in) :: fw
+            integer intent(in) :: nev
+            real(kind=8) dimension(npts,nev),intent(out),depend(npts,nev) :: v_sp
+            real(kind=8) dimension(nev),intent(out),depend(nev) :: lambda
+            real(kind=8) dimension(nev),intent(out),depend(nev) :: theta
+        end subroutine dpss_spline
+        subroutine mt_cohe(npts,dt,xi,xj,tbp,kspec,nf,p,freq,cohe,phase,speci,specj,conf,cohe_ci,phase_ci,iadapt) ! in :_mtspec_lib:mt_cohe.f90
+            use spectra
+            integer, optional,intent(in),check(len(xi)>=npts),depend(xi) :: npts=len(xi)
+            real(kind=4) intent(in) :: dt
+            real(kind=4) dimension(npts),intent(in) :: xi
+            real(kind=4) dimension(npts),intent(in),depend(npts) :: xj
+            real(kind=4) intent(in) :: tbp
+            integer intent(in) :: kspec
+            integer, optional,intent(in),check(len(freq)>=nf),depend(freq) :: nf=len(freq)
+            real(kind=4) :: p
+            real(kind=4), optional,dimension(nf) :: freq
+            real(kind=4), optional,dimension(nf),depend(nf) :: cohe
+            real(kind=4), optional,dimension(nf),depend(nf) :: phase
+            real(kind=4), optional,dimension(nf),depend(nf) :: speci
+            real(kind=4), optional,dimension(nf),depend(nf) :: specj
+            real(kind=4), optional,dimension(nf),depend(nf) :: conf
+            real(kind=4), optional,dimension(nf,2),depend(nf) :: cohe_ci
+            real(kind=4), optional,dimension(nf,2),depend(nf) :: phase_ci
+            integer, optional :: iadapt
+        end subroutine mt_cohe
+        subroutine mt_deconv(npts,nfft,dt,xi,xj,tbp,kspec,nf,freq,tfun,spec_ratio,speci,specj,iadapt,demean,fmax) ! in :_mtspec_lib:mt_deconv.f90
+            use spectra
+            integer, optional,intent(in),check(len(xi)>=npts),depend(xi) :: npts=len(xi)
+            integer, optional,intent(in),check(len(tfun)>=nfft),depend(tfun) :: nfft=len(tfun)
+            real(kind=4) intent(in) :: dt
+            real(kind=4) dimension(npts),intent(in) :: xi
+            real(kind=4) dimension(npts),intent(in),depend(npts) :: xj
+            real(kind=4) intent(in) :: tbp
+            integer intent(in) :: kspec
+            integer, optional,intent(in),check(len(freq)>=nf),depend(freq) :: nf=len(freq)
+            real(kind=4), optional,dimension(nf) :: freq
+            real(kind=4), optional,dimension(nfft) :: tfun
+            real(kind=4), optional,dimension(nf),depend(nf) :: spec_ratio
+            real(kind=4), optional,dimension(nf),depend(nf) :: speci
+            real(kind=4), optional,dimension(nf),depend(nf) :: specj
+            integer, optional :: iadapt
+            integer, optional :: demean
+            real(kind=4), optional :: fmax
+        end subroutine mt_deconv
+        subroutine mtspec_d(npts,dt,x,tbp,kspec,nf,freq,spec,verb,qispec,adapt,yk,wt,err,se,sk,rshape,fstat,fcrit,nodemean) ! in :_mtspec_lib:mtspec.f90
+            integer, optional,intent(in),check(len(x)>=npts),depend(x) :: npts=len(x)
+            real(kind=8) intent(in) :: dt
+            real(kind=8) dimension(npts),intent(in) :: x
+            real(kind=8) intent(in) :: tbp
+            integer, optional,intent(in),check(shape(yk,1)==kspec),depend(yk) :: kspec=shape(yk,1)
+            integer, optional,intent(in),check(shape(wt,0)==nf),depend(wt) :: nf=shape(wt,0)
+            real(kind=8) dimension(nf),intent(out),depend(nf) :: freq
+            real(kind=8) dimension(nf),intent(out),depend(nf) :: spec
+            character*1, optional :: verb
+            integer, optional :: qispec
+            integer, optional :: adapt
+            complex(kind=8), optional,dimension(npts,kspec),depend(npts) :: yk
+            real(kind=8), optional,dimension(nf,kspec),depend(kspec) :: wt
+            real(kind=8), optional,dimension(nf,2),depend(nf) :: err
+            real(kind=8), optional,dimension(nf),depend(nf) :: se
+            real(kind=8), optional,dimension(nf,kspec),depend(nf,kspec) :: sk
+            integer, optional,intent(in) :: rshape
+            real(kind=8), optional,dimension(nf),intent(out),depend(nf) :: fstat
+            real(kind=4), optional,intent(in) :: fcrit
+            integer, optional :: nodemean
+        end subroutine mtspec_d
+        subroutine mtspec_r(npts,dt,x,tbp,kspec,nf,freq,spec,verb,qispec,adapt,yk,wt,err,se,sk,rshape,fstat,fcrit,nodemean) ! in :_mtspec_lib:mtspec.f90
+            integer, optional,intent(in),check(len(x)>=npts),depend(x) :: npts=len(x)
+            real(kind=4) intent(in) :: dt
+            real(kind=4) dimension(npts),intent(in) :: x
+            real(kind=4) intent(in) :: tbp
+            integer intent(in) :: kspec
+            integer intent(in) :: nf
+            real(kind=4) dimension(nf),intent(out),depend(nf) :: freq
+            real(kind=4) dimension(nf),intent(out),depend(nf) :: spec
+            character*1, optional :: verb
+            integer, optional :: qispec
+            integer, optional :: adapt
+            complex(kind=4), optional,dimension(npts,kspec),intent(out),depend(npts,kspec) :: yk
+            real(kind=4), optional,dimension(nf,kspec),intent(out),depend(nf,kspec) :: wt
+            real(kind=4), optional,dimension(nf,2),intent(out),depend(nf) :: err
+            real(kind=4), optional,dimension(nf),intent(out),depend(nf) :: se
+            real(kind=4), optional,dimension(nf,kspec),intent(out),depend(nf,kspec) :: sk
+            integer, optional,intent(in) :: rshape
+            real(kind=4), optional,dimension(nf),intent(out),depend(nf) :: fstat
+            real(kind=4), optional,intent(in) :: fcrit
+            integer, optional :: nodemean
+        end subroutine mtspec_r
+        subroutine mtspec_m(ntimes,npts,dt,x,tbp,kspec,nf,freq,spec,err,nodemean) ! in :_mtspec_lib:mtspec.f90
+            integer, optional,intent(in),check(shape(x,1)==ntimes),depend(x) :: ntimes=shape(x,1)
+            integer, optional,intent(in),check(shape(x,0)==npts),depend(x) :: npts=shape(x,0)
+            real(kind=4) intent(in) :: dt
+            real(kind=4) dimension(npts,ntimes),intent(in) :: x
+            real(kind=4) intent(in) :: tbp
+            integer intent(in) :: kspec
+            integer intent(in) :: nf
+            real(kind=4) dimension(nf),intent(out),depend(nf) :: freq
+            real(kind=4) dimension(nf,ntimes),intent(out),depend(nf,ntimes) :: spec
+            real(kind=4) dimension(nf,2,ntimes),intent(out),depend(nf,ntimes) :: err
+            integer, optional :: nodemean
+        end subroutine mtspec_m
+        subroutine mtspec_pad(npts,nfft,dt,x,tbp,kspec,nf,freq,spec,verb,qispec,adapt,yk,wt,err,se,sk,rshape,fstat,fcrit,nodemean) ! in :_mtspec_lib:mtspec.f90
+            integer, optional,intent(in),check(len(x)>=npts),depend(x) :: npts=len(x)
+            integer intent(in) :: nfft
+            real(kind=4) intent(in) :: dt
+            real(kind=4) dimension(npts),intent(in) :: x
+            real(kind=4) intent(in) :: tbp
+            integer intent(in) :: kspec
+            integer intent(in) :: nf
+            real(kind=4) dimension(nf),intent(out),depend(nf) :: freq
+            real(kind=4) dimension(nf),intent(out),depend(nf) :: spec
+            character*1, optional :: verb
+            integer, optional :: qispec
+            integer, optional :: adapt
+            complex(kind=4), optional,dimension(nfft,kspec),intent(out),depend(nfft,kspec) :: yk
+            real(kind=4), optional,dimension(nf,kspec),intent(out),depend(nf,kspec) :: wt
+            real(kind=4), optional,dimension(nf,2),intent(out),depend(nf) :: err
+            real(kind=4), optional,dimension(nf),intent(out),depend(nf) :: se
+            real(kind=4), optional,dimension(nf,kspec),intent(out),depend(nf,kspec) :: sk
+            integer, optional,intent(in) :: rshape
+            real(kind=4), optional,dimension(nf),intent(out),depend(nf) :: fstat
+            real(kind=4), optional,intent(in) :: fcrit
+            integer, optional :: nodemean
+        end subroutine mtspec_pad
+        subroutine mtspec_c(npts,dt,x,tbp,kspec,nf,freq,spec,verb,qispec,adapt,yk,wt,err,se,sk,rshape,fstat,fcrit,nodemean) ! in :_mtspec_lib:mtspec.f90
+            integer, optional,intent(in),check(len(x)>=npts),depend(x) :: npts=len(x)
+            real(kind=4) intent(in) :: dt
+            complex(kind=4) dimension(npts),intent(in) :: x
+            real(kind=4) intent(in) :: tbp
+            integer intent(in) :: kspec
+            integer intent(in) :: nf
+            real(kind=4) dimension(nf),intent(out),depend(nf) :: freq
+            real(kind=4) dimension(nf),intent(out),depend(nf) :: spec
+            character*1, optional :: verb
+            integer, optional :: qispec
+            integer, optional :: adapt
+            complex(kind=4), optional,dimension(npts,kspec),intent(out),depend(npts,kspec) :: yk
+            real(kind=4), optional,dimension(nf,kspec),intent(out),depend(nf,kspec) :: wt
+            real(kind=4), optional,dimension(nf,2),intent(out),depend(nf) :: err
+            real(kind=4), optional,dimension(nf),intent(out),depend(nf) :: se
+            real(kind=4), optional,dimension(nf,kspec),intent(out),depend(nf,kspec) :: sk
+            integer, optional,intent(in) :: rshape
+            real(kind=4), optional,dimension(nf),intent(out),depend(nf) :: fstat
+            real(kind=4), optional,intent(in) :: fcrit
+            integer, optional :: nodemean
+        end subroutine mtspec_c
+        subroutine mt_transfer(npts,nfft,dt,xi,xj,tbp,kspec,nf,freq,cohe,trf,cspec,speci,specj,iadapt,demean,nodemean) ! in :_mtspec_lib:mt_transfer.f90
+            use spectra
+            integer, optional,intent(in),check(len(xi)>=npts),depend(xi) :: npts=len(xi)
+            integer, optional,intent(in),check(len(trf)>=nfft),depend(trf) :: nfft=len(trf)
+            real(kind=4) intent(in) :: dt
+            real(kind=4) dimension(npts),intent(in) :: xi
+            real(kind=4) dimension(npts),intent(in),depend(npts) :: xj
+            real(kind=4) intent(in) :: tbp
+            integer intent(in) :: kspec
+            integer, optional,intent(in),check(len(freq)>=nf),depend(freq) :: nf=len(freq)
+            real(kind=4), optional,dimension(nf) :: freq
+            real(kind=4), optional,dimension(nf),depend(nf) :: cohe
+            complex(kind=4), optional,dimension(nfft) :: trf
+            complex(kind=4), optional,dimension(nf),depend(nf) :: cspec
+            real(kind=4), optional,dimension(nf),depend(nf) :: speci
+            real(kind=4), optional,dimension(nf),depend(nf) :: specj
+            integer, optional :: iadapt
+            integer, optional :: demean
+            integer, optional :: nodemean
+        end subroutine mt_transfer
+        subroutine mt_transfer2(iadapt,npts,nfft,dt,xi,xj,tbp,kspec,nf,freq,cohe,trf,cspec,speci,specj) ! in :_mtspec_lib:mt_transfer.f90
+            use spectra
+            integer intent(in) :: iadapt
+            integer, optional,intent(in),check(len(xi)>=npts),depend(xi) :: npts=len(xi)
+            integer intent(in) :: nfft
+            real(kind=4) intent(in) :: dt
+            real(kind=4) dimension(npts),intent(in) :: xi
+            real(kind=4) dimension(npts),intent(in),depend(npts) :: xj
+            real(kind=4) intent(in) :: tbp
+            integer intent(in) :: kspec
+            integer intent(in) :: nf
+            real(kind=4) dimension(nf),intent(out),depend(nf) :: freq
+            real(kind=4) dimension(nf),intent(out),depend(nf) :: cohe
+            complex(kind=4) dimension(nf),intent(out),depend(nf) :: trf
+            complex(kind=4) dimension(nf),intent(out),depend(nf) :: cspec
+            real(kind=4) dimension(nf),intent(out),depend(nf) :: speci
+            real(kind=4) dimension(nf),intent(out),depend(nf) :: specj
+        end subroutine mt_transfer2
+        function nearn(n) ! in :_mtspec_lib:nearn.f90
+            integer :: n
+            integer :: nearn
+        end function nearn
+        subroutine sine_cohe(npts,dt,x1,x2,ntap,ntimes,fact,nf,p,freq,cohe,phase,speci,specj,kopt,conf,cohe_ci,phase_ci) ! in :_mtspec_lib:sine_cohe.f90
+            use spectra
+            integer, optional,intent(in),check(len(x1)>=npts),depend(x1) :: npts=len(x1)
+            real(kind=4) intent(in) :: dt
+            real(kind=4) dimension(npts),intent(in) :: x1
+            real(kind=4) dimension(npts),intent(in),depend(npts) :: x2
+            integer :: ntap
+            integer :: ntimes
+            real(kind=4) :: fact
+            integer, optional,intent(in),check(len(freq)>=nf),depend(freq) :: nf=len(freq)
+            real(kind=4) :: p
+            real(kind=4), optional,dimension(nf) :: freq
+            real(kind=4), optional,dimension(nf),depend(nf) :: cohe
+            real(kind=4), optional,dimension(nf),depend(nf) :: phase
+            real(kind=4), optional,dimension(nf),depend(nf) :: speci
+            real(kind=4), optional,dimension(nf),depend(nf) :: specj
+            integer, optional,dimension(nf),depend(nf) :: kopt
+            real(kind=4), optional,dimension(nf),depend(nf) :: conf
+            real(kind=4), optional,dimension(nf,2),depend(nf) :: cohe_ci
+            real(kind=4), optional,dimension(nf,2),depend(nf) :: phase_ci
+        end subroutine sine_cohe
+        subroutine sine_psd(npts,dt,x,ntap,ntimes,fact,nf,freq,spec,kopt,err,verb) ! in :_mtspec_lib:sine_psd.f90
+            integer, optional,intent(in),check(len(x)>=npts),depend(x) :: npts=len(x)
+            real(kind=4) intent(in) :: dt
+            real(kind=4) dimension(npts),intent(in) :: x
+            integer :: ntap
+            integer :: ntimes
+            real(kind=4) :: fact
+            integer, optional,intent(in),check(len(kopt)>=nf),depend(kopt) :: nf=len(kopt)
+            real(kind=4) dimension(nf),intent(out),depend(nf) :: freq
+            real(kind=4) dimension(nf),intent(out),depend(nf) :: spec
+            integer, optional,dimension(nf) :: kopt
+            real(kind=4), optional,dimension(nf,2),depend(nf) :: err
+            character*1, optional :: verb
+        end subroutine sine_psd
+        subroutine sine_psd_short(npts,dt,x,ntap,ntimes,fact,nf,spec) ! in :_mtspec_lib:sine_psd.f90
+            integer, optional,intent(in),check(len(x)>=npts),depend(x) :: npts=len(x)
+            real(kind=4) intent(in) :: dt
+            real(kind=4) dimension(npts),intent(in) :: x
+            integer :: ntap
+            integer :: ntimes
+            real(kind=4) :: fact
+            integer intent(in) :: nf
+            real(kind=4) dimension(nf),intent(out),depend(nf) :: spec
+        end subroutine sine_psd_short
+        subroutine wv_spec(npts,dt,xi,xj,tbp,kspec,filter,fbox,filename) ! in :_mtspec_lib:wv_spec.f90
+            use spectra
+            integer, optional,intent(in),check(len(xi)>=npts),depend(xi) :: npts=len(xi)
+            real(kind=4) intent(in) :: dt
+            real(kind=4) dimension(npts),intent(in) :: xi
+            real(kind=4) dimension(npts),intent(in),depend(npts) :: xj
+            real(kind=4) intent(in) :: tbp
+            integer intent(in) :: kspec
+            integer intent(in) :: filter
+            real(kind=4) intent(in) :: fbox
+            character*100 intent(in) :: filename
+        end subroutine wv_spec
+    end interface
+end python module _mtspec_lib
