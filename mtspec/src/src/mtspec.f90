@@ -4,35 +4,35 @@
 !  partial codes from EISPACK, Robert L. Parker and Glenn Ierley from
 !  Scripps Institution of Oceanography.
 !
-!  The subroutine is in charge of estimating the adaptive weigthed 
-!  multitaper spectrum, as in Thomson 1982. 
-!  This is done by estimating the dpss (discrete prolate spheroidal 
-!  sequences), multiplying each of the kspec tapers with the data 
+!  The subroutine is in charge of estimating the adaptive weigthed
+!  multitaper spectrum, as in Thomson 1982.
+!  This is done by estimating the dpss (discrete prolate spheroidal
+!  sequences), multiplying each of the kspec tapers with the data
 !  series, take the fft, and using the adaptive scheme for a better
-!  estimation. 
-!  As a by product of the spectrum (spec), all intermediate steps 
-!  are estimated, and can be called as optional variables (see 
+!  estimation.
+!  As a by product of the spectrum (spec), all intermediate steps
+!  are estimated, and can be called as optional variables (see
 !  documentation). By-products include the complex information
-!  in yk, the eigenspectra sk, the jackknife 95% confidence intervals 
+!  in yk, the eigenspectra sk, the jackknife 95% confidence intervals
 !  (err), the degrees of freedom (se) and the weigths wt(nf,kspec) used.
 !  To get ahold of this values, simply call them in the subroutine. Note
-!  that the order of calling this variables does matter. But if you want 
-!  specific variables from the subroutine you can specify them (see 
-!  documentation). 
+!  that the order of calling this variables does matter. But if you want
+!  specific variables from the subroutine you can specify them (see
+!  documentation).
 !
 !
 !  Variable names used in the subroutine
 !
 !   	xmean	mean of the time series (data is demeaned)
 !	xvar	variance of time series
-!   	df	frequency bin separation 
+!   	df	frequency bin separation
 !	fnyq	Nyquist frequency
 !	sk	eigenspectra (yk**2)
 !   	yk 	eigencoefficients
 !	sbar	mean spectrum
 !	se 	number of degrees of freedom for each frequency bin
 !	err	jackknife 95% confidence interval
-!	wt	array containing the ne weights for kspec eigenspectra 
+!	wt	array containing the ne weights for kspec eigenspectra
 !		normalized so that the sum of squares over
 !           	the kspec eigenspectra is one
 !	lambda  eigenvalues of the dpss
@@ -60,19 +60,19 @@
 !
 !  Optional Input
 !
-!	verb		verbose option, print various intermediate 
+!	verb		verbose option, print various intermediate
 !			results (y, n)
-!	qispec		Use of the QI theory method. 
+!	qispec		Use of the QI theory method.
 !			values (0 - normal 1 - QI method)
 !			default		normal method.
 !       adapt		Use of adaptive or constant weighting
 !			values (0 - adaptive 1 - constant weight)
-!			default		adaptive 
+!			default		adaptive
 !       rshape		Perform F-test for lines, and reshape spectrum.
-!			If rshape=1, then don't put the lines back 
-!			(but keep units correct) 
+!			If rshape=1, then don't put the lines back
+!			(but keep units correct)
 ! 	fcrit   	The threshold probability for the F test
-!	nodemean	Use to avoid demeaning time series before 
+!	nodemean	Use to avoid demeaning time series before
 !			calculating spectra.
 !
 !  Optional Output
@@ -81,7 +81,7 @@
 !   	yk 	eigencoefficients
 !	se 	number of degrees of freedom for each frequency bin
 !	err	jackknife 95% confidence interval
-!	wt	array containing the ne weights for kspec eigenspectra 
+!	wt	array containing the ne weights for kspec eigenspectra
 !		normalized so that the sum of squares over
 !           	the kspec eigenspectra is one
 !	fstat	F statistics for single line
@@ -91,47 +91,47 @@
 !
 !	German Prieto
 !	April 2005
-!       
+!
 !       *************************************************************
 !
 !	Feb 11 / 2007
 !	The Quadratic algorithm is now also available. (February 2007)
 !
-!	In this code, I save three variables npts, kspec and tbp. 
-!	This variables have the main information about the tapers 
-!	and frequency resolution of the multitaper code, so if this 
-!	subroutine is called continuosly by the same main program 
+!	In this code, I save three variables npts, kspec and tbp.
+!	This variables have the main information about the tapers
+!	and frequency resolution of the multitaper code, so if this
+!	subroutine is called continuosly by the same main program
 !	it will compute the dpss only if necessary. This part of the
-!       code is one of the most time consuming. 
-!       
+!       code is one of the most time consuming.
+!
 !       *************************************************************
 !
 !	German A. Prieto
 !	September 21, 2007
-!	
+!
 !	Separated the module spectra.f90 from the main subroutines
-!	here. This, to allow additional interfaces to be added, 
-!	including sine_psd and subroutines for padded spectra. 
-!       
+!	here. This, to allow additional interfaces to be added,
+!	including sine_psd and subroutines for padded spectra.
+!
 !       *************************************************************
 !
 !	German A. Prieto
 !	June 13, 2008
 !
-!	Started to work on a multitaper version for complex 
-!	variables. This has applications in physical oceanography 
-!	and 2D spatial estimation for example for topography, 
-!	where the first dimension is real, but then the second 
-!	dimension becomes complex. 
-!	
+!	Started to work on a multitaper version for complex
+!	variables. This has applications in physical oceanography
+!	and 2D spatial estimation for example for topography,
+!	where the first dimension is real, but then the second
+!	dimension becomes complex.
+!
 !       *************************************************************
 !
 !	German A. Prieto
 !	Oct 7, 2008
-!	
+!
 !	Added a new feature to not remove the mean inside mtspec.f90
-!	if requested. This may be important for auto-coherence, 
-!	deconvolutions, etc. 
+!	if requested. This may be important for auto-coherence,
+!	deconvolutions, etc.
 !
 !	*************************************************************
 !
@@ -140,7 +140,7 @@
 !  calls
 !	dpss, eigenft, adaptspec, jackspec
 !	dpss_spline,, noadaptspec,
-!	qiinv, 
+!	qiinv,
 !	ftest, fdis, psd_reshape
 !
 
@@ -154,7 +154,7 @@ subroutine mtspec_d (npts,dt,x,tbp,kspec,nf,freq,spec,             &
 		rshape, fstat, fcrit, nodemean )
 
 !
-!  The double precision version. This is the original version of the 
+!  The double precision version. This is the original version of the
 !  subroutine.
 !
 
@@ -185,10 +185,10 @@ subroutine mtspec_d (npts,dt,x,tbp,kspec,nf,freq,spec,             &
 
 !  Eigenspectra
 
-   real(8),    dimension(nf,kspec) 	        :: sk_o 
+   real(8),    dimension(nf,kspec) 	        :: sk_o
    real(8),    dimension(nf,kspec),   optional  :: sk
-   complex(8), dimension(npts,kspec) 	        :: yk_o 
-   complex(8), dimension(npts,kspec), optional  :: yk 
+   complex(8), dimension(npts,kspec) 	        :: yk_o
+   complex(8), dimension(npts,kspec), optional  :: yk
 
 !  Simple mean spectra
 
@@ -196,13 +196,13 @@ subroutine mtspec_d (npts,dt,x,tbp,kspec,nf,freq,spec,             &
 
 !  Adaptive spectra
 
-   real(8), dimension(nf) 	          :: se_o 
+   real(8), dimension(nf) 	          :: se_o
    real(8), dimension(nf),       optional :: se
    real(8), dimension(nf,kspec)	 	  :: wt_o
    real(8), dimension(nf,kspec), optional :: wt
    real(8), dimension(nf,2) 	          :: err_o
    real(8), dimension(nf,2),     optional :: err
-   
+
 !  Efficiency and Stability of estimate
 
    real(8)	     :: xi, seavg
@@ -213,7 +213,7 @@ subroutine mtspec_d (npts,dt,x,tbp,kspec,nf,freq,spec,             &
    real(4),                   optional, intent(in)   :: fcrit
    real(8),    dimension(nf), optional, intent(out)  :: fstat
 
-   real(8),    dimension(nf)            :: F, sline 
+   real(8),    dimension(nf)            :: F, sline
 
    integer                              :: ier
    real(4),    dimension(nf)	        :: p
@@ -226,7 +226,7 @@ subroutine mtspec_d (npts,dt,x,tbp,kspec,nf,freq,spec,             &
 
 !  Time series
 
-   real(8) :: xmean, xvar 
+   real(8) :: xmean, xvar
 
 !  Frequency variables
 
@@ -243,7 +243,7 @@ subroutine mtspec_d (npts,dt,x,tbp,kspec,nf,freq,spec,             &
    integer, save                              :: npts_2, kspec_2
    real(8), save                              :: tbp_2
 
-!  Dpss 
+!  Dpss
 
    real(8), dimension(:),   allocatable, save :: lambda, theta
    real(8), dimension(:,:), allocatable, save :: vn
@@ -252,9 +252,9 @@ subroutine mtspec_d (npts,dt,x,tbp,kspec,nf,freq,spec,             &
 
 !********************************************************************
 
-   if (present(verb)) then 
+   if (present(verb)) then
       if (index(verb,'n') == 0) then
-         v = 1 
+         v = 1
       endif
    else
       v = 0
@@ -279,7 +279,7 @@ subroutine mtspec_d (npts,dt,x,tbp,kspec,nf,freq,spec,             &
    do i = 1,nf
       freq(i) = dble(i-1)*df
    enddo
- 
+
 !
 !  Get time series stats (mean and variance)
 !  Always demean the time series
@@ -288,11 +288,8 @@ subroutine mtspec_d (npts,dt,x,tbp,kspec,nf,freq,spec,             &
    xmean = sum(x)/dble(npts)
    xvar = (sum((x - xmean)**2))/dble(npts-1)
 
-   if (present(nodemean)) then
-      x2 = x 
-   else
-      x2 = x - xmean 
-   endif
+! Always demean!
+  x2 = x - xmean
 
    if (all(x2==0.d0)) then
       if (v == 1) then
@@ -308,7 +305,7 @@ subroutine mtspec_d (npts,dt,x,tbp,kspec,nf,freq,spec,             &
 
    if (kspec/=kspec_2 .or. npts_2/=npts .or. tbp_2/=tbp .or. &
        .not. allocated(vn) ) then
-     
+
       if (allocated(vn)) then
          deallocate(vn, lambda, theta)
       endif
@@ -316,23 +313,23 @@ subroutine mtspec_d (npts,dt,x,tbp,kspec,nf,freq,spec,             &
       allocate(lambda(kspec),theta(kspec))
 
       if (npts<20000) then
-   
+
          call dpss(npts,tbp,kspec,vn,lambda,theta)
 
       else
 
          if (v == 1) then
-            write(6,'(a)') 'Computing DPSS with interpolation' 
+            write(6,'(a)') 'Computing DPSS with interpolation'
          endif
          call dpss_spline(10000,npts,tbp,kspec,vn,lambda,theta)
-   
+
       endif
       npts_2 = npts
       kspec_2 = kspec
       tbp_2 = tbp
    endif
 
-   if (v == 1) then 
+   if (v == 1) then
       write(6,'(3x,a/(4f18.14))')'Prolate spheroidal eigenvalues:',  &
      			       (lambda(j),j=1,kspec)
    endif
@@ -347,15 +344,15 @@ subroutine mtspec_d (npts,dt,x,tbp,kspec,nf,freq,spec,             &
 !  The F test and reshaping
 !
 
-   if (present(rshape)) then
+   if (present(rshape) .and. (.not. (rshape.eq.-1))) then
       p = 0.0
       call ftest(npts, nf, kspec, vn, yk_o, F)
 
       ! If requested (rshape=2), only check around 60 Hz
-      if (freq(nf) > 60.d0 .and. rshape==2) then 
-         if1 = minloc(freq,MASK = freq > (60.d0-tbp/(dble(npts)*dt)) ) 
-	 if2 = maxloc(freq,MASK = freq < (60.d0+tbp/(dble(npts)*dt)) )   
-        
+      if (freq(nf) > 60.d0 .and. rshape==2) then
+         if1 = minloc(freq,MASK = freq > (60.d0-tbp/(dble(npts)*dt)) )
+	 if2 = maxloc(freq,MASK = freq < (60.d0+tbp/(dble(npts)*dt)) )
+
          do i = if1(1), if2(1)
             call fdis(real(F(i)),2,2*(kspec-1),p(i),ier)
             if (ier /= 0) then
@@ -363,14 +360,14 @@ subroutine mtspec_d (npts,dt,x,tbp,kspec,nf,freq,spec,             &
                stop
             endif
          enddo
-     
-      else 
-         do i = 1,nf   
+
+      else
+         do i = 1,nf
             call fdis(real(F(i)),2,2*(kspec-1),p(i),ier)
             if (ier /= 0) then
                write(6,*) 'Error in F distribution ', ier
             endif
-         enddo 
+         enddo
       endif
 
       if (present(fcrit)) then
@@ -385,7 +382,7 @@ subroutine mtspec_d (npts,dt,x,tbp,kspec,nf,freq,spec,             &
       call psd_reshape(npts,nf,kspec,fcritical,p,vn,yk_o,yk_shape,sline)
 
       do i = 1,nf
-         if (sline(i) > 0.0d0) then 
+         if (sline(i) > 0.0d0) then
             if (v == 1) then
                write(6,*) 'Line components ', freq(i), real(F(i)), p(i)
             endif
@@ -427,12 +424,12 @@ subroutine mtspec_d (npts,dt,x,tbp,kspec,nf,freq,spec,             &
       err_o = 1.d0
    endif
 
-!  If requested, perform QI inverse theory on top of it. 
+!  If requested, perform QI inverse theory on top of it.
 
    if (present(qispec)) then
       if (qispec==1) then
          call qiinv(npts,tbp,kspec,nf,lambda,vn,yk_o,  &
-                    wt_o, spec,slope)   
+                    wt_o, spec,slope)
       endif
    endif
 
@@ -440,21 +437,21 @@ subroutine mtspec_d (npts,dt,x,tbp,kspec,nf,freq,spec,             &
 !  scale spectrum to meet parseval's theorem
 !
 
-   if (present(rshape)) then 
+   if (present(rshape) .and. (.not. (rshape.eq.-1))) then
       spec = spec + sline
    endif
 
 !  double power in positive frequencies
 
    spec(2:nf) = 2.d0 * spec(2:nf)
- 
+
    sscal = (spec(1) + spec(nf))
    do i=2, nf-1
       sscal=sscal + spec(i)
    enddo
    sscal = xvar/(sscal*df)
 
-   if (present(rshape)) then
+   if (present(rshape) .and. (.not. (rshape.eq.-1))) then
       if (rshape == 1 .or. rshape == 2) then	! Do not add or save the lines
          spec = spec - 2.d0*sline
       endif
@@ -468,23 +465,23 @@ subroutine mtspec_d (npts,dt,x,tbp,kspec,nf,freq,spec,             &
 
    err_o(:,1) = spec / err_o(:,1)
    err_o(:,2) = spec * err_o(:,2)
-  
+
 !
 !  Average stability (average degrees of freedom)
 !		(Eq. 5.5 Pg 1065)
 !
 
    seavg = sum(se_o)/(2.d0*dble(kspec)*dble(nf))
-  
-   if (v == 1) then 
+
+   if (v == 1) then
       write(6,'(a,g15.7)') ' Average stability of estimate = ', seavg
    endif
 
 !
-!  compute estimate of variance efficiency 
+!  compute estimate of variance efficiency
 !		(Eq 7.2(c) Pg 1069)
 !
-   
+
    xi=0.d0
    do i=1,npts
       xsum=0.d0
@@ -494,7 +491,7 @@ subroutine mtspec_d (npts,dt,x,tbp,kspec,nf,freq,spec,             &
       xsum = xsum/dble(kspec)
       xi = xi+xsum**2
    enddo
-      
+
    xi=1.d0/(dble(npts)*xi)
 
    if (v == 1) then
@@ -536,7 +533,7 @@ subroutine mtspec_r (npts,dt,x,tbp,kspec,nf,freq,spec,               &
 		rshape, fstat, fcrit, nodemean )
 
 !
-!  This is the single precision version of the subroutine. It is 
+!  This is the single precision version of the subroutine. It is
 !  simply the original version, with the output changed to real(4).
 !
 
@@ -566,10 +563,10 @@ subroutine mtspec_r (npts,dt,x,tbp,kspec,nf,freq,spec,               &
 
 !  Eigenspectra
 
-   real(8),    dimension(nf,kspec) 	       :: sk_o 
+   real(8),    dimension(nf,kspec) 	       :: sk_o
    real(4),    dimension(nf,kspec),   optional, intent(out) :: sk
-   complex(8), dimension(npts,kspec) 	       :: yk_o 
-   complex(4), dimension(npts,kspec), optional, intent(out) :: yk 
+   complex(8), dimension(npts,kspec) 	       :: yk_o
+   complex(4), dimension(npts,kspec), optional, intent(out) :: yk
 
 !  Simple mean spectra
 
@@ -577,13 +574,13 @@ subroutine mtspec_r (npts,dt,x,tbp,kspec,nf,freq,spec,               &
 
 !  Adaptive spectra
 
-   real(8), dimension(nf) 	          :: se_o 
+   real(8), dimension(nf) 	          :: se_o
    real(4), dimension(nf),       optional, intent(out) :: se
    real(8), dimension(nf,kspec)	 	  :: wt_o
    real(4), dimension(nf,kspec), optional, intent(out) :: wt
    real(8), dimension(nf,2) 	          :: err_o
    real(4), dimension(nf,2),     optional, intent(out) :: err
-   
+
 !  Efficiency and Stability of estimate
 
    real(4)           :: xi, seavg
@@ -595,7 +592,7 @@ subroutine mtspec_r (npts,dt,x,tbp,kspec,nf,freq,spec,               &
    real(4),    dimension(nf), optional, intent(out)  :: fstat
 
    integer                              :: ier
-   real(8),    dimension(nf)            :: F, sline  
+   real(8),    dimension(nf)            :: F, sline
    real(4),    dimension(nf)	        :: p
    real(4)				:: fcritical
    complex(8), dimension(npts,kspec)    :: yk_shape
@@ -606,7 +603,7 @@ subroutine mtspec_r (npts,dt,x,tbp,kspec,nf,freq,spec,               &
 
 !  Time series
 
-   real(8) :: xmean, xvar 
+   real(8) :: xmean, xvar
 
 !  Frequency variables
 
@@ -624,7 +621,7 @@ subroutine mtspec_r (npts,dt,x,tbp,kspec,nf,freq,spec,               &
    integer, save                              :: npts_2, kspec_2
    real(4), save                              :: tbp_2
 
-!  Dpss 
+!  Dpss
 
    real(8), dimension(:),   allocatable, save :: lambda, theta
    real(8), dimension(:,:), allocatable, save :: vn
@@ -633,12 +630,12 @@ subroutine mtspec_r (npts,dt,x,tbp,kspec,nf,freq,spec,               &
 
 !********************************************************************
 
-   if (present(verb)) then 
+   if (present(verb)) then
       if (index(verb,'n') == 0) then
-         v = 1 
+         v = 1
       endif
    else
-      v = 0 
+      v = 0
    endif
 
    spec8 = 0.d0		! Initialize to zero always
@@ -660,7 +657,7 @@ subroutine mtspec_r (npts,dt,x,tbp,kspec,nf,freq,spec,               &
    do i = 1,nf
       freq(i) = real(i-1)*real(df)
    enddo
-  
+
 !
 !  Get time series stats (mean and variance)
 !  Always demean the time series
@@ -673,12 +670,12 @@ subroutine mtspec_r (npts,dt,x,tbp,kspec,nf,freq,spec,               &
       if (v == 1) then
          print *, 'No demean'
       endif
-      x2 = dble(x) 
+      x2 = dble(x)
    else
       if (v == 1) then
           print *, 'Demeaned'
       endif
-      x2 = dble(x) - xmean 
+      x2 = dble(x) - xmean
    endif
 
    if (all(x2==0.d0)) then
@@ -700,18 +697,18 @@ subroutine mtspec_r (npts,dt,x,tbp,kspec,nf,freq,spec,               &
       endif
       allocate(vn(npts,kspec))
       allocate(lambda(kspec),theta(kspec))
- 
+
       if (npts<20000) then
-   
+
          call dpss(npts,dble(tbp),kspec,vn,lambda,theta)
 
       else
-      
+
          if (v == 1) then
-            write(6,'(a)') 'Computing DPSS with interpolation' 
+            write(6,'(a)') 'Computing DPSS with interpolation'
          endif
          call dpss_spline(10000,npts,dble(tbp),kspec,vn,lambda,theta)
-   
+
       endif
       npts_2 = npts
       kspec_2 = kspec
@@ -738,10 +735,10 @@ subroutine mtspec_r (npts,dt,x,tbp,kspec,nf,freq,spec,               &
       call ftest(npts, nf, kspec, vn, yk_o, F)
 
       ! If requested (rshape=2), only check around 60 Hz.
-      if (freq(nf) > 60. .and. rshape==2) then 
-         if1 = minloc(freq,MASK = freq > (60.-tbp/(real(npts)*dt)) ) 
-	 if2 = maxloc(freq,MASK = freq < (60.+tbp/(real(npts)*dt)) )   
-      
+      if (freq(nf) > 60. .and. rshape==2) then
+         if1 = minloc(freq,MASK = freq > (60.-tbp/(real(npts)*dt)) )
+	 if2 = maxloc(freq,MASK = freq < (60.+tbp/(real(npts)*dt)) )
+
          do i = if1(1), if2(1)
             call fdis(real(F(i)),2,2*(kspec-1),p(i),ier)
             if (ier /= 0) then
@@ -751,13 +748,13 @@ subroutine mtspec_r (npts,dt,x,tbp,kspec,nf,freq,spec,               &
          enddo
 
       else
-         do i = 1,nf   
+         do i = 1,nf
             call fdis(real(F(i)),2,2*(kspec-1),p(i),ier)
             if (ier /= 0) then
                write(6,*) 'Error in F distribution ', ier
                stop
             endif
-         enddo 
+         enddo
       endif
 
       if (present(fcrit)) then
@@ -765,14 +762,14 @@ subroutine mtspec_r (npts,dt,x,tbp,kspec,nf,freq,spec,               &
       else
          fcritical = max(0.95,(real(npts)-5.)/real(npts))
       endif
-      if (v == 1) then 
+      if (v == 1) then
          write(6,*) 'Critical F-test value ', fcritical
       endif
 
       call psd_reshape(npts,nf,kspec,fcritical,p,vn,yk_o,yk_shape,sline)
 
       do i = 1,nf
-         if (sline(i) > 0.0d0) then 
+         if (sline(i) > 0.0d0) then
             if (v == 1) then
                write(6,*) 'Line components ', freq(i), real(F(i)), p(i)
             endif
@@ -806,29 +803,29 @@ subroutine mtspec_r (npts,dt,x,tbp,kspec,nf,freq,spec,               &
       err_o = 1.d0
    endif
 
-!  If requested, perform QI inverse theory on top of it. 
+!  If requested, perform QI inverse theory on top of it.
 
-   if (present(qispec)) then 
+   if (present(qispec)) then
       if (qispec==1) then
          call qiinv(npts,dble(tbp),kspec,nf,lambda,vn,yk_o,  &
-                    wt_o,spec8,slope) 
-      endif  
+                    wt_o,spec8,slope)
+      endif
    endif
 
 !
 !  scale spectrum to meet parseval's theorem
 !
 
-   if (present(rshape)) then 
+   if (present(rshape)) then
       spec8 = spec8 + sline
    endif
 
 !  double power in positive frequencies
 
    spec8(2:nf) = 2.d0 * spec8(2:nf)
- 
+
    sscal = (spec8(1) + spec8(nf))
- 
+
    do i=2, nf-1
       sscal=sscal + spec8(i)
    enddo
@@ -848,22 +845,22 @@ subroutine mtspec_r (npts,dt,x,tbp,kspec,nf,freq,spec,               &
 
    err_o(:,1) = dble(spec) / err_o(:,1)
    err_o(:,2) = dble(spec) * err_o(:,2)
- 
+
 !
 !  Average stability (average degrees of freedom)
 !		(Eq. 5.5 Pg 1065)
 !
 
    seavg = real(sum(se_o))/(2.*real(kspec)*real(nf))
-  
-   if (v == 1) then 
+
+   if (v == 1) then
       write(6,'(a,g15.7)') ' Average stability of estimate = ', seavg
    endif
 !
-!  compute estimate of variance efficiency 
+!  compute estimate of variance efficiency
 !		(Eq 7.2(c) Pg 1069)
 !
-   
+
    xi = 0.
    do i=1,npts
       xsum=0.
@@ -873,10 +870,10 @@ subroutine mtspec_r (npts,dt,x,tbp,kspec,nf,freq,spec,               &
       xsum = xsum/real(kspec)
       xi   = xi + xsum**2
    enddo
-      
+
    xi = 1./(real(npts)*xi)
 
-   if (v == 1) then 
+   if (v == 1) then
       write(6,'(a,g15.7)') ' Variance efficiency = ', xi
    endif
 !
@@ -915,8 +912,8 @@ subroutine mtspec_m (ntimes,npts,dt,x,tbp,kspec,nf,freq,spec,err, &
 			nodemean )
 
 !
-!  This is the single precision matrix version of the subroutine. It is 
-!  simply the original version, with the output changed to real(4), in 
+!  This is the single precision matrix version of the subroutine. It is
+!  simply the original version, with the output changed to real(4), in
 !  matrix form
 !
 
@@ -946,8 +943,8 @@ subroutine mtspec_m (ntimes,npts,dt,x,tbp,kspec,nf,freq,spec,err, &
 
 !  Eigenspectra
 
-   real(8), dimension(nf,kspec) 	       :: sk 
-   complex(8), dimension(npts,kspec) 	       :: yk 
+   real(8), dimension(nf,kspec) 	       :: sk
+   complex(8), dimension(npts,kspec) 	       :: yk
 
 !  Simple mean spectra
 
@@ -955,10 +952,10 @@ subroutine mtspec_m (ntimes,npts,dt,x,tbp,kspec,nf,freq,spec,err, &
 
 !  Adaptive spectra
 
-   real(8), dimension(nf) 	          :: se 
+   real(8), dimension(nf) 	          :: se
    real(8), dimension(nf,kspec)	 	  :: wt
 
-!  Dpss 
+!  Dpss
 
    real(8), dimension(kspec)	       :: lambda, theta
    real(8), dimension(npts,kspec)      :: vn
@@ -973,7 +970,7 @@ subroutine mtspec_m (ntimes,npts,dt,x,tbp,kspec,nf,freq,spec,err, &
 
 !  Time series
 
-   real(8) :: xmean, xvar 
+   real(8) :: xmean, xvar
 
 !  Frequency variables
 
@@ -1010,14 +1007,14 @@ subroutine mtspec_m (ntimes,npts,dt,x,tbp,kspec,nf,freq,spec,err, &
 !
 
    if (npts<20000) then
-   
+
       call dpss(npts,dble(tbp),kspec,vn,lambda,theta)
 
    else
 
-      write(6,'(a)') 'Computing DPSS with interpolation' 
+      write(6,'(a)') 'Computing DPSS with interpolation'
       call dpss_spline(10000,npts,dble(tbp),kspec,vn,lambda,theta)
-   
+
    endif
 
    write(6,'(3x,a/(4f18.14))')'Prolate spheroidal eigenvalues:',  &
@@ -1035,9 +1032,9 @@ subroutine mtspec_m (ntimes,npts,dt,x,tbp,kspec,nf,freq,spec,err, &
       xvar = (sum((dble(x(:,k)) - xmean)**2))/dble(npts-1)
 
       if (present(nodemean)) then
-         x2 = dble(x(:,k)) 
+         x2 = dble(x(:,k))
       else
-         x2 = dble(x(:,k)) - xmean 
+         x2 = dble(x(:,k)) - xmean
       endif
 
    !
@@ -1069,7 +1066,7 @@ subroutine mtspec_m (ntimes,npts,dt,x,tbp,kspec,nf,freq,spec,err, &
    !  double power in positive frequencies
 
       spec8(2:nf) = 2.d0 * spec8(2:nf)
- 
+
       sscal = (spec8(1) + spec8(nf))
 
       do i=2, nf-1
@@ -1083,9 +1080,9 @@ subroutine mtspec_m (ntimes,npts,dt,x,tbp,kspec,nf,freq,spec,err, &
    !  Put errors on scale
    !
 
-      err8(:,1) = dble(spec(:,k)) / err8(:,1) 
-      err8(:,2) = dble(spec(:,k)) * err8(:,2) 
-  
+      err8(:,1) = dble(spec(:,k)) / err8(:,1)
+      err8(:,2) = dble(spec(:,k)) * err8(:,2)
+
       err(:,1,k) = real(err8(:,1))
       err(:,2,k) = real(err8(:,2))
 
@@ -1095,14 +1092,14 @@ subroutine mtspec_m (ntimes,npts,dt,x,tbp,kspec,nf,freq,spec,err, &
    !
 
       seavg = real(sum(se))/(2.*real(kspec)*real(nf))
-   
+
       write(6,'(a,g15.7)') ' Average stability of estimate = ', seavg
 
    !
-   !  compute estimate of variance efficiency 
+   !  compute estimate of variance efficiency
    !		(Eq 7.2(c) Pg 1069)
    !
-   
+
       xi=0.
       do i=1,npts
          xsum=0.
@@ -1112,9 +1109,9 @@ subroutine mtspec_m (ntimes,npts,dt,x,tbp,kspec,nf,freq,spec,err, &
          xsum = xsum/real(kspec)
          xi = xi + xsum**2
       enddo
-      
+
       xi = 1./(real(npts)*xi)
-  
+
       write(6,'(a,g15.7)') ' Variance efficiency = ', xi
 
    enddo
@@ -1132,9 +1129,9 @@ subroutine mtspec_pad (npts,nfft,dt,x,tbp,kspec,nf,freq,spec,           &
 		rshape, fstat, fcrit, nodemean )
 
 !
-!  This is the single precision version of the subroutine. It is 
-!  simply the original version, with the output changed to real(4), 
-!  and the tapered series are padded to NFFT points. 
+!  This is the single precision version of the subroutine. It is
+!  simply the original version, with the output changed to real(4),
+!  and the tapered series are padded to NFFT points.
 !
 
 !**********************************************************************
@@ -1163,10 +1160,10 @@ subroutine mtspec_pad (npts,nfft,dt,x,tbp,kspec,nf,freq,spec,           &
 
 !  Eigenspectra
 
-   real(8),    dimension(nf,kspec) 	       :: sk_o 
+   real(8),    dimension(nf,kspec) 	       :: sk_o
    real(4),    dimension(nf,kspec),   optional, intent(out) :: sk
-   complex(8), dimension(nfft,kspec) 	       :: yk_o 
-   complex(4), dimension(nfft,kspec), optional, intent(out) :: yk 
+   complex(8), dimension(nfft,kspec) 	       :: yk_o
+   complex(4), dimension(nfft,kspec), optional, intent(out) :: yk
 
 !  Quadratic spectrum
 
@@ -1178,13 +1175,13 @@ subroutine mtspec_pad (npts,nfft,dt,x,tbp,kspec,nf,freq,spec,           &
 
 !  Adaptive spectra
 
-   real(8), dimension(nf) 	          :: se_o 
+   real(8), dimension(nf) 	          :: se_o
    real(4), dimension(nf),       optional, intent(out) :: se
    real(8), dimension(nf,kspec)	 	  :: wt_o
    real(4), dimension(nf,kspec), optional, intent(out) :: wt
    real(8), dimension(nf,2) 	          :: err_o
    real(4), dimension(nf,2),     optional, intent(out) :: err
-   
+
 !  Efficiency and Stability of estimate
 
    real(4) :: xi, seavg
@@ -1196,7 +1193,7 @@ subroutine mtspec_pad (npts,nfft,dt,x,tbp,kspec,nf,freq,spec,           &
    real(4),    dimension(nf), optional, intent(out)  :: fstat
 
    integer                              :: ier
-   real(8),    dimension(nf)            :: F, sline  
+   real(8),    dimension(nf)            :: F, sline
    real(4),    dimension(nf)	        :: p
    real(4)				:: fcritical
    complex(8), dimension(nfft,kspec)    :: yk_shape
@@ -1207,7 +1204,7 @@ subroutine mtspec_pad (npts,nfft,dt,x,tbp,kspec,nf,freq,spec,           &
 
 !  Time series
 
-   real(8) :: xmean, xvar 
+   real(8) :: xmean, xvar
 
 !  Frequency variables
 
@@ -1225,7 +1222,7 @@ subroutine mtspec_pad (npts,nfft,dt,x,tbp,kspec,nf,freq,spec,           &
    integer, save                              :: npts_2, kspec_2
    real(4), save                              :: tbp_2
 
-!  Dpss 
+!  Dpss
 !
    real(8), dimension(:),   allocatable, save :: lambda, theta
    real(8), dimension(:,:), allocatable, save :: vn
@@ -1234,15 +1231,15 @@ subroutine mtspec_pad (npts,nfft,dt,x,tbp,kspec,nf,freq,spec,           &
 
 !********************************************************************
 
-   if (present(verb)) then 
+   if (present(verb)) then
       if (index(verb,'n') == 0) then
-         v = 1 
+         v = 1
       endif
    else
-      v = 0 
+      v = 0
    endif
 
-   if (npts > nfft) then 
+   if (npts > nfft) then
       write(6,'(a,2i10)') 'For zero padding nfft > npts', nfft, npts
       stop
    endif
@@ -1281,9 +1278,9 @@ subroutine mtspec_pad (npts,nfft,dt,x,tbp,kspec,nf,freq,spec,           &
    xvar = (sum((dble(x) - xmean)**2))/dble(npts-1)
 
    if (present(nodemean)) then
-      x2 = dble(x) 
+      x2 = dble(x)
    else
-      x2 = dble(x) - xmean 
+      x2 = dble(x) - xmean
    endif
 
    if (all(x2==0.d0)) then
@@ -1305,18 +1302,18 @@ subroutine mtspec_pad (npts,nfft,dt,x,tbp,kspec,nf,freq,spec,           &
       endif
       allocate(vn(npts,kspec))
       allocate(lambda(kspec),theta(kspec))
- 
+
       if (npts<20000) then
-   
+
          call dpss(npts,dble(tbp),kspec,vn,lambda,theta)
 
       else
-      
+
          if (v == 1) then
-            write(6,'(a)') 'Computing DPSS with interpolation' 
+            write(6,'(a)') 'Computing DPSS with interpolation'
          endif
          call dpss_spline(10000,npts,dble(tbp),kspec,vn,lambda,theta)
-   
+
       endif
       npts_2 = npts
       kspec_2 = kspec
@@ -1343,10 +1340,10 @@ subroutine mtspec_pad (npts,nfft,dt,x,tbp,kspec,nf,freq,spec,           &
       call ftest_pad(npts, nfft, nf, kspec, vn, yk_o, F)
 
       ! If requested (rshape=2), only check around 60 Hz.
-      if (freq(nf) > 60. .and. rshape==2) then 
-         if1 = minloc(freq,MASK = freq > (60.-tbp/(real(npts)*dt)) ) 
-	 if2 = maxloc(freq,MASK = freq < (60.+tbp/(real(npts)*dt)) )   
-      
+      if (freq(nf) > 60. .and. rshape==2) then
+         if1 = minloc(freq,MASK = freq > (60.-tbp/(real(npts)*dt)) )
+	 if2 = maxloc(freq,MASK = freq < (60.+tbp/(real(npts)*dt)) )
+
          do i = if1(1), if2(1)
             call fdis(real(F(i)),2,2*(kspec-1),p(i),ier)
             if (ier /= 0) then
@@ -1356,13 +1353,13 @@ subroutine mtspec_pad (npts,nfft,dt,x,tbp,kspec,nf,freq,spec,           &
          enddo
 
       else
-         do i = 1,nf   
+         do i = 1,nf
             call fdis(real(F(i)),2,2*(kspec-1),p(i),ier)
             if (ier /= 0) then
                write(6,*) 'Error in F distribution ', ier
                stop
             endif
-         enddo 
+         enddo
       endif
 
       if (present(fcrit)) then
@@ -1370,14 +1367,14 @@ subroutine mtspec_pad (npts,nfft,dt,x,tbp,kspec,nf,freq,spec,           &
       else
          fcritical = max(0.95,(real(npts)-5.)/real(npts))
       endif
-      if (v == 1) then 
+      if (v == 1) then
          write(6,*) 'Critical F-test value ', fcritical
       endif
 
       call psd_reshape_pad(npts,nfft,nf,kspec,fcritical,p,vn,yk_o,yk_shape,sline)
 
       do i = 1,nf
-         if (sline(i) > 0.0d0) then 
+         if (sline(i) > 0.0d0) then
             if (v == 1) then
                write(6,*) 'Line components ', freq(i), real(F(i)), p(i)
             endif
@@ -1385,7 +1382,7 @@ subroutine mtspec_pad (npts,nfft,dt,x,tbp,kspec,nf,freq,spec,           &
       enddo
 
       yk_o = yk_shape	! no more, still need to correct energy
-      
+
    endif
 
 !
@@ -1412,30 +1409,30 @@ subroutine mtspec_pad (npts,nfft,dt,x,tbp,kspec,nf,freq,spec,           &
    endif
 
 
-!  If requested, perform QI inverse theory on top of it. 
+!  If requested, perform QI inverse theory on top of it.
 
-   if (present(qispec)) then 
+   if (present(qispec)) then
       if (qispec==1) then
          write(6,'(a)') 'No quadratic multitaper supported yet'
          !call qiinv(nfft,dble(tbp),kspec,nf,lambda,vn,yk_o,  &
-         !           wt_o,spec8,slope) 
-      endif  
+         !           wt_o,spec8,slope)
+      endif
    endif
 
 !
 !  scale spectrum to meet parseval's theorem
 !
 
-   if (present(rshape)) then 
+   if (present(rshape)) then
       spec8 = spec8 + sline
    endif
 
 !  double power in positive frequencies
 
    spec8(2:nf) = 2.d0 * spec8(2:nf)
- 
+
    sscal = (spec8(1) + spec8(nf))
- 
+
    do i=2, nf-1
       sscal=sscal + spec8(i)
    enddo
@@ -1455,22 +1452,22 @@ subroutine mtspec_pad (npts,nfft,dt,x,tbp,kspec,nf,freq,spec,           &
 
    err_o(:,1) = dble(spec) / err_o(:,1)
    err_o(:,2) = dble(spec) * err_o(:,2)
- 
+
 !
 !  Average stability (average degrees of freedom)
 !		(Eq. 5.5 Pg 1065)
 !
 
    seavg = real(sum(se_o))/(2.*real(kspec)*real(nf))
-  
-   if (v == 1) then 
+
+   if (v == 1) then
       write(6,'(a,g15.7)') ' Average stability of estimate = ', seavg
    endif
 !
-!  compute estimate of variance efficiency 
+!  compute estimate of variance efficiency
 !		(Eq 7.2(c) Pg 1069)
 !
-   
+
    xi=0.
    do i=1,npts
       xsum=0.
@@ -1480,10 +1477,10 @@ subroutine mtspec_pad (npts,nfft,dt,x,tbp,kspec,nf,freq,spec,           &
       xsum = xsum/real(kspec)
       xi = xi + xsum**2
    enddo
-      
+
    xi = 1./(real(npts)*xi)
 
-   if (v == 1) then 
+   if (v == 1) then
       write(6,'(a,g15.7)') ' Variance efficiency = ', xi
    endif
 !
@@ -1523,7 +1520,7 @@ subroutine mtspec_c (npts,dt,x,tbp,kspec,nf,freq,spec,               &
 		rshape, fstat, fcrit, nodemean )
 
 !
-!  This is the single precision version of the subroutine. It is 
+!  This is the single precision version of the subroutine. It is
 !  simply the original version, with the output changed to real(4).
 !
 
@@ -1553,10 +1550,10 @@ subroutine mtspec_c (npts,dt,x,tbp,kspec,nf,freq,spec,               &
 
 !  Eigenspectra
 
-   real(8),    dimension(nf,kspec) 	       :: sk_o 
+   real(8),    dimension(nf,kspec) 	       :: sk_o
    real(4),    dimension(nf,kspec),   optional, intent(out) :: sk
-   complex(8), dimension(npts,kspec) 	       :: yk_o 
-   complex(4), dimension(npts,kspec), optional, intent(out) :: yk 
+   complex(8), dimension(npts,kspec) 	       :: yk_o
+   complex(4), dimension(npts,kspec), optional, intent(out) :: yk
 
 !  Simple mean spectra
 
@@ -1564,13 +1561,13 @@ subroutine mtspec_c (npts,dt,x,tbp,kspec,nf,freq,spec,               &
 
 !  Adaptive spectra
 
-   real(8), dimension(nf) 	          :: se_o 
+   real(8), dimension(nf) 	          :: se_o
    real(4), dimension(nf),       optional, intent(out) :: se
    real(8), dimension(nf,kspec)	 	  :: wt_o
    real(4), dimension(nf,kspec), optional, intent(out) :: wt
    real(8), dimension(nf,2) 	          :: err_o
    real(4), dimension(nf,2),     optional, intent(out) :: err
-   
+
 !  Efficiency and Stability of estimate
 
    real(4)           :: xi, seavg
@@ -1582,7 +1579,7 @@ subroutine mtspec_c (npts,dt,x,tbp,kspec,nf,freq,spec,               &
    real(4),    dimension(nf), optional, intent(out)  :: fstat
 
    integer                              :: ier
-   real(8),    dimension(nf)            :: F, sline  
+   real(8),    dimension(nf)            :: F, sline
    real(4),    dimension(nf)	        :: p
    real(4)				:: fcritical
    complex(8), dimension(npts,kspec)    :: yk_shape
@@ -1594,7 +1591,7 @@ subroutine mtspec_c (npts,dt,x,tbp,kspec,nf,freq,spec,               &
 !  Time series
 
    complex(8) :: xmean
-   real(8)    :: xvar 
+   real(8)    :: xvar
 
 !  Frequency variables
 
@@ -1612,7 +1609,7 @@ subroutine mtspec_c (npts,dt,x,tbp,kspec,nf,freq,spec,               &
    integer, save                              :: npts_2, kspec_2
    real(4), save                              :: tbp_2
 
-!  Dpss 
+!  Dpss
 
    real(8), dimension(:),   allocatable, save :: lambda, theta
    real(8), dimension(:,:), allocatable, save :: vn
@@ -1626,12 +1623,12 @@ subroutine mtspec_c (npts,dt,x,tbp,kspec,nf,freq,spec,               &
       stop
    endif
 
-   if (present(verb)) then 
+   if (present(verb)) then
       if (index(verb,'n') == 0) then
-         v = 1 
+         v = 1
       endif
    else
-      v = 0 
+      v = 0
    endif
 
    spec8 = 0.d0		! Initialize to zero always
@@ -1667,9 +1664,9 @@ subroutine mtspec_c (npts,dt,x,tbp,kspec,nf,freq,spec,               &
    xvar = (sum((cmplx(x,kind=8) - xmean)**2))/dble(npts-1)
 
    if (present(nodemean)) then
-      x2 = cmplx(x,kind=8) 
+      x2 = cmplx(x,kind=8)
    else
-      x2 = cmplx(x,kind=8) - xmean 
+      x2 = cmplx(x,kind=8) - xmean
    endif
 
    if (all(x2==0.d0)) then
@@ -1691,18 +1688,18 @@ subroutine mtspec_c (npts,dt,x,tbp,kspec,nf,freq,spec,               &
       endif
       allocate(vn(npts,kspec))
       allocate(lambda(kspec),theta(kspec))
- 
+
       if (npts<20000) then
-   
+
          call dpss(npts,dble(tbp),kspec,vn,lambda,theta)
 
       else
-      
+
          if (v == 1) then
-            write(6,'(a)') 'Computing DPSS with interpolation' 
+            write(6,'(a)') 'Computing DPSS with interpolation'
          endif
          call dpss_spline(10000,npts,dble(tbp),kspec,vn,lambda,theta)
-   
+
       endif
       npts_2 = npts
       kspec_2 = kspec
@@ -1729,10 +1726,10 @@ subroutine mtspec_c (npts,dt,x,tbp,kspec,nf,freq,spec,               &
       call ftest(npts, nf, kspec, vn, yk_o, F)
 
       ! If requested (rshape=2), only check around 60 Hz.
-      if (freq(nf) > 60. .and. rshape==2) then 
-         if1 = minloc(freq,MASK = freq > (60.-tbp/(real(npts)*dt)) ) 
-	 if2 = maxloc(freq,MASK = freq < (60.+tbp/(real(npts)*dt)) )   
-      
+      if (freq(nf) > 60. .and. rshape==2) then
+         if1 = minloc(freq,MASK = freq > (60.-tbp/(real(npts)*dt)) )
+	 if2 = maxloc(freq,MASK = freq < (60.+tbp/(real(npts)*dt)) )
+
          do i = if1(1), if2(1)
             call fdis(real(F(i)),2,2*(kspec-1),p(i),ier)
             if (ier /= 0) then
@@ -1742,13 +1739,13 @@ subroutine mtspec_c (npts,dt,x,tbp,kspec,nf,freq,spec,               &
          enddo
 
       else
-         do i = 1,nf   
+         do i = 1,nf
             call fdis(real(F(i)),2,2*(kspec-1),p(i),ier)
             if (ier /= 0) then
                write(6,*) 'Error in F distribution ', ier
                stop
             endif
-         enddo 
+         enddo
       endif
 
       if (present(fcrit)) then
@@ -1756,14 +1753,14 @@ subroutine mtspec_c (npts,dt,x,tbp,kspec,nf,freq,spec,               &
       else
          fcritical = max(0.95,(real(npts)-5.)/real(npts))
       endif
-      if (v == 1) then 
+      if (v == 1) then
          write(6,*) 'Critical F-test value ', fcritical
       endif
 
       call psd_reshape(npts,nf,kspec,fcritical,p,vn,yk_o,yk_shape,sline)
 
       do i = 1,nf
-         if (sline(i) > 0.0d0) then 
+         if (sline(i) > 0.0d0) then
             if (v == 1) then
                write(6,*) 'Line components ', freq(i), real(F(i)), p(i)
             endif
@@ -1797,27 +1794,27 @@ subroutine mtspec_c (npts,dt,x,tbp,kspec,nf,freq,spec,               &
       err_o = 1.d0
    endif
 
-!  If requested, perform QI inverse theory on top of it. 
+!  If requested, perform QI inverse theory on top of it.
 
-   if (present(qispec)) then 
+   if (present(qispec)) then
       if (qispec==1) then
          call qiinv(npts,dble(tbp),kspec,nf,lambda,vn,yk_o,  &
-                    wt_o,spec8,slope) 
-      endif  
+                    wt_o,spec8,slope)
+      endif
    endif
 
 !
 !  scale spectrum to meet parseval's theorem
 !
 
-   if (present(rshape)) then 
+   if (present(rshape)) then
       spec8 = spec8 + sline
    endif
 
 !  double power in positive frequencies
 
    sscal = 0.0d0
- 
+
    do i=1, nf
       sscal=sscal + spec8(i)
    enddo
@@ -1837,22 +1834,22 @@ subroutine mtspec_c (npts,dt,x,tbp,kspec,nf,freq,spec,               &
 
    err_o(:,1) = dble(spec) / err_o(:,1)
    err_o(:,2) = dble(spec) * err_o(:,2)
- 
+
 !
 !  Average stability (average degrees of freedom)
 !		(Eq. 5.5 Pg 1065)
 !
 
    seavg = real(sum(se_o))/(2.*real(kspec)*real(nf))
-  
-   if (v == 1) then 
+
+   if (v == 1) then
       write(6,'(a,g15.7)') ' Average stability of estimate = ', seavg
    endif
 !
-!  compute estimate of variance efficiency 
+!  compute estimate of variance efficiency
 !		(Eq 7.2(c) Pg 1069)
 !
-   
+
    xi = 0.
    do i=1,npts
       xsum=0.
@@ -1862,10 +1859,10 @@ subroutine mtspec_c (npts,dt,x,tbp,kspec,nf,freq,spec,               &
       xsum = xsum/real(kspec)
       xi   = xi + xsum**2
    enddo
-      
+
    xi = 1./(real(npts)*xi)
 
-   if (v == 1) then 
+   if (v == 1) then
       write(6,'(a,g15.7)') ' Variance efficiency = ', xi
    endif
 !

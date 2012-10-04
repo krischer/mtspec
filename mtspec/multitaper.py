@@ -21,163 +21,111 @@ import numpy as np
 from mtspec import _mtspec_lib
 
 
-def mtspec(data, delta, time_bandwidth, nfft=None, number_of_tapers=None,
-           quadratic=False, adaptive=True, verbose=False,
-           optional_output=False, statistics=False, rshape=False,
-           fcrit=False):
+def mtspec(data, delta, time_bandwidth, number_of_tapers=None, quadratic=False,
+        adaptive=True, rshape=False, fcrit=False):
     """
-    Wrapper method for the mtspec subroutine in the library by German A.
-    Prieto.
-
     This method estimates the adaptive weighted multitaper spectrum, as in
     Thomson 1982.  This is done by estimating the DPSS (discrete prolate
     spheroidal sequences), multiplying each of the tapers with the data series,
     take the FFT, and using the adaptive scheme for a better estimation.
 
+    Will call the double precision variant.
+
+    Wrapper method for the mtspec_d subroutine in the library by German A.
+    Prieto.
+
     :param data: :class:`numpy.ndarray`
          Array with the data.
     :param delta: float
-         Sample spacing of the data.
+         Sample interval of the data.
     :param time_bandwidth: float
          Time-bandwidth product. Common values are 2, 3, 4 and numbers in
          between.
-    :param nfft: int
-         Number of points for fft. If nfft == None, no zero padding
-         will be applied before the fft
     :param number_of_tapers: integer, optional
-         Number of tapers to use. Defaults to int(2*time_bandwidth) - 1. This
-         is maximum senseful amount. More tapers will have no great influence
+         Number of tapers to use. Defaults to int(2 * time_bandwidth) - 1. This
+         is the maximum useful amount. More tapers will have no great influence
          on the final spectrum but increase the calculation time. Use fewer
          tapers for a faster calculation.
     :param quadratic: bool, optional
-         Whether or not to caluclate a quadratic multitaper. Will only work
-         if nfft is False or equal to the sample count. The nfft parameter
-         will overwrite the quadratic paramter. Defaults to False.
+         Whether or not to perform a quadratic multitaper spectral estimation.
+         Defaults to False.
     :param adaptive: bool, optional
          Whether to use adaptive or constant weighting of the eigenspectra.
-         Defaults to True(adaptive).
-    :param verbose: bool, optional
-         Passed to the fortran library. Defaults to False.
-    :param optional_output: bool, optional
-         Calculates and returns additional output parameters. See the notes in
-         the docstring for further details.
-    :param statistics: bool, optional
-         Calculates and returns statistics. See the notes in the docstring for
-         further details.
+         Defaults to True (adaptive weighting).
     :param rshape: integer/None, optional
-         Determines whether or not to perform the F-test for lines. If rshape
-         is 1 or 2, then don't put the lines back. If rshape is 2 only check
-         around 60 Hz. See the fortran source code for more informations.
+         Determines whether or not to perform the F-test for lines. Any
+         positive number will trigger the F-test.
+         If it is 1 or 2, then the lines will not be put back.
+         If rshape is 2 only check around 60 Hz.
+         See the Fortran source code for more informations.
          Defaults to None (do not perform the F-test).
     :param fcrit: float/None, optional
-         The threshold probability for the F-test. If none is given, the mtspec
-         library calculates a default value. See the fortran source code for
-         details. Defaults to None.
-    :return: Returns a list with :class:`numpy.ndarray`. See the note
-         below.
-
-    .. note::
-
-        This method will at return at least two arrays: The calculated spectrum
-        and the corresponding frequencies.  If optional_output is true it will
-        also return (in the given order) (multidimensional) arrays containing
-        the eigenspectra, the corresponding eigencoefficients and an array
-        containing the weights for each eigenspectra normalized so that the sum
-        of squares over the eigenspectra is one.  If statistics is True is will
-        also return (in the given order) (multidimensional) arrays containing
-        the jackknife 5% and 95% confidence intervals, the F statistics for
-        single line and the number of degrees of freedom for each frequency
-        bin.  If both optional_output and statistics are true, the
-        optional_outputs will be returned before the statistics.
+         The threshold probability for the F-test. If none is given, a default
+         value will be calculated. See the Fortran source code for details.
+         Defaults to None.
     """
+    # Make sure the data is Fortran continuous and double precision.
+    data = np.require(data, dtype="float64", requirements=["F_CONTIGUOUS"])
     npts = len(data)
 
-    # Depending if nfft is specified or not initialte MtspecTytpe
-    # for mtspec_pad_ or mtspec_d_
-    if nfft is None or nfft == npts:
-        nfft = npts
-        mt = _MtspecType("float64")  # mtspec_d_
-    else:
-        mt = _MtspecType("float32")  # mtspec_pad_
     # Use the optimal number of tapers in case no number is specified.
     if number_of_tapers is None:
         number_of_tapers = int(2 * time_bandwidth) - 1
-    # Transform the data to work with the library.
-    data = np.require(data, mt.float, mt.required)
+
     # Get some information necessary for the call to the Fortran library.
-    number_of_frequency_bins = int(nfft / 2) + 1
-    # Create output arrays.
-    spectrum = mt.empty(number_of_frequency_bins)
-    frequency_bins = mt.empty(number_of_frequency_bins)
-    # Create optional outputs.
-    if optional_output is True:
-        eigenspectra = mt.empty((number_of_frequency_bins, number_of_tapers))
-        eigencoefficients = mt.empty((nfft, number_of_tapers), complex=True)
-        weights = mt.empty((number_of_frequency_bins, number_of_tapers))
-    else:
-        eigenspectra = eigencoefficients = weights = None
-    # Create statistics.
-    if statistics is True:
-        jackknife_interval = mt.empty((number_of_frequency_bins, 2))
-        f_statistics = mt.empty(number_of_frequency_bins)
-        degrees_of_freedom = mt.empty(number_of_frequency_bins)
-    else:
-        jackknife_interval = f_statistics = degrees_of_freedom = None
-    # Verbose mode on or off.
-    if verbose is True:
-        verbose = C.byref(C.c_char('y'))
-    else:
-        verbose = None
+    number_of_frequency_bins = int(npts / 2) + 1
+
+    # Allocate some more arrays needed as arguments.
+    eigenspectra = np.empty((number_of_frequency_bins, number_of_tapers),
+        dtype="float64")
+    eigencoefficients = np.empty((npts, number_of_tapers), dtype="complex128")
+    weights = np.empty((number_of_frequency_bins, number_of_tapers),
+        dtype="float64")
+    jackknife_interval = np.empty((number_of_frequency_bins, 2),
+        dtype="float64")
+    degrees_of_freedom = np.empty(number_of_frequency_bins, dtype="float64")
+
     # Determine whether or not to compute the quadratic multitaper.
     if quadratic is True:
-        quadratic = C.byref(C.c_int(1))
+        quadratic = 1
     else:
-        quadratic = None
+        quadratic = 0
+
     # Determine whether to use adaptive or constant weighting of the
-    # eigenspectra.
+    # eigenspectra. This is counterintuitive, as 0 mean "adaptive weighting"!
     if adaptive is True:
-        adaptive = None
+        adaptive = 0
     else:
-        adaptive = C.byref(C.c_int(1))
-    # Determines whether or not to perform the F-test for lines. If rshape is 1
-    # or 2, then don't put the lines back. If rshape is 2 only check around 60
-    # Hz. See the fortran source code for more informations.
-    if type(rshape) == int:
-        rshape = C.byref(C.c_int(rshape))
-    else:
-        rshape = None
-    # The threshold probability for the F-test. If none is given, the mtspec
-    # library calculates a default value. See the fortran source code for
-    # details.
-    if type(fcrit) == float:
-        fcrit = C.byref(C.c_float(fcrit))
-    else:
-        fcrit = None
-    # Call the library. Fortran passes pointers!
-    args = [C.byref(C.c_int(npts)), C.byref(C.c_int(nfft)),
-            C.byref(mt.c_float(delta)), mt.p(data),
-            C.byref(mt.c_float(time_bandwidth)),
-            C.byref(C.c_int(number_of_tapers)),
-            C.byref(C.c_int(number_of_frequency_bins)), mt.p(frequency_bins),
-            mt.p(spectrum), verbose, quadratic, adaptive,
-            mt.p(eigencoefficients), mt.p(weights),
-            mt.p(jackknife_interval), mt.p(degrees_of_freedom),
-            mt.p(eigenspectra), rshape, mt.p(f_statistics), fcrit, None]
-    # diffrent arguments, depending on mtspec_pad_ or mtspec_d_, adapt
-    if npts == nfft:
-        args.pop(1)
+        adaptive = 1
 
-    # finally call the shared library function
-    mt.mtspec(*args)
+    if not rshape:
+        rshape = -1
 
-    # Figure out what to return. See the docstring of this method for details.
-    return_values = [spectrum, frequency_bins]
-    if optional_output is True:
-        return_values.extend([eigenspectra, eigencoefficients, weights])
-    if statistics is True:
-        return_values.extend([jackknife_interval, f_statistics,
-                              degrees_of_freedom])
-    return return_values
+    # If None is given, calculate a f statistics threshold. This is the same
+    # calculation as is done in the Fortran code.
+    if fcrit is None:
+        fcrit = max(0.95, float(npts - 5) / float(npts))
+
+    # Call the fortran method.
+    frequency_bins, spectrum, f_statistics = _mtspec_lib.mtspec_d(delta, data,
+        time_bandwidth, npts=npts, kspec=number_of_tapers,
+        nf=number_of_frequency_bins,
+        # No verbosity.
+        verb="n",
+        qispec=quadratic, adapt=adaptive, yk=eigencoefficients, wt=weights,
+        err=jackknife_interval, se=degrees_of_freedom, sk=eigenspectra,
+        rshape=rshape, fcrit=fcrit)
+
+    # Return a dictionary with all the output values.
+    return {
+        "spectrum": spectrum,
+        "frequencies": frequency_bins,
+        "eigenspectra": eigenspectra,
+        "eigencoefficients": eigencoefficients,
+        "eigenspectra_weights": weights,
+        "jackknife_conf_int": jackknife_interval,
+        "degrees_of_freedem_per_frequecy": degrees_of_freedom,
+        "f_statistics_for_single_line": f_statistics}
 
 
 def sine_psd(data, delta, number_of_tapers=None, number_of_iterations=2,
