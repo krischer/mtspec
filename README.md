@@ -38,6 +38,14 @@ python setup.py install
 pip install .
 ```
 
+### Running the tests
+
+Running the tests is a simple case of
+
+```bash
+python -m mtspec.tests
+```
+
 
 ### Notes
 
