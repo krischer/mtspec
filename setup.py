@@ -48,7 +48,7 @@ library_dirs = []
 # the corresponding compilation calls
 CCompiler.language_map['.f90'] = "c"
 
-from distutils.unixccompiler import UnixCCompiler, _darwin_compiler_fixup
+from distutils.unixccompiler import UnixCCompiler
 # Monkey patch UnixCCompiler for Unix, Linux and darwin
 UnixCCompiler.src_extensions.append(".f90")
 
@@ -56,6 +56,7 @@ UnixCCompiler.src_extensions.append(".f90")
 def _compile(self, obj, src, ext, cc_args, extra_postargs, pp_opts):
         compiler_so = self.compiler_so
         if sys.platform == 'darwin':
+            from distutils.unixccompiler import _darwin_compiler_fixup
             compiler_so = _darwin_compiler_fixup(compiler_so, cc_args + \
                     extra_postargs)
         if ext == ".f90":
