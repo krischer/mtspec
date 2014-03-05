@@ -48,7 +48,12 @@ library_dirs = []
 # the corresponding compilation calls
 CCompiler.language_map['.f90'] = "c"
 
-from distutils.unixccompiler import UnixCCompiler, _darwin_compiler_fixup
+try:
+    from distutils.unixccompiler import UnixCCompiler, _darwin_compiler_fixup
+except ImportError:
+    from distutils.unixccompiler import UnixCCompiler #we assume we will not need to use _darwin_compiler_fixup
+
+
 # Monkey patch UnixCCompiler for Unix, Linux and darwin
 UnixCCompiler.src_extensions.append(".f90")
 
@@ -56,8 +61,11 @@ UnixCCompiler.src_extensions.append(".f90")
 def _compile(self, obj, src, ext, cc_args, extra_postargs, pp_opts):
         compiler_so = self.compiler_so
         if sys.platform == 'darwin':
-            compiler_so = _darwin_compiler_fixup(compiler_so, cc_args + \
-                    extra_postargs)
+            try:
+                compiler_so = _darwin_compiler_fixup(compiler_so, cc_args + extra_postargs)
+            except AttributeError:  # In this case we leave the compiler_so sring as it is. Hoping it will work
+                pass
+
         if ext == ".f90":
             if sys.platform == 'darwin' or sys.platform == 'linux2':
                 compiler_so = ["gfortran"]
@@ -65,7 +73,7 @@ def _compile(self, obj, src, ext, cc_args, extra_postargs, pp_opts):
         try:
             self.spawn(compiler_so + cc_args + [src, '-o', obj] +
                        extra_postargs)
-        except DistutilsExecError, msg:
+        except DistutilsExecError as msg:
             raise CompileError(msg)
 UnixCCompiler._compile = _compile
 # set library dir for mac and linux
@@ -105,7 +113,7 @@ if platform.system() == "Windows":
             try:
                 self.spawn(self.compiler_so + cc_args + [src, '-o', obj] +
                            extra_postargs)
-            except DistutilsExecError, msg:
+            except DistutilsExecError as msg:
                 raise CompileError(msg)
             objects.append(obj)
         return objects
