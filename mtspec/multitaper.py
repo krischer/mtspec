@@ -14,7 +14,7 @@ Python Wrapper for multitaper `mtspec` f90 library of German A. Prieto.
 """
 
 import ctypes as C
-from util import mtspeclib
+from .util import mtspeclib
 import numpy as np
 
 
@@ -96,7 +96,7 @@ def mtspec(data, delta, time_bandwidth, nfft=None, number_of_tapers=None,
         mt = _MtspecType("float64")  # mtspec_d_
     else:
         mt = _MtspecType("float32")  # mtspec_pad_
-	quadratic = False
+    quadratic = False
     # Use the optimal number of tapers in case no number is specified.
     if number_of_tapers is None:
         number_of_tapers = int(2 * time_bandwidth) - 1
@@ -498,7 +498,7 @@ def mt_coherence(df, xi, xj, tbp, kspec, nf, p, **kwargs):
                        C.byref(C.c_float(p)), *args)
 
     # remove None values from dictionary
-    return dict([(k, v) for k, v in kwargs.iteritems() if v is not None])
+    return dict([(k, v) for k, v in kwargs.items() if v is not None])
 
 
 class _MtspecType(object):
@@ -515,7 +515,7 @@ class _MtspecType(object):
 
         :param dtype: 'float32' or 'float64'
         """
-        if dtype not in self.struct.keys():
+        if dtype not in list(self.struct.keys()):
             raise ValueError("dtype must be either 'float32' or 'float64'")
         self.float = dtype
         self.complex = 'complex%d' % (2 * float(dtype[-2:]))

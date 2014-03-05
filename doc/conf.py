@@ -197,14 +197,14 @@ def process_inherited(app, what, name, obj, options, docstringlines):
     name = name.split('.')[-1]
 
     if what == 'method' and hasattr(obj, 'im_class'):
-        if name in obj.im_class.__dict__.keys():
+        if name in list(obj.__self__.__class__.__dict__.keys()):  # following 2to3 suggestion
             return
 
     if what == 'attribute' and hasattr(obj, '__objclass__'):
-        if name in obj.__objclass__.__dict__.keys():
+        if name in list(obj.__objclass__.__dict__.keys()):  # as above
             return
 
-    for i in xrange(len(docstringlines)):
+    for i in range(len(docstringlines)):
         docstringlines.pop()
 
 # Options for Including private Members/Methods

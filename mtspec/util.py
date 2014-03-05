@@ -8,16 +8,18 @@ import ctypes as C
 import platform
 import os
 import gzip
+import sysconfig
 
-
-# Import shared mtspec library depending on the platform. 
-# Find library name generated via "python setup.py build"
-if platform.system() == 'Windows':
-    lib_name = 'mtspec.pyd'
-elif platform.system() == 'Darwin':
-    lib_name = 'mtspec.so'
-else:
-    lib_name = 'mtspec.so'
+# this is for python3 compatibility
+# python3 adds versioning to compiled python files
+# cit: "The configure/compilation options chosen at Python interpreter build-time will be encoded in the shared library
+# file name for extension modules. This "tag" will appear between the module base name and the operation file system
+# extension for shared libraries." <-- from http://legacy.python.org/dev/peps/pep-3149/
+# this should work on ALL python environments
+if  sysconfig.get_config_var('SOABI') is None:
+    lib_name = 'mtspec' + sysconfig.get_config_var('SO')
+else:  # add a dot
+    lib_name = 'mtspec.' + sysconfig.get_config_var('SOABI') + sysconfig.get_config_var('SO')
 
 # Initialize library
 mtspeclib = C.CDLL(os.path.join(os.path.dirname(__file__), 'lib',
