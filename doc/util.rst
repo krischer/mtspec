@@ -1,6 +1,6 @@
-================
-mtspec Utilities
-================
+===========
+mtspec.util
+===========
 
 .. contents::
     :local:

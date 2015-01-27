@@ -168,5 +168,9 @@ API Doc
 
 .. toctree::
 
-    multitaper
+    multitaper_dpss
+    multitaper_mtspec
+    multitaper_sine_psd
+    multitaper_mt_coherence
+    multitaper_wigner_ville_spectrum
     util
