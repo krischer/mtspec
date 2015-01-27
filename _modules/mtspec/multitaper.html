@@ -66,7 +66,10 @@
 <span class="kn">import</span> <span class="nn">ctypes</span> <span class="kn">as</span> <span class="nn">C</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 
-<span class="kn">from</span> <span class="nn">.util</span> <span class="kn">import</span> <span class="n">mtspeclib</span>
+<span class="kn">from</span> <span class="nn">.util</span> <span class="kn">import</span> <span class="n">_load_lib</span>
+
+
+<span class="n">mtspeclib</span> <span class="o">=</span> <span class="n">_load_lib</span><span class="p">()</span>
 
 
 <div class="viewcode-block" id="mtspec"><a class="viewcode-back" href="../../multitaper.html#mtspec.multitaper.mtspec">[docs]</a><span class="k">def</span> <span class="nf">mtspec</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">delta</span><span class="p">,</span> <span class="n">time_bandwidth</span><span class="p">,</span> <span class="n">nfft</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">number_of_tapers</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
