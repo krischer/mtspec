@@ -24,7 +24,7 @@ before_install:
   - sudo rm -rf /dev/shm
   - sudo ln -s /run/shm /dev/shm
   - conda install --yes python=$TRAVIS_PYTHON_VERSION atlas numpy matplotlib flake8 sphinx
-  - pip install coveralls
+  - pip install coveralls alabaster
 
 install:
   - git version
