@@ -30,8 +30,6 @@ extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.intersphinx',
     'sphinx.ext.todo',
-    'sphinx.ext.pngmath',
-    'sphinx.ext.mathjax',
     'sphinx.ext.viewcode',
     'matplotlib.sphinxext.plot_directive',
     'alabaster']
