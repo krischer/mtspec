@@ -328,6 +328,12 @@ def dpss(npts, fw, number_of_tapers, auto_spline=True, npts_max=None):
         ``v(npts, number_of_tapers)`` the eigenvectors (tapers), ``lambda`` the
         eigenvalues of the ``v``'s and ``theta`` the 1 - ``lambda``
         (energy outside the bandwidth) values.
+
+    >>> import matplotlib.pyplot as plt
+    >>> from mtspec import dpss
+    >>> tapers, lamb, theta = dpss(512, 2.5, 10)
+    >>> for i in xrange(10):
+    ...     plt.plot(tapers[:,i])
     """
     mt = _MtspecType("float64")
 

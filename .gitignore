@@ -1,6 +1,6 @@
 build
 mtspec.egg-info
-mtspec/lib/*
+mtspec/lib/*.so
 mtspec/tests/output/*
 doc/html_doc
 

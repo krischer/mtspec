@@ -1,6 +1,6 @@
-==============
-Multitaper API
-==============
+==========
+mtspec API
+==========
 
 .. contents::
     :local:
