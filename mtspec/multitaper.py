@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-Python Wrapper for multitaper `mtspec` f90 library of German A. Prieto.
+Main functions of mtspec.
 
 :copyright:
     Lion Krischer (krischer@geophysik.uni-muenchen.de) and
@@ -292,62 +292,66 @@ def sine_psd(data, delta, number_of_tapers=None, number_of_iterations=2,
     return return_values
 
 
-def dpss(npts, fw, nev, auto_spline=True, nmax=None):
+def dpss(npts, fw, number_of_tapers, auto_spline=True, npts_max=None):
     """
-    Wrapper method for the dpss subroutine in the library by German A.
-    Prieto.
+    Calculates DPSS also known as Slepian sequences or Slepian tapers.
 
-    Calculation of the Discrete Prolate Spheroidal Sequences also knows as the
-    slepian sequences, and the correspondent eigenvalues. Also, the (1 -
+    Calculation of the DPSS (Discrete Prolate Spheroidal Sequences) also knows
+    as the Slepian sequences, and the correspondent eigenvalues. Also, the (1 -
     eigenvalue) terms are calculated.
+
+    Wraps the ``dpss()`` subroutine from the Fortran library.
 
     By default this routine will use spline interpolation if sequences with
     more than 200000 samples are requested.
 
-    :param npts: The number of points in the series
-    :param fw: the time-bandwidth product (number of Rayleigh bins)
-    :param nev: the desired number of tapers
-    :param auto_spline: Whether or not to automatically use spline
-        interpolation with npts > 200000. Defaults to True.
-    :param nmax: The number of actual points to calculate the dpss. If this
-        number is smaller than npts spline interpolation will be performed,
-        regardless of auto_spline.
-    :return: (v, lamb, theta) with v(npts,nev) the eigenvectors (tapers)
-        lamb the eigenvalues of the v's and theta the 1-lambda (energy
-        outside the bandwidth) values.
-
     .. note::
 
-        The tapers are the eigenvectors of the tridiagonal matrix sigma(i,j)
-        [see Slepian(1978) eq 14 and 25.] They are also the eigenvectors of
-        the Toeplitz matrix eq. 18. We solve the tridiagonal system in
-        tridib and tinvit for the tapers and use them in the integral
-        equation in the frequency domain (dpss_ev subroutine) to get the
-        eigenvalues more accurately, by performing Chebychev Gaussian
-        Quadrature following Thomson's codes.
+        The tapers are the eigenvectors of the tridiagonal matrix sigma(i, j)
+        [see Slepian(1978) eq 14 and 25]. They are also the eigenvectors of
+        the Toeplitz matrix eq. 18.
+
+    :param npts: The number of points in the series
+    :type npts: int
+    :param fw: The time-bandwidth product (number of Rayleigh bins)
+    :type fw: float
+    :param number_of_tapers: The desired number of tapers
+    :type number_of_tapers: int
+    :param auto_spline: Whether or not to automatically use spline
+        interpolation with ``npts`` > 200000.
+    :type auto_spline: bool
+    :param npts_max: The number of actual points to calculate the dpss. If this
+        number is smaller than npts spline interpolation will be performed,
+        regardless of auto_spline.
+    :type npts_max: None or int
+    :returns: ``(v, lambda, theta)`` with
+        ``v(npts, number_of_tapers)`` the eigenvectors (tapers), ``lambda`` the
+        eigenvalues of the ``v``'s and ``theta`` the 1 - ``lambda``
+        (energy outside the bandwidth) values.
     """
     mt = _MtspecType("float64")
 
-    v = mt.empty((npts, nev))
-    lamb = mt.empty(nev)
-    theta = mt.empty(nev)
+    v = mt.empty((npts, number_of_tapers))
+    lamb = mt.empty(number_of_tapers)
+    theta = mt.empty(number_of_tapers)
 
     # Set auto_spline to True.
-    if nmax and nmax < npts:
+    if npts_max and npts_max < npts:
         auto_spline = True
-    # Always set nmax.
+    # Always set npts_max.
     else:
-        nmax = 200000
+        npts_max = 200000
 
     # Call either the spline routine or the normal routine.
-    if auto_spline is True and npts > nmax:
-        mtspeclib.dpss_spline_(C.byref(C.c_int(nmax)), C.byref(C.c_int(npts)),
-                               C.byref(C.c_double(fw)), C.byref(C.c_int(nev)),
-                               mt.p(v), mt.p(lamb), mt.p(theta))
+    if auto_spline is True and npts > npts_max:
+        mtspeclib.dpss_spline_(
+            C.byref(C.c_int(npts_max)), C.byref(C.c_int(npts)),
+            C.byref(C.c_double(fw)), C.byref(C.c_int(number_of_tapers)),
+            mt.p(v), mt.p(lamb), mt.p(theta))
     else:
         mtspeclib.dpss_(C.byref(C.c_int(npts)), C.byref(C.c_double(fw)),
-                        C.byref(C.c_int(nev)), mt.p(v), mt.p(lamb),
-                        mt.p(theta))
+                        C.byref(C.c_int(number_of_tapers)), mt.p(v),
+                        mt.p(lamb), mt.p(theta))
 
     return (v, lamb, theta)
 

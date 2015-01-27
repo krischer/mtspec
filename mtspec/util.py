@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-Loads the mtspec library depending on the platform.
+Utility functions for mtspec. Mainly useful for testing and playing around.
 
 :copyright:
     Lion Krischer (krischer@geophysik.uni-muenchen.de) and
@@ -31,14 +31,15 @@ mtspeclib = C.CDLL(os.path.join(os.path.dirname(__file__), 'lib',
                                 lib_name))
 
 
-def load_mtdata(gzfile):
+def _load_mtdata(gzfile):
     """
     Simple helper function that finds the test data in the directory tree
-    and loads it using `gzip.open` and `numpy.loadtxt`
+    and loads it using :func:`gzip.open` and :func:`numpy.loadtxt`.
 
-    :param gzfile: String of filename, either `v22_174_series.dat.gz` or
-        `PASC.dat.gz`
-    :returns: numpy.ndarray 1dim, containing the data
+    :param gzfile: Filename
+    :type gzfile: str
+    :returns: data
+    :rtype: numpy.ndarray
     """
     path = os.path.join(os.path.dirname(__file__), 'tests', 'data', gzfile)
     return np.loadtxt(gzip.open(path))
@@ -46,8 +47,11 @@ def load_mtdata(gzfile):
 
 def signal_bursts():
     """
-    Function which returns a signal (numpy.ndarray) with two signal bursts
-    inside.
+    Generates a signal with two bursts inside. Useful for testing time
+    frequency distributions.
+
+    :returns: Generated signal
+    :rtype: numpy.ndarray
     """
     np.random.seed(815)
     length = 5 * 512
@@ -73,19 +77,29 @@ def signal_bursts():
     return data
 
 
-def linear_chirp():
+def linear_chirp(npts=2000):
     """
-    Returns a simple linear chirp with length 2000.
+    Generates a simple linear chirp.
+
+    :param npts: Number of samples.
+    :type npts: int
+    :returns: Generated signal
+    :rtype: numpy.ndarray
     """
-    time = np.linspace(0, 20, 2000)
+    time = np.linspace(0, 20, npts)
     chirp = np.sin(0.2 * np.pi * (0.1 + 24.0 / 2.0 * time) * time)
     return chirp
 
 
-def exponential_chirp():
+def exponential_chirp(npts=2000):
     """
-    Returns an exponential chirp with length 2000.
+    Generates an exponential chirp.
+
+    :param npts: Number of samples.
+    :type npts: int
+    :returns: Generated signal
+    :rtype: numpy.ndarray
     """
-    time = np.linspace(0, 20, 2000)
-    chirp = np.sin(2*np.pi*0.2*(1.3**time - 1)/np.log(1.3))
+    time = np.linspace(0, 20, npts)
+    chirp = np.sin(2 * np.pi * 0.2 * (1.3 ** time - 1) / np.log(1.3))
     return chirp

@@ -29,7 +29,7 @@ import time
 import unittest
 
 from ..multitaper import mtspec, sine_psd
-from ..util import load_mtdata
+from ..util import _load_mtdata
 
 
 class RecreateFigures(unittest.TestCase):
@@ -48,7 +48,7 @@ class RecreateFigures(unittest.TestCase):
         """
         Recreate Figure 1
         """
-        data = load_mtdata('v22_174_series.dat.gz')
+        data = _load_mtdata('v22_174_series.dat.gz')
 
         spec, freq, jackknife, _, _ = mtspec(
             data, 4930., 3.5, number_of_tapers=5, nfft=312, statistics=True)
@@ -78,7 +78,7 @@ class RecreateFigures(unittest.TestCase):
         """
         Recreate Figure 2
         """
-        data = load_mtdata('v22_174_series.dat.gz')
+        data = _load_mtdata('v22_174_series.dat.gz')
         spec, freq, jackknife, fstatistics, _ = mtspec(
             data, 4930., 3.5, number_of_tapers=5, nfft=312, statistics=True,
             rshape=0, fcrit=0.9)
@@ -102,7 +102,7 @@ class RecreateFigures(unittest.TestCase):
         """
         Recreate Figure 2
         """
-        data = load_mtdata('PASC.dat.gz')
+        data = _load_mtdata('PASC.dat.gz')
 
         fig = plt.figure()
         ax1 = fig.add_subplot(3, 1, 1)

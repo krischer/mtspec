@@ -18,9 +18,9 @@ Recreate Fig. 1
     mpl.rcParams['font.size'] = 9.0
     import matplotlib.pyplot as plt
     from mtspec import mtspec
-    from mtspec.util import load_mtdata
+    from mtspec.util import _load_mtdata
 
-    data = load_mtdata('v22_174_series.dat.gz')
+    data = _load_mtdata('v22_174_series.dat.gz')
 
     spec, freq, jackknife, _, _ = mtspec(data, 4930., 3.5, number_of_tapers=5,
                                          nfft=312, statistics=True)
@@ -41,9 +41,9 @@ Recreate Fig. 1
 
     import matplotlib.pyplot as plt
     from mtspec import mtspec
-    from mtspec.util import load_mtdata
+    from mtspec.util import _load_mtdata
 
-    data = load_mtdata('v22_174_series.dat.gz')
+    data = _load_mtdata('v22_174_series.dat.gz')
 
     spec, freq, jackknife, _, _ = mtspec(data, 4930., 3.5, number_of_tapers=5,
                                          nfft=312, statistics=True)
@@ -70,9 +70,9 @@ Recreate Fig. 2
     mpl.rcParams['font.size'] = 9.0
     import matplotlib.pyplot as plt
     from mtspec import mtspec
-    from mtspec.util import load_mtdata
+    from mtspec.util import _load_mtdata
 
-    data = load_mtdata('v22_174_series.dat.gz')
+    data = _load_mtdata('v22_174_series.dat.gz')
     spec, freq, jackknife, fstatistics, _ = mtspec(data, 4930., 3.5,
             number_of_tapers=5, nfft=312, statistics=True, rshape=0,
             fcrit=0.9)
@@ -91,9 +91,9 @@ Recreate Fig. 2
 
     import matplotlib.pyplot as plt
     from mtspec import mtspec
-    from mtspec.util import load_mtdata
+    from mtspec.util import _load_mtdata
 
-    data = load_mtdata('v22_174_series.dat.gz')
+    data = _load_mtdata('v22_174_series.dat.gz')
     spec, freq, jackknife, fstatistics, _ = mtspec(data, 4930., 3.5,
             number_of_tapers=5, nfft=312, statistics=True, rshape=0,
             fcrit=0.9)
@@ -118,9 +118,9 @@ Recreate Fig. 3
     mpl.rcParams['font.size'] = 9.0
     import matplotlib.pyplot as plt
     from mtspec import mtspec, sine_psd
-    from mtspec.util import load_mtdata
+    from mtspec.util import _load_mtdata
 
-    data = load_mtdata('PASC.dat.gz')
+    data = _load_mtdata('PASC.dat.gz')
 
     fig = plt.figure()
     ax1 = fig.add_subplot(3, 1, 1)
@@ -158,13 +158,13 @@ Recreate Fig. 3
     ax5.set_xscale('log')
     ax5.plot(freq, spec, color='black')
     ax5.set_xlim(freq[0], freq[-1])
-    data = load_mtdata('PASC.dat.gz')
+    data = _load_mtdata('PASC.dat.gz')
 
 ::
 
     import matplotlib.pyplot as plt
     from mtspec import mtspec, sine_psd
-    from mtspec.util import load_mtdata
+    from mtspec.util import _load_mtdata
 
     fig = plt.figure()
     ax1 = fig.add_subplot(3, 1, 1)

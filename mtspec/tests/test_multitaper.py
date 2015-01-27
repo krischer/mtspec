@@ -19,7 +19,7 @@ import unittest
 
 from ..multitaper import mtspec, sine_psd, dpss, wigner_ville_spectrum, \
     mt_coherence
-from ..util import signal_bursts, load_mtdata
+from ..util import signal_bursts, _load_mtdata
 
 
 class MtSpecTestCase(unittest.TestCase):
@@ -34,7 +34,7 @@ class MtSpecTestCase(unittest.TestCase):
         assumed to be correct because they are identical to the figures in the
         paper on the machine that created these.
         """
-        data = load_mtdata('PASC.dat.gz')
+        data = _load_mtdata('PASC.dat.gz')
         # Calculate the spectra.
         spec, freq = mtspec(data, 1.0, 1.5, number_of_tapers=1)
         # No NaNs are supposed to be in the output.
@@ -56,7 +56,7 @@ class MtSpecTestCase(unittest.TestCase):
         be correct because they are identical to the figures in the paper on
         the machine that created these.
         """
-        data = load_mtdata('PASC.dat.gz')
+        data = _load_mtdata('PASC.dat.gz')
         # Calculate the spectra.
         spec, freq = mtspec(data, 1.0, 4.5, number_of_tapers=5)
         # No NaNs are supposed to be in the output.
@@ -78,7 +78,7 @@ class MtSpecTestCase(unittest.TestCase):
         be correct because they are identical to the figures in the paper on
         the machine that created these.
         """
-        data = load_mtdata('PASC.dat.gz')
+        data = _load_mtdata('PASC.dat.gz')
         # Calculate the spectra.
         spec, freq, eigspec, eigcoef, weights = \
             mtspec(data, 1.0, 4.5, number_of_tapers=5, optional_output=True)
@@ -117,7 +117,7 @@ class MtSpecTestCase(unittest.TestCase):
         Tests the eigenspectra output using a nonadaptive spectra. This also at
         least somewhat tests the weights.
         """
-        data = load_mtdata('PASC.dat.gz')
+        data = _load_mtdata('PASC.dat.gz')
         # Calculate the spectra.
         spec, freq, eigspec, eigcoef, weights = \
             mtspec(data, 1.0, 4.5, number_of_tapers=5, adaptive=False,
@@ -146,7 +146,7 @@ class MtSpecTestCase(unittest.TestCase):
         directory. This is assumed to be correct because they are identical to
         the figures in the paper on the machine that created these.
         """
-        data = load_mtdata('v22_174_series.dat.gz')
+        data = _load_mtdata('v22_174_series.dat.gz')
         # Calculate the spectra.
         spec, freq, jackknife, _, _ = mtspec(
             data, 4930., 3.5, nfft=312, number_of_tapers=5, statistics=True)
@@ -174,7 +174,7 @@ class MtSpecTestCase(unittest.TestCase):
         be correct because they are identical to the figures in the paper on
         the machine that created these.
         """
-        data = load_mtdata('PASC.dat.gz')
+        data = _load_mtdata('PASC.dat.gz')
         # Calculate the spectra.
         spec, freq = mtspec(data, 1.0, 4.5, number_of_tapers=5,
                             quadratic=True)
@@ -197,7 +197,7 @@ class MtSpecTestCase(unittest.TestCase):
         directory. This is assumed to be correct because they are identical to
         the figures in the paper on the machine that created these.
         """
-        data = load_mtdata('v22_174_series.dat.gz')
+        data = _load_mtdata('v22_174_series.dat.gz')
         # Calculate the spectra.
         spec, freq, jackknife, fstatistics, _ = mtspec(
             data, 4930., 3.5, nfft=312, number_of_tapers=5, statistics=True,
@@ -230,7 +230,7 @@ class MtSpecTestCase(unittest.TestCase):
         be correct because they are identical to the figures in the paper on
         the machine that created these.
         """
-        data = load_mtdata('PASC.dat.gz')
+        data = _load_mtdata('PASC.dat.gz')
         # Calculate the spectra.
         spec, freq = sine_psd(data, 1.0)
         # No NaNs are supposed to be in the output.
@@ -252,7 +252,7 @@ class MtSpecTestCase(unittest.TestCase):
         directory. This is assumed to be correct because they are identical
         to the figures in the paper on the machine that created these.
         """
-        data = load_mtdata('PASC.dat.gz')
+        data = _load_mtdata('PASC.dat.gz')
         # Calculate the spectra.
         spec, freq, errors, tapers = sine_psd(data, 1.0, statistics=True)
         # No NaNs are supposed to be in the output.
@@ -275,7 +275,7 @@ class MtSpecTestCase(unittest.TestCase):
         The quadratic and the normal multitaper spectra look quite similar.
         Check that they are different.
         """
-        data = load_mtdata('v22_174_series.dat.gz')
+        data = _load_mtdata('v22_174_series.dat.gz')
         # Calculate the spectra.
         spec, freq = mtspec(data, 1.0, 4.5, number_of_tapers=2)
         # No NaNs are supposed to be in the output.
@@ -311,7 +311,7 @@ class MtSpecTestCase(unittest.TestCase):
         np.testing.assert_almost_equal(v2[:, 1] / v[:, 1], v[:, 1] / v[:, 1])
 
         # Do the same but with spline interpolation.
-        v3, lamb2, thetha2 = dpss(512, 2.5, 2, nmax=400)
+        v3, lamb2, thetha2 = dpss(512, 2.5, 2, npts_max=400)
         # Test both tapers. They are not exactly equal therefore only two
         # digits are compared.
         np.testing.assert_almost_equal(v3 / v3, v2 / v3, 2)

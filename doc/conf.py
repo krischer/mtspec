@@ -42,8 +42,7 @@ html_theme_options = {
     'github_user': 'krischer',
     'github_repo': 'mtspec',
     'github_button': True,
-    'travis_button': True,
-    'description': 'Multitaper Spectral Estimation'
+    'travis_button': True
 }
 html_sidebars = {
     '**': [

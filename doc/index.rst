@@ -18,11 +18,11 @@ estimations with various options, calculate Wigner-Ville time-frequency
 distributions, and construct coherence spectra with multitapers.
 
 It currently wraps version 3.1 of the library. This is mainly due to later
-versions using FFTW which would introduce additional dependency.
+versions using FFTW which would introduce an additional dependency.
 
 
-Tutorial
---------
+Getting Started and Documentation
+---------------------------------
 
 To get started, please have a look at the tutorial.
 
@@ -74,7 +74,7 @@ It is a free scientific Python distribution bundling almost all necessary
 modules with a convenient installer (does not require root access!).
 Once installed assert that ``pip`` and ``conda`` point to the Anaconda
 installation folder (you may need to open a new terminal after installing
-Anaconda).
+Anaconda). Then install **mtspec**'s dependencies with
 
 .. code-block:: bash
 
@@ -91,7 +91,9 @@ sure the following line is part of it:
 
 
 Installing mtspec
-^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^
+
+For normal usage just install **mtspec** with
 
 User Installation
 ~~~~~~~~~~~~~~~~~
@@ -103,7 +105,8 @@ User Installation
 Developer Installation
 ~~~~~~~~~~~~~~~~~~~~~~
 
-Clone the git repository and install in an editable fashion.
+If you want the bleeding edge version or intend to edit **mtspec**'s code,
+clone the git repository and install in an editable fashion:
 
 .. code-block:: bash
 
@@ -146,7 +149,7 @@ choice.
 Additional Notes
 ^^^^^^^^^^^^^^^^
 
-In case you get the error message ``"Internal Error: printf is broken"`` you
+In case you get the error message ``"Internal Error: printf is broken"``, you
 can use the following workaround:
 
 
@@ -155,7 +158,7 @@ can use the following workaround:
     export LC_ALL=C
     python script.py
 
-This is a known gfortran bug, see
+This is a known ``gfortran`` bug, see
 `here <http://projects.scipy.org/scipy/ticket/696>`_
 for an explanation.
 
@@ -166,3 +169,4 @@ API Doc
 .. toctree::
 
     multitaper
+    util
