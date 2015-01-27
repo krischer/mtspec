@@ -299,9 +299,8 @@ def dpss(npts, fw, number_of_tapers, auto_spline=True, npts_max=None):
     """
     Calculates DPSS also known as Slepian sequences or Slepian tapers.
 
-    Calculation of the DPSS (Discrete Prolate Spheroidal Sequences) also knows
-    as the Slepian sequences, and the correspondent eigenvalues. Also, the (1 -
-    eigenvalue) terms are calculated.
+    Calculation of the DPSS (Discrete Prolate Spheroidal Sequences) and the
+    correspondent eigenvalues. The (1 - eigenvalue) terms are also calculated.
 
     Wraps the ``dpss()`` subroutine from the Fortran library.
 
@@ -312,31 +311,48 @@ def dpss(npts, fw, number_of_tapers, auto_spline=True, npts_max=None):
 
         The tapers are the eigenvectors of the tridiagonal matrix sigma(i, j)
         [see Slepian(1978) eq 14 and 25]. They are also the eigenvectors of
-        the Toeplitz matrix eq. 18.
+        the Toeplitz matrix, eq. 18.
 
-    :param npts: The number of points in the series
+    :param npts: The number of points in the series.
     :type npts: int
-    :param fw: The time-bandwidth product (number of Rayleigh bins)
+    :param fw: The time-bandwidth product (number of Rayleigh bins).
     :type fw: float
-    :param number_of_tapers: The desired number of tapers
+    :param number_of_tapers: The desired number of tapers.
     :type number_of_tapers: int
     :param auto_spline: Whether or not to automatically use spline
-        interpolation with ``npts`` > 200000.
+        interpolation for ``npts`` > 200000.
     :type auto_spline: bool
-    :param npts_max: The number of actual points to calculate the dpss. If this
-        number is smaller than npts spline interpolation will be performed,
-        regardless of auto_spline.
+    :param npts_max: The number of actual points to calculate the DPSS. If this
+        number is smaller than ``npts``, spline interpolation will be
+        performed, regardless of the value of ``auto_spline``.
     :type npts_max: None or int
     :returns: ``(v, lambda, theta)`` with
         ``v(npts, number_of_tapers)`` the eigenvectors (tapers), ``lambda`` the
         eigenvalues of the ``v``'s and ``theta`` the 1 - ``lambda``
         (energy outside the bandwidth) values.
 
+    .. rubric:: Example
+
+    This example demonstrates how to calculate and plot the first five DPSSs.
+
     >>> import matplotlib.pyplot as plt
     >>> from mtspec import dpss
-    >>> tapers, lamb, theta = dpss(512, 2.5, 10)
-    >>> for i in xrange(10):
-    ...     plt.plot(tapers[:,i])
+    >>> tapers, lamb, theta = dpss(512, 2.5, 5)
+    >>> for i in range(5):
+    ...     plt.plot(tapers[:, i])
+
+    .. plot ::
+
+        import seaborn as sns
+        sns.set_style("ticks")
+        import matplotlib.pyplot as plt
+        from mtspec import dpss
+        tapers, lamb, theta = dpss(512, 2.5, 5)
+        for i in xrange(5):
+            plt.plot(tapers[:, i])
+        plt.xlim(0, 512)
+        plt.ylim(-0.09, 0.09)
+        plt.tight_layout()
     """
     mt = _MtspecType("float64")
 

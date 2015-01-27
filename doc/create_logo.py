@@ -9,7 +9,7 @@ output_folder = "_static"
 
 
 plt.figure(figsize=(8, 4))
-for i in xrange(5):
+for i in range(5):
     plt.plot(tapers[:, i], lw=10, alpha=0.4)
 plt.xlim(0, len(tapers[:, 0]))
 plt.ylim(-0.08, 0.08)
