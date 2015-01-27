@@ -498,7 +498,7 @@ def mt_coherence(df, xi, xj, tbp, kspec, nf, p, **kwargs):
                        C.byref(C.c_float(float(p))), *args)
 
     # remove None values from dictionary
-    return dict([(k, v) for k, v in kwargs.iteritems() if v is not None])
+    return dict([(k, v) for k, v in kwargs.items() if v is not None])
 
 
 class _MtspecType(object):
