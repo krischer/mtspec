@@ -1,6 +1,8 @@
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-Welcome to mtspec Documentation
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+mtspec
+======
+
+Multitaper Spectral Estimation
+------------------------------
 
 .. currentmodule:: mtspec
 .. automodule:: mtspec

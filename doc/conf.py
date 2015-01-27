@@ -12,6 +12,7 @@
 # All configuration values have a default value; values that are commented out
 # serve to show the default value.
 
+import alabaster
 import sys, os
 
 # If your extensions are in another directory, add it here. If the directory
@@ -32,10 +33,32 @@ extensions = [
     'sphinx.ext.pngmath',
     'sphinx.ext.mathjax',
     'sphinx.ext.viewcode',
-    'matplotlib.sphinxext.plot_directive']
+    'matplotlib.sphinxext.plot_directive',
+    'alabaster']
+
+
+import alabaster
+
+html_theme_path = [alabaster.get_path()]
+html_theme = 'alabaster'
+
+html_theme_options = {
+    'logo': 'logo.svg',
+    'github_user': 'krischer',
+    'github_repo': 'mtspec',
+    'github_button': True,
+    'travis_button': True,
+    'description': 'Multitaper Spectral Estimation'
+}
+html_sidebars = {
+    '**': [
+        'about.html', 'navigation.html', 'searchbox.html', 'donate.html',
+    ]
+}
+
 
 # Add any paths that contain templates here, relative to this directory.
-templates_path = ['_templates']
+#templates_path = ['_templates']
 
 # The suffix of source filenames.
 source_suffix = '.rst'
@@ -83,7 +106,7 @@ today_fmt = "%B %d %H o'clock, %Y"
 #show_authors = False
 
 # The name of the Pygments (syntax highlighting) style to use.
-pygments_style = 'sphinx'
+# pygments_style = 'sphinx'
 
 
 # Options for HTML output
@@ -92,7 +115,7 @@ pygments_style = 'sphinx'
 # The style sheet to use for HTML and HTML Help pages. A file of that name
 # must exist either in Sphinx' static/ path, or in one of the custom paths
 # given in html_static_path.
-html_style = 'default.css'
+#html_style = 'default.css'
 
 # The name for this set of Sphinx documents.  If None, it defaults to
 # "<project> v<release> documentation".
