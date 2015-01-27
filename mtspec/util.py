@@ -10,11 +10,11 @@ Loads the mtspec library depending on the platform.
     GNU General Public License, Version 3
     (http://www.gnu.org/copyleft/gpl.html)
 """
-import numpy as np
 import ctypes as C
-import platform
-import os
 import gzip
+import numpy as np
+import os
+import platform
 
 
 # Import shared mtspec library depending on the platform.

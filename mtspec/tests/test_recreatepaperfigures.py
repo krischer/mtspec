@@ -23,11 +23,13 @@ from __future__ import (absolute_import, division, print_function,
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pylab as plt
-from mtspec import mtspec, sine_psd
-from mtspec.util import load_mtdata
+
 import os
-import unittest
 import time
+import unittest
+
+from ..multitaper import mtspec, sine_psd
+from ..util import load_mtdata
 
 
 class RecreateFigures(unittest.TestCase):

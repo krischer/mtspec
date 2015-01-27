@@ -11,9 +11,10 @@
 from __future__ import (absolute_import, division, print_function,
                         unicode_literals)
 
-from mtspec.tests import test_multitaper, test_recreatepaperfigures, \
-    test_code_formatting
 import unittest
+
+from . import test_multitaper, test_recreatepaperfigures, \
+    test_code_formatting
 
 
 def suite():

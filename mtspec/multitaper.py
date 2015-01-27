@@ -11,8 +11,9 @@ Python Wrapper for multitaper `mtspec` f90 library of German A. Prieto.
     (http://www.gnu.org/copyleft/gpl.html)
 """
 import ctypes as C
-from util import mtspeclib
 import numpy as np
+
+from .util import mtspeclib
 
 
 def mtspec(data, delta, time_bandwidth, nfft=None, number_of_tapers=None,

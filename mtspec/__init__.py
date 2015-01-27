@@ -12,5 +12,5 @@ A Python wrapper for the multitaper library of German A. Prieto (see link_).
     GNU General Public License, Version 3
     (http://www.gnu.org/copyleft/gpl.html)
 """
-from multitaper import mtspec, sine_psd, dpss  # NOQA
-from multitaper import wigner_ville_spectrum, mt_coherence  # NOQA
+from .multitaper import mtspec, sine_psd, dpss  # NOQA
+from .multitaper import wigner_ville_spectrum, mt_coherence  # NOQA
