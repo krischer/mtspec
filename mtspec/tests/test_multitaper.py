@@ -346,7 +346,7 @@ class MtSpecTestCase(unittest.TestCase):
         one_hz_sin = np.sin(np.arange(0, sampling_rate, dtype='float32') /
                             sampling_rate * 2 * np.pi)
         # repeat this until npts is reached
-        one_hz_sin = np.tile(one_hz_sin, npts//sampling_rate + 1)[:npts]
+        one_hz_sin = np.tile(one_hz_sin, int(npts // sampling_rate + 1))[:npts]
         xi = np.random.randn(npts) + one_hz_sin * .5
         xj = np.random.randn(npts) + one_hz_sin * .5
         dt, tbp, kspec, nf, p = 1.0/sampling_rate, 3.5, 5, npts // 2, .90
