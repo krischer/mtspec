@@ -160,11 +160,9 @@ This is a known gfortran bug, see
 for an explanation.
 
 
-    Modules
-    -------
-    .. autosummary::
-      :toctree: .
-      :nosignatures:
+API Doc
+-------
 
-        multitaper
-        util
+.. toctree::
+
+    multitaper
