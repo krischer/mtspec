@@ -2,9 +2,9 @@ import matplotlib as mpl
 mpl.rcParams['font.size'] = 9.0
 import matplotlib.pyplot as plt
 from mtspec import mtspec, sine_psd
-from mtspec.util import load_mtdata
+from mtspec.util import _load_mtdata
 
-data = load_mtdata('PASC.dat.gz')
+data = _load_mtdata('PASC.dat.gz')
 
 fig = plt.figure()
 ax1 = fig.add_subplot(3, 1, 1)
@@ -42,4 +42,4 @@ ax5.set_yscale('log')
 ax5.set_xscale('log')
 ax5.plot(freq, spec, color='black')
 ax5.set_xlim(freq[0], freq[-1])
-data = load_mtdata('PASC.dat.gz')
+data = _load_mtdata('PASC.dat.gz')

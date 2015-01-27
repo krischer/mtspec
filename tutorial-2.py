@@ -2,9 +2,9 @@ import matplotlib as mpl
 mpl.rcParams['font.size'] = 9.0
 import matplotlib.pyplot as plt
 from mtspec import mtspec
-from mtspec.util import load_mtdata
+from mtspec.util import _load_mtdata
 
-data = load_mtdata('v22_174_series.dat.gz')
+data = _load_mtdata('v22_174_series.dat.gz')
 spec, freq, jackknife, fstatistics, _ = mtspec(data, 4930., 3.5,
         number_of_tapers=5, nfft=312, statistics=True, rshape=0,
         fcrit=0.9)

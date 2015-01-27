@@ -1,0 +1,203 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>mtspec Utilities &mdash; mtspec 0.3.x documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.3.x',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="mtspec 0.3.x documentation" href="index.html" />
+    <link rel="prev" title="mtspec API" href="multitaper.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="multitaper.html" title="mtspec API"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">mtspec 0.3.x documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="mtspec-utilities">
+<h1>mtspec Utilities<a class="headerlink" href="#mtspec-utilities" title="Permalink to this headline">¶</a></h1>
+<span class="target" id="module-mtspec.util"></span><p>Utility functions for mtspec. Mainly useful for testing and playing around.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">copyright:</th><td class="field-body">Lion Krischer (<a class="reference external" href="mailto:krischer&#37;&#52;&#48;geophysik&#46;uni-muenchen&#46;de">krischer<span>&#64;</span>geophysik<span>&#46;</span>uni-muenchen<span>&#46;</span>de</a>) and
+Moritz Beyreuther, 2010-2015</td>
+</tr>
+<tr class="field-even field"><th class="field-name">license:</th><td class="field-body">GNU General Public License, Version 3
+(<a class="reference external" href="http://www.gnu.org/copyleft/gpl.html">http://www.gnu.org/copyleft/gpl.html</a>)</td>
+</tr>
+</tbody>
+</table>
+<dl class="function">
+<dt id="mtspec.util.exponential_chirp">
+<tt class="descclassname">mtspec.util.</tt><tt class="descname">exponential_chirp</tt><big>(</big><em>npts=2000</em><big>)</big><a class="reference internal" href="_modules/mtspec/util.html#exponential_chirp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mtspec.util.exponential_chirp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates an exponential chirp.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>npts</strong> (<em>int</em>) &#8211; Number of samples.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Generated signal</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">numpy.ndarray</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="mtspec.util.linear_chirp">
+<tt class="descclassname">mtspec.util.</tt><tt class="descname">linear_chirp</tt><big>(</big><em>npts=2000</em><big>)</big><a class="reference internal" href="_modules/mtspec/util.html#linear_chirp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mtspec.util.linear_chirp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a simple linear chirp.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>npts</strong> (<em>int</em>) &#8211; Number of samples.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Generated signal</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">numpy.ndarray</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="mtspec.util.signal_bursts">
+<tt class="descclassname">mtspec.util.</tt><tt class="descname">signal_bursts</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/mtspec/util.html#signal_bursts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mtspec.util.signal_bursts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a signal with two bursts inside. Useful for testing time
+frequency distributions.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Generated signal</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">numpy.ndarray</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="index.html">
+    <img class="logo" src="_static/logo.svg" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+
+
+<p>
+<iframe src="http://ghbtns.com/github-btn.html?user=krischer&repo=mtspec&type=watch&count=true&size=large"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+    
+
+<p>
+<a href="https://travis-ci.org/krischer/mtspec">
+    <img
+        alt="https://secure.travis-ci.org/krischer/mtspec.png?branch=master"
+        src="https://secure.travis-ci.org/krischer/mtspec.png?branch=master"
+    >
+</a>
+</p>
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="tutorial.html">Tutorial</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="multitaper.html">mtspec API</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">mtspec Utilities</a></li>
+</ul>
+
+
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2009-2015, Lion Krischer, Moritz Beyreuther.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.2.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.6.3</a>
+      
+      |
+      <a href="_sources/util.txt"
+          rel="nofollow">Page source</a></li>
+    </div>
+
+    
+
+    
+  </body>
+</html>

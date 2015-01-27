@@ -1,4 +1,3 @@
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -7,15 +6,15 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Welcome to mtspec Documentation &mdash; mtspec 0.2.6 documentation</title>
+    <title>mtspec &mdash; mtspec 0.3.x documentation</title>
     
-    <link rel="stylesheet" href="_static/pyramid.css" type="text/css" />
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '',
-        VERSION:     '0.2.6',
+        URL_ROOT:    './',
+        VERSION:     '0.3.x',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -24,18 +23,14 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <link rel="top" title="mtspec 0.2.6 documentation" href="#" />
+    <link rel="top" title="mtspec 0.3.x documentation" href="#" />
     <link rel="next" title="Tutorial" href="tutorial.html" />
-<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Neuton&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
-<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Nobile:regular,italic,bold,bolditalic&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
-<!--[if lte IE 6]>
-<link rel="stylesheet" href="_static/ie6.css" type="text/css" media="screen" charset="utf-8" />
-<![endif]-->
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
 
   </head>
   <body>
-
     <div class="related">
       <h3>Navigation</h3>
       <ul>
@@ -48,7 +43,7 @@
         <li class="right" >
           <a href="tutorial.html" title="Tutorial"
              accesskey="N">next</a> |</li>
-        <li><a href="#">mtspec 0.2.6 documentation</a> &raquo;</li> 
+        <li><a href="#">mtspec 0.3.x documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -57,69 +52,146 @@
         <div class="bodywrapper">
           <div class="body">
             
-  <div class="section" id="module-mtspec">
-<span id="welcome-to-mtspec-documentation"></span><h1>Welcome to mtspec Documentation<a class="headerlink" href="#module-mtspec" title="Permalink to this headline">¶</a></h1>
-<p>A Python wrapper for the multitaper library of German A. Prieto (see <a class="reference external" href="http://wwwprof.uniandes.edu.co/~gprieto/software/mwlib.html.">link</a>).</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">copyright:</th><td class="field-body">Moritz Beyreuther and Lion Krischer</td>
-</tr>
-<tr class="field-even field"><th class="field-name">license:</th><td class="field-body">GNU General Public License (GPLv2)</td>
-</tr>
-</tbody>
-</table>
-<div class="section" id="tutorial">
-<h2>Tutorial<a class="headerlink" href="#tutorial" title="Permalink to this headline">¶</a></h2>
+  <div class="section" id="mtspec">
+<h1>mtspec<a class="headerlink" href="#mtspec" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="multitaper-spectral-estimation">
+<h2>Multitaper Spectral Estimation<a class="headerlink" href="#multitaper-spectral-estimation" title="Permalink to this headline">¶</a></h2>
+<p><strong>mtspec</strong> is a Python wrapper for the
+<a class="reference external" href="http://wwwprof.uniandes.edu.co/~gprieto/software/mwlib.html">Multitaper Spectrum Estimation Library</a>
+by Germán Prieto. The relevant publication is</p>
+<div class="highlight-python"><div class="highlight"><pre>Prieto, G. A., R. L. Parker, F. L. Vernon. (2009),
+A Fortran 90 library for multitaper spectrum analysis,
+Computers and Geosciences, 35, pp. 1701-1710.
+doi:10.1016/ j.cageo.2008.06.007
+</pre></div>
+</div>
+<p>It enables you to calculate Slepian windows, perform multitaper spectral
+estimations with various options, calculate Wigner-Ville time-frequency
+distributions, and construct coherence spectra with multitapers.</p>
+<p>It currently wraps version 3.1 of the library. This is mainly due to later
+versions using FFTW which would introduce an additional dependency.</p>
+</div>
+<div class="section" id="getting-started-and-documentation">
+<h2>Getting Started and Documentation<a class="headerlink" href="#getting-started-and-documentation" title="Permalink to this headline">¶</a></h2>
+<p>To get started, please have a look at the tutorial.</p>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="tutorial.html">Tutorial</a></li>
 </ul>
 </div>
 </div>
-<div class="section" id="classes-functions">
-<h2>Classes &amp; functions<a class="headerlink" href="#classes-functions" title="Permalink to this headline">¶</a></h2>
-<table border="1" class="longtable docutils">
-<colgroup>
-<col width="10%" />
-<col width="90%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="mtspec.multitaper.mtspec.html#mtspec.multitaper.mtspec" title="mtspec.multitaper.mtspec"><tt class="xref py py-obj docutils literal"><span class="pre">mtspec</span></tt></a></td>
-<td>Wrapper method for the mtspec subroutine in the library by German A.</td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="mtspec.multitaper.sine_psd.html#mtspec.multitaper.sine_psd" title="mtspec.multitaper.sine_psd"><tt class="xref py py-obj docutils literal"><span class="pre">sine_psd</span></tt></a></td>
-<td>Wrapper method for the sine_psd subroutine in the library by German A.</td>
-</tr>
-<tr class="row-odd"><td><a class="reference internal" href="mtspec.multitaper.wigner_ville_spectrum.html#mtspec.multitaper.wigner_ville_spectrum" title="mtspec.multitaper.wigner_ville_spectrum"><tt class="xref py py-obj docutils literal"><span class="pre">wigner_ville_spectrum</span></tt></a></td>
-<td>Wrapper method of the modified wv_spec (wv_spec_to_array) subroutine in</td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="mtspec.multitaper.mt_coherence.html#mtspec.multitaper.mt_coherence" title="mtspec.multitaper.mt_coherence"><tt class="xref py py-obj docutils literal"><span class="pre">mt_coherence</span></tt></a></td>
-<td>Construct the coherence spectrum from the yk&#8217;s and the  weights of the usual multitaper spectrum estimation.</td>
-</tr>
-<tr class="row-odd"><td><a class="reference internal" href="mtspec.multitaper.dpss.html#mtspec.multitaper.dpss" title="mtspec.multitaper.dpss"><tt class="xref py py-obj docutils literal"><span class="pre">dpss</span></tt></a></td>
-<td>Wrapper method for the dpss subroutine in the library by German A.</td>
-</tr>
-</tbody>
-</table>
+<div class="section" id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="requirements">
+<h3>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h3>
+<p><strong>mtspec</strong> currently runs on Linux and Mac OS X. Adding support for Windows is
+mainly a question of compiling the shared Fortran libraries - pull requests are
+welcome.</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">gfortran</span> <span class="pre">&gt;=</span> <span class="pre">4.7</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">Python</span> <span class="pre">2.6,</span> <span class="pre">2.7,</span> <span class="pre">3.3,</span> <span class="pre">or</span> <span class="pre">3.4</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">NumPy</span> <span class="pre">&gt;=</span> <span class="pre">1.7</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">matplotlib</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">flake8</span></tt></li>
+</ul>
+<div class="section" id="fortran-compiler">
+<h4>Fortran Compiler<a class="headerlink" href="#fortran-compiler" title="Permalink to this headline">¶</a></h4>
+<p>If you don&#8217;t have <tt class="docutils literal"><span class="pre">gfortran</span></tt>, please install it (on Linux) with</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>sudo apt-get install gfortran
+</pre></div>
 </div>
-<div class="section" id="modules">
-<h2>Modules<a class="headerlink" href="#modules" title="Permalink to this headline">¶</a></h2>
-<table border="1" class="longtable docutils">
-<colgroup>
-<col width="10%" />
-<col width="90%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="mtspec.multitaper.html#module-mtspec.multitaper" title="mtspec.multitaper"><tt class="xref py py-obj docutils literal"><span class="pre">multitaper</span></tt></a></td>
-<td>Python Wrapper for multitaper <cite>mtspec</cite> f90 library of German A. Prieto.</td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="mtspec.util.html#module-mtspec.util" title="mtspec.util"><tt class="xref py py-obj docutils literal"><span class="pre">util</span></tt></a></td>
-<td>Loads the mtspec library depending on the platform.</td>
-</tr>
-</tbody>
-</table>
+<p>or the equivalent of your distribution. On OSX we recommend to install
+<a class="reference external" href="http://brew.sh/">Homebrew</a> and then use it to install <tt class="docutils literal"><span class="pre">gfortran</span></tt>:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>brew install gcc
+</pre></div>
+</div>
+</div>
+<div class="section" id="python-and-dependencies">
+<h4>Python and Dependencies<a class="headerlink" href="#python-and-dependencies" title="Permalink to this headline">¶</a></h4>
+<p>If you know what you are doing, just make sure the aforementioned
+dependencies are installed. Otherwise do yourself a favor and download the
+<a class="reference external" href="https://store.continuum.io/cshop/anaconda/">Anaconda</a> Python distribution.
+It is a free scientific Python distribution bundling almost all necessary
+modules with a convenient installer (does not require root access!).
+Once installed assert that <tt class="docutils literal"><span class="pre">pip</span></tt> and <tt class="docutils literal"><span class="pre">conda</span></tt> point to the Anaconda
+installation folder (you may need to open a new terminal after installing
+Anaconda). Then install <strong>mtspec</strong>&#8216;s dependencies with</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>conda install numpy matplotlib flake8 pip
+</pre></div>
+</div>
+<p>A possible complication arises <strong>if you are running on a server without a
+display</strong>. In that case please edit (on Linux)
+<tt class="docutils literal"><span class="pre">~/.config/matplotlib/matplotlibrc</span></tt> (create if it does not exist) and make
+sure the following line is part of it:</p>
+<div class="highlight-bash"><div class="highlight"><pre>backend: agg
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="installing-mtspec">
+<h3>Installing mtspec<a class="headerlink" href="#installing-mtspec" title="Permalink to this headline">¶</a></h3>
+<p>For normal usage just install <strong>mtspec</strong> with</p>
+<div class="section" id="user-installation">
+<h4>User Installation<a class="headerlink" href="#user-installation" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>pip install mtspec
+</pre></div>
+</div>
+</div>
+<div class="section" id="developer-installation">
+<h4>Developer Installation<a class="headerlink" href="#developer-installation" title="Permalink to this headline">¶</a></h4>
+<p>If you want the bleeding edge version or intend to edit <strong>mtspec</strong>&#8216;s code,
+clone the git repository and install in an editable fashion:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>git clone https://github.com/krischer/mtspec.git
+<span class="nv">$ </span><span class="nb">cd </span>mtspec
+<span class="nv">$ </span>pip install -v -e .
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="testing">
+<h3>Testing<a class="headerlink" href="#testing" title="Permalink to this headline">¶</a></h3>
+<p>To assert that your installation is working properly, execute</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>python -m mtspec.tests
+</pre></div>
+</div>
+<p>and make sure all tests pass. Otherwise please contact the developers.</p>
+</div>
+<div class="section" id="build-the-documentation">
+<h3>Build the Documentation<a class="headerlink" href="#build-the-documentation" title="Permalink to this headline">¶</a></h3>
+<p>The documentation requires <tt class="docutils literal"><span class="pre">sphinx</span></tt> and the Alabaster theme. Install both
+with</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>pip install sphinx alabaster
+</pre></div>
+</div>
+<p>Build the doc with</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span><span class="nb">cd </span>doc
+<span class="nv">$ </span>make html
+</pre></div>
+</div>
+<p>Finally open the <tt class="docutils literal"><span class="pre">doc/html_doc/index.html</span></tt> file with the browser of your
+choice.</p>
+</div>
+<div class="section" id="additional-notes">
+<h3>Additional Notes<a class="headerlink" href="#additional-notes" title="Permalink to this headline">¶</a></h3>
+<p>In case you get the error message <tt class="docutils literal"><span class="pre">&quot;Internal</span> <span class="pre">Error:</span> <span class="pre">printf</span> <span class="pre">is</span> <span class="pre">broken&quot;</span></tt>, you
+can use the following workaround:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nb">export </span><span class="nv">LC_ALL</span><span class="o">=</span>C
+python script.py
+</pre></div>
+</div>
+<p>This is a known <tt class="docutils literal"><span class="pre">gfortran</span></tt> bug, see
+<a class="reference external" href="http://projects.scipy.org/scipy/ticket/696">here</a>
+for an explanation.</p>
+</div>
+</div>
+<div class="section" id="api-doc">
+<h2>API Doc<a class="headerlink" href="#api-doc" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="multitaper.html">mtspec API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="util.html">mtspec Utilities</a></li>
+</ul>
+</div>
 </div>
 </div>
 
@@ -129,25 +201,45 @@
       </div>
       <div class="sphinxsidebar">
         <div class="sphinxsidebarwrapper">
-  <h3><a href="#">Table Of Contents</a></h3>
-  <ul>
-<li><a class="reference internal" href="#">Welcome to mtspec Documentation</a><ul>
-<li><a class="reference internal" href="#tutorial">Tutorial</a><ul>
+<p class="logo">
+  <a href="#">
+    <img class="logo" src="_static/logo.svg" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+
+
+<p>
+<iframe src="http://ghbtns.com/github-btn.html?user=krischer&repo=mtspec&type=watch&count=true&size=large"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+    
+
+<p>
+<a href="https://travis-ci.org/krischer/mtspec">
+    <img
+        alt="https://secure.travis-ci.org/krischer/mtspec.png?branch=master"
+        src="https://secure.travis-ci.org/krischer/mtspec.png?branch=master"
+    >
+</a>
+</p>
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="tutorial.html">Tutorial</a></li>
 </ul>
-</li>
-<li><a class="reference internal" href="#classes-functions">Classes &amp; functions</a><ul>
-</ul>
-</li>
-<li><a class="reference internal" href="#modules">Modules</a><ul>
-</ul>
-</li>
-</ul>
-</li>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="multitaper.html">mtspec API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="util.html">mtspec Utilities</a></li>
 </ul>
 
-  <h4>Next topic</h4>
-  <p class="topless"><a href="tutorial.html"
-                        title="next chapter">Tutorial</a></p>
+
 <div id="searchbox" style="display: none">
   <h3>Quick search</h3>
     <form class="search" action="search.html" method="get">
@@ -165,24 +257,20 @@
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="General Index"
-             >index</a></li>
-        <li class="right" >
-          <a href="py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
-          <a href="tutorial.html" title="Tutorial"
-             >next</a> |</li>
-        <li><a href="#">mtspec 0.2.6 documentation</a> &raquo;</li> 
-      </ul>
-    </div>
     <div class="footer">
-        &copy; Copyright 2012, Lion Krischer, Moritz Beyreuther.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+      &copy;2009-2015, Lion Krischer, Moritz Beyreuther.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.2.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.6.3</a>
+      
+      |
+      <a href="_sources/index.txt"
+          rel="nofollow">Page source</a></li>
     </div>
+
+    
+
+    
   </body>
 </html>
