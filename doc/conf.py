@@ -25,10 +25,14 @@ import sys, os
 
 # Add any Sphinx extension module names here, as strings. They can be extensions
 # coming with Sphinx (named 'sphinx.ext.*') or your custom ones.
-extensions = ['sphinx.ext.autodoc',
-              'sphinx.ext.autosummary']
-              #'matplotlib.sphinxext.plot_directive',
-              #'matplotlib.sphinxext.only_directives']
+extensions = [
+    'sphinx.ext.autodoc',
+    'sphinx.ext.intersphinx',
+    'sphinx.ext.todo',
+    'sphinx.ext.pngmath',
+    'sphinx.ext.mathjax',
+    'sphinx.ext.viewcode',
+    'matplotlib.sphinxext.plot_directive']
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -41,15 +45,15 @@ master_doc = 'index'
 
 # General substitutions.
 project = 'mtspec'
-copyright = '2009-2010, Moritz Beyreuther, Lion Krischer'
+copyright = '2009-2015, Lion Krischer, Moritz Beyreuther'
 
 # The default replacements for |version| and |release|, also used in various
 # other places throughout the built documents.
 #
 # The short X.Y version.
-version = '0.2'
+version = '0.3'
 # The full version, including alpha/beta/rc tags.
-release = '0.2'
+release = '0.3.x'
 
 # There are two options for replacing |today|: either, you set today to some
 # non-false value, then it is used:
@@ -92,7 +96,6 @@ html_style = 'default.css'
 
 # The name for this set of Sphinx documents.  If None, it defaults to
 # "<project> v<release> documentation".
-html_title = "mtspec documentation"
 
 # A shorter title for the navigation bar.  Default is the same as html_title.
 #html_short_title = None
@@ -163,7 +166,7 @@ htmlhelp_basename = 'mtspecdoc'
 # (source start file, target name, title, author, document class [howto/manual]).
 latex_documents = [
   ('index', 'mtspec.tex', 'mtspec Documentation',
-   'Moritz Beyreuther, Lion Krischer', 'manual'),
+   'Lion Krischer', 'Moritz Beyreuther', 'manual'),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
