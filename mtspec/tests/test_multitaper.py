@@ -10,6 +10,9 @@ mtspec test suite.
     GNU General Public License, Version 3
     (http://www.gnu.org/copyleft/gpl.html)
 """
+from __future__ import (absolute_import, division, print_function,
+                        unicode_literals)
+
 from mtspec import mtspec, sine_psd, dpss, wigner_ville_spectrum, mt_coherence
 from mtspec.util import signal_bursts, load_mtdata
 import numpy as np

@@ -490,10 +490,11 @@ def mt_coherence(df, xi, xj, tbp, kspec, nf, p, **kwargs):
         else:
             args.append(kwargs[key])
 
-    mtspeclib.mt_cohe_(C.byref(C.c_int(npts)), C.byref(C.c_float(df)),
-                       mt.p(xi), mt.p(xj), C.byref(C.c_float(tbp)),
-                       C.byref(C.c_int(kspec)), C.byref(C.c_int(nf)),
-                       C.byref(C.c_float(p)), *args)
+    mtspeclib.mt_cohe_(C.byref(C.c_int(int(npts))),
+                       C.byref(C.c_float(float(df))),
+                       mt.p(xi), mt.p(xj), C.byref(C.c_float(float(tbp))),
+                       C.byref(C.c_int(int(kspec))), C.byref(C.c_int(int(nf))),
+                       C.byref(C.c_float(float(p))), *args)
 
     # remove None values from dictionary
     return dict([(k, v) for k, v in kwargs.iteritems() if v is not None])
