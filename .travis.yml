@@ -1,0 +1,45 @@
+language: python
+
+python:
+  - "2.6"
+  - "2.7"
+  - "3.3"
+  - "3.4"
+
+env:
+  global:
+    secure: "MhW7gICzNIUwodMqpkVrpLQjGbkP/dpsBJu6GJZl/lobs0LmzSV9iFEXamG48Tmbxtfgf1pcciu0b6xCnuAeLpcoe0dvOC5+MF5HOwqanmQMbqi9tJduzzFEn9UUySUcdochG62lMtg1g1dR3f0T3q0JaX4a0axMOTC7d/AK6og="
+
+before_install:
+  - sudo apt-get install -qq gfortran
+  - wget http://repo.continuum.io/miniconda/Miniconda-latest-Linux-x86_64.sh -O miniconda.sh
+  - chmod +x miniconda.sh
+  - ./miniconda.sh -b
+  - export PATH=/home/travis/miniconda/bin:$PATH
+  - conda update --yes conda
+  - conda create --yes -n condaenv python=$TRAVIS_PYTHON_VERSION
+  - conda install --yes -n condaenv pip
+  - source activate condaenv
+  # The next couple lines fix a crash with multiprocessing on Travis and are not specific to using Miniconda
+  - sudo rm -rf /dev/shm
+  - sudo ln -s /run/shm /dev/shm
+  - conda install --yes python=$TRAVIS_PYTHON_VERSION atlas numpy matplotlib flake8 sphinx
+  - pip install coveralls
+
+install:
+  - git version
+  - git fetch origin --tags --unshallow
+  - git remote add mtspec git://github.com/krischer/mtspec.git
+  - git fetch mtspec --tags
+  - git status
+  - pip install --no-deps -v -e .
+  - git status
+
+script:
+  - coverage run --source=mtspec -m mtspec.tests
+  # Docs only need to be built once.
+  - if [[ $TRAVIS_PYTHON_VERSION == '2.7' ]]; then cd $TRAVIS_BUILD_DIR/doc; make html ; fi
+
+after_success:
+  - cd $TRAVIS_BUILD_DIR; coveralls
+  - if [[ $TRAVIS_PYTHON_VERSION == '2.7' ]]; then bash $TRAVIS_BUILD_DIR/.travis-update-gh-pages.sh ; fi
