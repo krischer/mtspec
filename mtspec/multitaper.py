@@ -13,7 +13,10 @@ Main functions of mtspec.
 import ctypes as C
 import numpy as np
 
-from .util import mtspeclib
+from .util import _load_lib
+
+
+mtspeclib = _load_lib()
 
 
 def mtspec(data, delta, time_bandwidth, nfft=None, number_of_tapers=None,

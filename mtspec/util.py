@@ -11,24 +11,33 @@ Utility functions for mtspec. Mainly useful for testing and playing around.
     (http://www.gnu.org/copyleft/gpl.html)
 """
 import ctypes as C
+import glob
 import gzip
+import inspect
 import numpy as np
 import os
-import platform
 
 
-# Import shared mtspec library depending on the platform.
-# Find library name generated via "python setup.py build"
-if platform.system() == 'Windows':
-    lib_name = 'mtspec.pyd'
-elif platform.system() == 'Darwin':
-    lib_name = 'mtspec.so'
-else:
-    lib_name = 'mtspec.so'
+LIB_DIR = os.path.join(os.path.dirname(os.path.abspath(
+    inspect.getfile(inspect.currentframe()))), "lib")
 
-# Initialize library
-mtspeclib = C.CDLL(os.path.join(os.path.dirname(__file__), 'lib',
-                                lib_name))
+
+cache = []
+
+
+def _load_lib():
+    if cache:
+        return cache[0]
+    else:
+        # Enable a couple of different library naming schemes.
+        possible_files = glob.glob(os.path.join(LIB_DIR, "mtspec*.*"))
+        if not possible_files:
+            raise ValueError("Could not find suitable instaseis shared "
+                             "library.")
+        filename = possible_files[0]
+        lib = C.CDLL(filename)
+        cache.append(lib)
+        return lib
 
 
 def _load_mtdata(gzfile):
