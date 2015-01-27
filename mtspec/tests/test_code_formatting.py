@@ -53,10 +53,11 @@ class CodeFormattingTestCase(unittest.TestCase):
 
         report = flake8_style.check_files(files)
 
-        # Make sure at least 10 files are tested.
-        self.assertEqual(report.counters["files"] > 10)
+        # Make sure at least 8 files are tested. This happens to be the number
+        # of python files at the time of writing this test case.
+        self.assertTrue(report.counters["files"] >= 8)
         # And no errors occured.
-        self.assertEqual(report.get_count() == 0)
+        self.assertEqual(report.get_count(), 0)
 
 
 def suite():

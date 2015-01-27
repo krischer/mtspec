@@ -1,18 +1,15 @@
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
-#-------------------------------------------------------------------
-# Filename: multitaper.py
-#  Purpose: Python wrapper for multitaper `mtspec` f90 library of
-#           German A. Prieto
-#   Author: Moritz Beyreuther, Lion Krischer
-#    Email: beyreuth@geophysik.uni-muenchen.de
-#  License: GPLv2
-#
-# Copyright (C) 2008-2010 Moritz Beyreuther, Lion Krischer
-#---------------------------------------------------------------------
 """
 Python Wrapper for multitaper `mtspec` f90 library of German A. Prieto.
-"""
 
+:copyright:
+    Lion Krischer (krischer@geophysik.uni-muenchen.de) and
+    Moritz Beyreuther, 2010-2015
+:license:
+    GNU General Public License, Version 3
+    (http://www.gnu.org/copyleft/gpl.html)
+"""
 import ctypes as C
 from util import mtspeclib
 import numpy as np
@@ -96,7 +93,7 @@ def mtspec(data, delta, time_bandwidth, nfft=None, number_of_tapers=None,
         mt = _MtspecType("float64")  # mtspec_d_
     else:
         mt = _MtspecType("float32")  # mtspec_pad_
-	quadratic = False
+        quadratic = False
     # Use the optimal number of tapers in case no number is specified.
     if number_of_tapers is None:
         number_of_tapers = int(2 * time_bandwidth) - 1
@@ -273,19 +270,20 @@ def sine_psd(data, delta, number_of_tapers=None, number_of_iterations=2,
         tapers_per_freq_point = np.empty(number_of_frequency_bins,
                                          'int32', mt.required)
         tapers_per_freq_point_p = \
-                tapers_per_freq_point.ctypes.data_as(C.POINTER(C.c_int))
+            tapers_per_freq_point.ctypes.data_as(C.POINTER(C.c_int))
         errors = mt.empty((number_of_frequency_bins, 2))
     else:
         tapers_per_freq_point_p = errors = None
     # Call the library. Fortran passes pointers!
-    mtspeclib.sine_psd_(C.byref(C.c_int(npts)),
-                  C.byref(C.c_float(delta)), mt.p(data),
-                  C.byref(C.c_int(number_of_tapers)),
-                  C.byref(C.c_int(number_of_iterations)),
-                  C.byref(C.c_float(degree_of_smoothing)),
-                  C.byref(C.c_int(number_of_frequency_bins)),
-                  mt.p(frequency_bins), mt.p(spectrum),
-                  tapers_per_freq_point_p, mt.p(errors), verbose)
+    mtspeclib.sine_psd_(
+        C.byref(C.c_int(npts)),
+        C.byref(C.c_float(delta)), mt.p(data),
+        C.byref(C.c_int(number_of_tapers)),
+        C.byref(C.c_int(number_of_iterations)),
+        C.byref(C.c_float(degree_of_smoothing)),
+        C.byref(C.c_int(number_of_frequency_bins)),
+        mt.p(frequency_bins), mt.p(spectrum),
+        tapers_per_freq_point_p, mt.p(errors), verbose)
     # Calculate return values.
     return_values = [spectrum, frequency_bins]
     if statistics is True:
@@ -354,7 +352,7 @@ def dpss(npts, fw, nev, auto_spline=True, nmax=None):
 
 
 def wigner_ville_spectrum(data, delta, time_bandwidth=3.5,
-                          number_of_tapers=None, smoothing_filter=None, 
+                          number_of_tapers=None, smoothing_filter=None,
                           filter_width=100, frequency_divider=1,
                           verbose=False):
     """
@@ -417,8 +415,8 @@ def wigner_ville_spectrum(data, delta, time_bandwidth=3.5,
     output = mt.empty((npts//2//int(frequency_divider)+1, npts))
 
     mtspeclib.wv_spec_to_array_(C.byref(C.c_int(npts)),
-                                C.byref(C.c_float(delta)), 
-                                mt.p(data), mt.p(output), 
+                                C.byref(C.c_float(delta)),
+                                mt.p(data), mt.p(output),
                                 C.byref(C.c_float(time_bandwidth)),
                                 C.byref(C.c_int(number_of_tapers)),
                                 C.byref(C.c_int(smoothing_filter)),
@@ -430,12 +428,12 @@ def wigner_ville_spectrum(data, delta, time_bandwidth=3.5,
 
 def mt_coherence(df, xi, xj, tbp, kspec, nf, p, **kwargs):
     """
-    Construct the coherence spectrum from the yk's and the 
-    weights of the usual multitaper spectrum estimation. 
-    Note this code uses the real(4) multitaper code. 
-    
+    Construct the coherence spectrum from the yk's and the
+    weights of the usual multitaper spectrum estimation.
+    Note this code uses the real(4) multitaper code.
+
     INPUT
-    
+
     :param df: float; sampling rate of time series
     :param xi: numpy.ndarray; data for first series
     :param xj: numpy.ndarray; data for second series
@@ -443,18 +441,18 @@ def mt_coherence(df, xi, xj, tbp, kspec, nf, p, **kwargs):
     :param kspec: integer; number of tapers to use
     :param nf: integer; number of freq points in spectrum
     :param p:  float; confidence for null hypothesis test, e.g. .95
-    
-    
+
+
     OPTIONAL INPUT
-    
+
     :param iadapt:  integer 0 - adaptive, 1 - constant weights
              default adapt = 1
-    
+
     OPTIONAL OUTPUTS, the outputs are returned as dictionary, with keys as
     specified below and values as numpy.ndarrays. In order to activate the
-    output set the corresponding kwarg in the argument list, e.g. 
+    output set the corresponding kwarg in the argument list, e.g.
     ``mt_coherence(df, xi, xj, tbp, kspec, nf, p, freq=True, cohe=True)``
-    
+
     :param freq:     the frequency bins
     :param cohe:     coherence of the two series (0 - 1)
     :param phase:    the phase at each frequency
@@ -465,7 +463,7 @@ def mt_coherence(df, xi, xj, tbp, kspec, nf, p, **kwargs):
     :param phase_ci: 95% bounds on phase estimates
 
     If confidence intervals are requested, then both phase and
-    cohe variables need to be requested as well. 
+    cohe variables need to be requested as well.
     """
     npts = len(xi)
     if len(xj) != npts:
@@ -479,10 +477,10 @@ def mt_coherence(df, xi, xj, tbp, kspec, nf, p, **kwargs):
     # fill up optional arguments, if not given set them None
     args = []
     for key in ('freq', 'cohe', 'phase', 'speci', 'specj', 'conf',
-                'cohe_ci' , 'phase_ci', 'iadapt'):
+                'cohe_ci', 'phase_ci', 'iadapt'):
         kwargs.setdefault(key, None)
         if key in ('cohe_ci', 'phase_ci') and kwargs[key]:
-            kwargs[key] = mt.empty(nf,2)
+            kwargs[key] = mt.empty(nf, 2)
             args.append(mt.p(kwargs[key]))
         elif key == 'iadapt' and kwargs[key]:
             args.append(C.byref(C.c_int(kwargs[key])))

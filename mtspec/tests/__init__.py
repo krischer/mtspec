@@ -1,5 +1,13 @@
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
+"""
+:copyright:
+    Lion Krischer (krischer@geophysik.uni-muenchen.de) and
+    Moritz Beyreuther, 2010-2015
+:license:
+    GNU General Public License, Version 3
+    (http://www.gnu.org/copyleft/gpl.html)
+"""
 from mtspec.tests import test_multitaper, test_recreatepaperfigures, \
     test_code_formatting
 import unittest
