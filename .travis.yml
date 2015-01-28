@@ -24,6 +24,7 @@ before_install:
   - sudo rm -rf /dev/shm
   - sudo ln -s /run/shm /dev/shm
   - conda install --yes python=$TRAVIS_PYTHON_VERSION atlas numpy matplotlib flake8
+  - pip install coveralls
   # Docs are built with Python 2.7. Thus only this variant needs the doc dependencies.
   - if [[ $TRAVIS_PYTHON_VERSION == '2.7' ]]; then conda install --yes python=$TRAVIS_PYTHON_VERSION sphinx seaborn; fi
   - if [[ $TRAVIS_PYTHON_VERSION == '2.7' ]]; then pip install alabaster; fi
