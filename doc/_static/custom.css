@@ -1,11 +1,3 @@
-div.document {
-    width: 1240px;
-}
-
-div.bodywrapper {
-    margin: 0px 0px 0px 270px;
-}
-
 dl.function {
     padding-top: 18px;
 }
@@ -16,6 +8,7 @@ dt {
     padding-right: 30px;
     padding-top: 5px;
     padding-bottom: 5px;
+    margin-bottom: 15px;
     background-color: #eeeeee;
     border: 1px solid #cccccc;
 }

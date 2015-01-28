@@ -343,6 +343,7 @@ def dpss(npts, fw, number_of_tapers, auto_spline=True, npts_max=None):
 
     .. plot ::
 
+        # Same as the code snippet in the docstring, just a bit prettier.
         import seaborn as sns
         sns.set_style("ticks")
         import matplotlib.pyplot as plt
@@ -386,32 +387,122 @@ def wigner_ville_spectrum(data, delta, time_bandwidth=3.5,
                           filter_width=100, frequency_divider=1,
                           verbose=False):
     """
-    Wrapper method of the modified wv_spec (wv_spec_to_array) subroutine in
-    the library of German A. Prieto.
+    Function to calculate the Wigner-Ville Distribution or Wigner-Ville
+    Spectrum of a signal using multitaper spectral estimates.
+
+    In general it gives better temporal and frequency resolution than a
+    spectrogram but introduces many artifacts and possibly negative values
+    which are not physical. This can be alleviated a bit by applying a
+    smoothing kernel which is also known as a reduced interference
+    distribution (RID).
+
+    Wraps the ``wv_spec()`` and ``wv_spec_to_array()`` subroutines of the
+    Fortran library.
 
     It is very slow for large arrays so try with a small one (< 5000 samples)
-    first, or adapt frac respectively.
+    first.
 
-    :param data: numpy.ndarray;
-        The input signal
-    :param delta: integer;
-        The input sampling interval
-    :param time_bandwidth: float;
-        Time bandwith product
-    :param number_of_tapers: int;
-        Number of tapers to use. If None the number will be automatically
-        determined
-    :param smoothing_filter: string;
-        One of 'boxcar', 'gauss' or just None
-    :param filter_width: int;
-        Filter width in samples
-    :param frequency_divider: int,
-        This method will always calculate all frequencies from 0..nyquist_freq.
-        This parameter allows the adjustment of the maximum frequency, so that
-        the frequencies range from 0..nyquist_freq/int(frequency_divider).
-        Defaults to 1.
-    :param verbose: bool;
-        If True turn on verbose output
+    :param data: The input signal.
+    :type data: numpy.ndarray
+    :param delta: The sampling interval of the data.
+    :type delta: float
+    :param time_bandwidth: Time bandwidth product for the tapers.
+    :type time_bandwidth: float
+    :param number_of_tapers: Number of tapers to use. If ``None``, the number
+        will be automatically determined from the time bandwidth product
+        which is usually the optimal choice.
+    :type number_of_tapers: int
+    :param smoothing_filter: One of ``"boxcar"``, ``"gauss"`` or just ``None``
+    :type smoothing_filter: str
+    :param filter_width: Filter width in samples.
+    :type filter_width: int
+    :param frequency_divider: This method will always calculate all
+        frequencies from 0 ... Nyquist frequency. This parameter allows the
+        adjustment of the maximum frequency, so that the frequencies range
+        from 0 .. Nyquist frequency / int(frequency_divider).
+    :type frequency_divider: int
+    :param verbose: Verbose output on/off.
+    :type verbose: bool
+
+    .. rubric:: Example
+
+    This example demonstrates how to plot a signal, its multitaper spectral
+    estimate, and its Wigner-Ville time-frequency distribution. The signal
+    is sinusoidal overlaid with two simple linear chirps.
+
+    >>> import matplotlib.pyplot as plt
+    >>> import numpy as np
+    >>> from mtspec import mtspec, wigner_ville_spectrum
+    >>> from mtspec.util import signal_bursts
+    >>> fig = plt.figure()
+
+    Get the example signal.
+
+    >>> data = signal_bursts()
+
+    Plot the data on the top axes.
+
+    >>> ax1 = fig.add_axes([0.2,0.75, 0.79, 0.23])
+    >>> ax1.plot(data, color="0.3")
+    >>> ax1.set_xlim(0, len(data))
+
+    Plot its spectral estimate on the side.
+
+    >>> ax2 = fig.add_axes([0.06,0.02,0.13,0.69])
+    >>> spec, freq = mtspec(data, 10, 3.5)
+    >>> ax2.plot(spec, freq, color="0.3")
+    >>> ax2.set_xlim(0, spec.max())
+    >>> ax2.set_ylim(freq[0], freq[-1])
+    >>> ax2.set_xticks([])
+
+    Create and plot the Wigner-Ville distribution.
+
+    >>> wv = wigner_ville_spectrum(data, 10, 3.5,
+    ...                            smoothing_filter='gauss')
+    >>> ax3 = fig.add_axes([0.2, 0.02, 0.79, 0.69])
+    >>> ax3.set_yticks([])
+    >>> ax3.set_xticks([])
+    >>> # The square root only serves plotting purposes.
+    >>> ax3.imshow(np.sqrt(abs(wv)), interpolation='lanczos',
+    ...            aspect='auto')
+
+    .. plot::
+
+        # Same as the above code snippet just a bit prettier.
+        import seaborn as sns
+        import matplotlib.pyplot as plt
+        from mtspec import mtspec, wigner_ville_spectrum
+        from mtspec.util import signal_bursts
+        import numpy as np
+        sns.set_style("whitegrid")
+
+        fig = plt.figure()
+        data = signal_bursts()
+
+        # Plot the data
+        ax1 = fig.add_axes([0.2,0.75, 0.79, 0.23])
+        ax1.plot(data, color="0.3")
+        ax1.set_xlim(0, len(data))
+
+        # Plot multitaper spectrum
+        ax2 = fig.add_axes([0.06,0.02,0.13,0.69])
+        spec, freq = mtspec(data, 10, 3.5)
+        ax2.plot(spec, freq, color="0.3")
+        ax2.set_xlim(0, spec.max())
+        ax2.set_ylim(freq[0], freq[-1])
+        ax2.set_xticks([])
+
+        # Create the wigner ville spectrum
+        wv = wigner_ville_spectrum(data, 10, 3.5, smoothing_filter='gauss')
+
+        # Plot the WV
+        ax3 = fig.add_axes([0.2, 0.02, 0.79, 0.69])
+        ax3.set_yticks([])
+        ax3.set_xticks([])
+        c = sns.cubehelix_palette(light=1.0, dark=0.0, rot=2.0, as_cmap=True,
+                                  reverse=True)
+        ax3.imshow(np.sqrt(abs(wv)), interpolation='lanczos', aspect='auto',
+                   cmap=c)
     """
     data = np.require(data, 'float32')
     mt = _MtspecType("float32")
@@ -440,9 +531,9 @@ def wigner_ville_spectrum(data, delta, time_bandwidth=3.5,
         verbose = None
 
     # Allocate the output array
-    # f90 code internally pads zeros to 2*npts. That is we only return
+    # f90 code internally pads zeros to 2 * npts. That is we only return
     # every second frequency point, thus decrease the size of the array
-    output = mt.empty((npts//2//int(frequency_divider)+1, npts))
+    output = mt.empty((npts // 2 // int(frequency_divider) + 1, npts))
 
     mtspeclib.wv_spec_to_array_(C.byref(C.c_int(npts)),
                                 C.byref(C.c_float(delta)),
