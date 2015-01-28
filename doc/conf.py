@@ -42,7 +42,9 @@ html_theme_options = {
     'github_user': 'krischer',
     'github_repo': 'mtspec',
     'github_button': True,
-    'travis_button': True
+    'travis_button': True,
+    'note_bg': "#fafaea",
+    'pre_bg': "#fafaea"
 }
 html_sidebars = {
     '**': [
@@ -52,7 +54,7 @@ html_sidebars = {
 
 
 # Add any paths that contain templates here, relative to this directory.
-#templates_path = ['_templates']
+templates_path = ['_templates']
 
 # The suffix of source filenames.
 source_suffix = '.rst'

@@ -305,7 +305,7 @@ def dpss(npts, fw, number_of_tapers, auto_spline=True, npts_max=None):
     Wraps the ``dpss()`` subroutine from the Fortran library.
 
     By default this routine will use spline interpolation if sequences with
-    more than 200000 samples are requested.
+    more than 200.000 samples are requested.
 
     .. note::
 
@@ -333,7 +333,7 @@ def dpss(npts, fw, number_of_tapers, auto_spline=True, npts_max=None):
 
     .. rubric:: Example
 
-    This example demonstrates how to calculate and plot the first five DPSSs.
+    This example demonstrates how to calculate and plot the first five DPSS'.
 
     >>> import matplotlib.pyplot as plt
     >>> from mtspec import dpss
