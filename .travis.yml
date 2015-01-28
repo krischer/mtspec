@@ -23,8 +23,10 @@ before_install:
   # The next couple lines fix a crash with multiprocessing on Travis and are not specific to using Miniconda
   - sudo rm -rf /dev/shm
   - sudo ln -s /run/shm /dev/shm
-  - conda install --yes python=$TRAVIS_PYTHON_VERSION atlas numpy matplotlib flake8 sphinx
-  - pip install coveralls alabaster
+  - conda install --yes python=$TRAVIS_PYTHON_VERSION atlas numpy matplotlib flake8
+  # Docs are built with Python 2.7. Thus only this variant needs the doc dependencies.
+  - if [[ $TRAVIS_PYTHON_VERSION == '2.7' ]]; then conda install --yes python=$TRAVIS_PYTHON_VERSION sphinx seaborn; fi
+  - if [[ $TRAVIS_PYTHON_VERSION == '2.7' ]]; then pip install alabaster; fi
 
 install:
   - git version
