@@ -1,0 +1,26 @@
+dl.function {
+    padding-top: 18px;
+}
+
+dt {
+    margin-left: -30px;
+    padding-left: 30px;
+    padding-right: 30px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    margin-bottom: 15px;
+    background-color: #eeeeee;
+    border: 1px solid #cccccc;
+}
+
+dd div.admonition {
+    margin-left: -30px;
+    padding-left: 30px;
+}
+
+dl pre{
+    margin-left: -30px;
+    padding-left: 30px;
+    border: 1px solid #CCC;
+}
+

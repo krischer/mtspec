@@ -1,0 +1,228 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>mtspec.sine_psd &mdash; mtspec 0.3.x documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.3.x',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="mtspec 0.3.x documentation" href="index.html" />
+    <link rel="next" title="mtspec.mt_coherence" href="multitaper_mt_coherence.html" />
+    <link rel="prev" title="mtspec.mtspec" href="multitaper_mtspec.html" />
+    
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+
+    <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="multitaper_mt_coherence.html" title="mtspec.mt_coherence"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="multitaper_mtspec.html" title="mtspec.mtspec"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">mtspec 0.3.x documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="mtspec-sine-psd">
+<h1>mtspec.sine_psd<a class="headerlink" href="#mtspec-sine-psd" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="mtspec.multitaper.sine_psd">
+<tt class="descclassname">mtspec.multitaper.</tt><tt class="descname">sine_psd</tt><big>(</big><em>data</em>, <em>delta</em>, <em>number_of_tapers=None</em>, <em>number_of_iterations=2</em>, <em>degree_of_smoothing=1.0</em>, <em>statistics=False</em>, <em>verbose=False</em><big>)</big><a class="reference internal" href="_modules/mtspec/multitaper.html#sine_psd"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mtspec.multitaper.sine_psd" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wrapper method for the sine_psd subroutine in the library by German A.
+Prieto.</p>
+<p>The subroutine is in charge of estimating the adaptive sine multitaper as
+in Riedel and Sidorenko (1995).
+This is done by performing a MSE adaptive estimation. First a pilot
+spectral estimate is used, and S&#8221; is estimated, in order to get te number
+of tapers to use, using (13) of Riedel and Sidorenko for a min square error
+spectrum.
+Unlike the prolate spheroidal multitapers, the sine multitaper adaptive
+process introduces a variable resolution and error in the frequency domain.
+Complete error information is contained in the output variables as the
+corridor of 1-standard-deviation errors, and in the number of tapers used
+at each frequency.  The errors are estimated in the simplest way, from the
+number of degrees of freedom (two per taper), not by jack-knifing. The
+frequency resolution is found from K*fN/Nf where fN is the Nyquist
+frequency and Nf is the number of frequencies estimated.  The adaptive
+process used is as follows. A quadratic fit to the log PSD within an
+adaptively determined frequency band is used to find an estimate of the
+local second derivative of the spectrum. This is used in an equation like R
+&amp; S (13) for the MSE taper number, with the difference that a parabolic
+weighting is applied with increasing taper order. Because the FFTs of the
+tapered series can be found by resampling the FFT of the original time
+series (doubled in length and padded with zeros) only one FFT is required
+per series, no matter how many tapers are used. This makes the program
+fast. Compared with the Thomson multitaper programs, this code is not only
+fast but simple and short. The spectra associated with the sine tapers are
+weighted before averaging with a parabolically varying weight. The
+expression for the optimal number of tapers given by R &amp; S must be modified
+since it gives an unbounded result near points where S&#8221; vanishes, which
+happens at many points in most spectra. This program restricts the rate of
+growth of the number of tapers so that a neighboring covering interval
+estimate is never completely contained in the next such interval.</p>
+<p>This method SHOULD not be used for sharp cutoffs or deep valleys, or small
+sample sizes. Instead use Thomson multitaper in mtspec in this same
+library.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>data</strong> &#8211; <tt class="xref py py-class docutils literal"><span class="pre">numpy.ndarray</span></tt>
+Array with the data.</li>
+<li><strong>delta</strong> &#8211; float
+Sample spacing of the data.</li>
+<li><strong>number_of_tapers</strong> &#8211; integer/None, optional
+Number of tapers to use. If none is given, the library will perform an
+adaptive taper estimation with a varying number of tapers for each
+frequency. Defaults to None.</li>
+<li><strong>number_of_iterations</strong> &#8211; integer, optional
+Number of iterations to perform. Values less than 2 will be set to 2.
+Defaults to 2.</li>
+<li><strong>degree_of_smoothing</strong> &#8211; float, optional
+Degree of smoothing. Defaults to 1.0.</li>
+<li><strong>statistics</strong> &#8211; bool, optional
+Calculates and returns statistics. See the notes in the docstring for
+further details.</li>
+<li><strong>verbose</strong> &#8211; bool, optional
+Passed to the fortran library. Defaults to False.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Returns a list with <tt class="xref py py-class docutils literal"><span class="pre">numpy.ndarray</span></tt>. See the note below
+for details.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This method will at return at least two arrays: The calculated
+spectrum and the corresponding frequencies.  If statistics is True
+is will also return (in the given order) (multidimensional) arrays
+containing the 1-std errors (a simple dof estimate) and the number
+of tapers used for each frequency point.</p>
+</div>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="index.html">
+    <img class="logo" src="_static/logo.svg" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+
+
+<p>
+<iframe src="http://ghbtns.com/github-btn.html?user=krischer&repo=mtspec&type=watch&count=true&size=large"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+    
+
+<p>
+<a href="https://travis-ci.org/krischer/mtspec">
+    <img
+        alt="https://secure.travis-ci.org/krischer/mtspec.png?branch=master"
+        src="https://secure.travis-ci.org/krischer/mtspec.png?branch=master"
+    >
+</a>
+</p>
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="tutorial.html">Tutorial</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="multitaper_dpss.html">mtspec.dpss</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multitaper_mtspec.html">mtspec.mtspec</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">mtspec.sine_psd</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multitaper_mt_coherence.html">mtspec.mt_coherence</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multitaper_wigner_ville_spectrum.html">mtspec.wigner_ville_spectrum</a></li>
+<li class="toctree-l1"><a class="reference internal" href="util.html">mtspec.util</a></li>
+</ul>
+
+
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2009-2015, Lion Krischer, Moritz Beyreuther.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.2.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.6.3</a>
+      
+      |
+      <a href="_sources/multitaper_sine_psd.txt"
+          rel="nofollow">Page source</a></li>
+    </div>
+
+    
+
+    
+  </body>
+</html>

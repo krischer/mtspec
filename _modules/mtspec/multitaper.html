@@ -25,9 +25,12 @@
     <script type="text/javascript" src="../../_static/doctools.js"></script>
     <link rel="top" title="mtspec 0.3.x documentation" href="../../index.html" />
     <link rel="up" title="Module code" href="../index.html" />
+    
    
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+
+    <link rel="stylesheet" href="_static/custom.css" type="text/css" />
 
   </head>
   <body>
@@ -72,7 +75,7 @@
 <span class="n">mtspeclib</span> <span class="o">=</span> <span class="n">_load_lib</span><span class="p">()</span>
 
 
-<div class="viewcode-block" id="mtspec"><a class="viewcode-back" href="../../multitaper.html#mtspec.multitaper.mtspec">[docs]</a><span class="k">def</span> <span class="nf">mtspec</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">delta</span><span class="p">,</span> <span class="n">time_bandwidth</span><span class="p">,</span> <span class="n">nfft</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">number_of_tapers</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+<div class="viewcode-block" id="mtspec"><a class="viewcode-back" href="../../multitaper_mtspec.html#mtspec.multitaper.mtspec">[docs]</a><span class="k">def</span> <span class="nf">mtspec</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">delta</span><span class="p">,</span> <span class="n">time_bandwidth</span><span class="p">,</span> <span class="n">nfft</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">number_of_tapers</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
            <span class="n">quadratic</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">adaptive</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
            <span class="n">optional_output</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">statistics</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">rshape</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
            <span class="n">fcrit</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
@@ -232,7 +235,7 @@
     <span class="k">return</span> <span class="n">return_values</span>
 
 </div>
-<div class="viewcode-block" id="sine_psd"><a class="viewcode-back" href="../../multitaper.html#mtspec.multitaper.sine_psd">[docs]</a><span class="k">def</span> <span class="nf">sine_psd</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">delta</span><span class="p">,</span> <span class="n">number_of_tapers</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">number_of_iterations</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+<div class="viewcode-block" id="sine_psd"><a class="viewcode-back" href="../../multitaper_sine_psd.html#mtspec.multitaper.sine_psd">[docs]</a><span class="k">def</span> <span class="nf">sine_psd</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">delta</span><span class="p">,</span> <span class="n">number_of_tapers</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">number_of_iterations</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
              <span class="n">degree_of_smoothing</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">statistics</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Wrapper method for the sine_psd subroutine in the library by German A.</span>
@@ -348,48 +351,65 @@
     <span class="k">return</span> <span class="n">return_values</span>
 
 </div>
-<div class="viewcode-block" id="dpss"><a class="viewcode-back" href="../../multitaper.html#mtspec.multitaper.dpss">[docs]</a><span class="k">def</span> <span class="nf">dpss</span><span class="p">(</span><span class="n">npts</span><span class="p">,</span> <span class="n">fw</span><span class="p">,</span> <span class="n">number_of_tapers</span><span class="p">,</span> <span class="n">auto_spline</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">npts_max</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="dpss"><a class="viewcode-back" href="../../multitaper_dpss.html#mtspec.multitaper.dpss">[docs]</a><span class="k">def</span> <span class="nf">dpss</span><span class="p">(</span><span class="n">npts</span><span class="p">,</span> <span class="n">fw</span><span class="p">,</span> <span class="n">number_of_tapers</span><span class="p">,</span> <span class="n">auto_spline</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">npts_max</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Calculates DPSS also known as Slepian sequences or Slepian tapers.</span>
 
-<span class="sd">    Calculation of the DPSS (Discrete Prolate Spheroidal Sequences) also knows</span>
-<span class="sd">    as the Slepian sequences, and the correspondent eigenvalues. Also, the (1 -</span>
-<span class="sd">    eigenvalue) terms are calculated.</span>
+<span class="sd">    Calculation of the DPSS (Discrete Prolate Spheroidal Sequences) and the</span>
+<span class="sd">    correspondent eigenvalues. The (1 - eigenvalue) terms are also calculated.</span>
 
 <span class="sd">    Wraps the ``dpss()`` subroutine from the Fortran library.</span>
 
 <span class="sd">    By default this routine will use spline interpolation if sequences with</span>
-<span class="sd">    more than 200000 samples are requested.</span>
+<span class="sd">    more than 200.000 samples are requested.</span>
 
 <span class="sd">    .. note::</span>
 
 <span class="sd">        The tapers are the eigenvectors of the tridiagonal matrix sigma(i, j)</span>
 <span class="sd">        [see Slepian(1978) eq 14 and 25]. They are also the eigenvectors of</span>
-<span class="sd">        the Toeplitz matrix eq. 18.</span>
+<span class="sd">        the Toeplitz matrix, eq. 18.</span>
 
-<span class="sd">    :param npts: The number of points in the series</span>
+<span class="sd">    :param npts: The number of points in the series.</span>
 <span class="sd">    :type npts: int</span>
-<span class="sd">    :param fw: The time-bandwidth product (number of Rayleigh bins)</span>
+<span class="sd">    :param fw: The time-bandwidth product (number of Rayleigh bins).</span>
 <span class="sd">    :type fw: float</span>
-<span class="sd">    :param number_of_tapers: The desired number of tapers</span>
+<span class="sd">    :param number_of_tapers: The desired number of tapers.</span>
 <span class="sd">    :type number_of_tapers: int</span>
 <span class="sd">    :param auto_spline: Whether or not to automatically use spline</span>
-<span class="sd">        interpolation with ``npts`` &gt; 200000.</span>
+<span class="sd">        interpolation for ``npts`` &gt; 200000.</span>
 <span class="sd">    :type auto_spline: bool</span>
-<span class="sd">    :param npts_max: The number of actual points to calculate the dpss. If this</span>
-<span class="sd">        number is smaller than npts spline interpolation will be performed,</span>
-<span class="sd">        regardless of auto_spline.</span>
+<span class="sd">    :param npts_max: The number of actual points to calculate the DPSS. If this</span>
+<span class="sd">        number is smaller than ``npts``, spline interpolation will be</span>
+<span class="sd">        performed, regardless of the value of ``auto_spline``.</span>
 <span class="sd">    :type npts_max: None or int</span>
 <span class="sd">    :returns: ``(v, lambda, theta)`` with</span>
 <span class="sd">        ``v(npts, number_of_tapers)`` the eigenvectors (tapers), ``lambda`` the</span>
 <span class="sd">        eigenvalues of the ``v``&#39;s and ``theta`` the 1 - ``lambda``</span>
 <span class="sd">        (energy outside the bandwidth) values.</span>
 
+<span class="sd">    .. rubric:: Example</span>
+
+<span class="sd">    This example demonstrates how to calculate and plot the first five DPSS&#39;.</span>
+
 <span class="sd">    &gt;&gt;&gt; import matplotlib.pyplot as plt</span>
 <span class="sd">    &gt;&gt;&gt; from mtspec import dpss</span>
-<span class="sd">    &gt;&gt;&gt; tapers, lamb, theta = dpss(512, 2.5, 10)</span>
-<span class="sd">    &gt;&gt;&gt; for i in xrange(10):</span>
-<span class="sd">    ...     plt.plot(tapers[:,i])</span>
+<span class="sd">    &gt;&gt;&gt; tapers, lamb, theta = dpss(512, 2.5, 5)</span>
+<span class="sd">    &gt;&gt;&gt; for i in range(5):</span>
+<span class="sd">    ...     plt.plot(tapers[:, i])</span>
+
+<span class="sd">    .. plot ::</span>
+
+<span class="sd">        # Same as the code snippet in the docstring, just a bit prettier.</span>
+<span class="sd">        import seaborn as sns</span>
+<span class="sd">        sns.set_style(&quot;ticks&quot;)</span>
+<span class="sd">        import matplotlib.pyplot as plt</span>
+<span class="sd">        from mtspec import dpss</span>
+<span class="sd">        tapers, lamb, theta = dpss(512, 2.5, 5)</span>
+<span class="sd">        for i in xrange(5):</span>
+<span class="sd">            plt.plot(tapers[:, i])</span>
+<span class="sd">        plt.xlim(0, 512)</span>
+<span class="sd">        plt.ylim(-0.09, 0.09)</span>
+<span class="sd">        plt.tight_layout()</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">mt</span> <span class="o">=</span> <span class="n">_MtspecType</span><span class="p">(</span><span class="s">&quot;float64&quot;</span><span class="p">)</span>
 
@@ -418,37 +438,127 @@
     <span class="k">return</span> <span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">lamb</span><span class="p">,</span> <span class="n">theta</span><span class="p">)</span>
 
 </div>
-<div class="viewcode-block" id="wigner_ville_spectrum"><a class="viewcode-back" href="../../multitaper.html#mtspec.multitaper.wigner_ville_spectrum">[docs]</a><span class="k">def</span> <span class="nf">wigner_ville_spectrum</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">delta</span><span class="p">,</span> <span class="n">time_bandwidth</span><span class="o">=</span><span class="mf">3.5</span><span class="p">,</span>
+<div class="viewcode-block" id="wigner_ville_spectrum"><a class="viewcode-back" href="../../multitaper_wigner_ville_spectrum.html#mtspec.multitaper.wigner_ville_spectrum">[docs]</a><span class="k">def</span> <span class="nf">wigner_ville_spectrum</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">delta</span><span class="p">,</span> <span class="n">time_bandwidth</span><span class="o">=</span><span class="mf">3.5</span><span class="p">,</span>
                           <span class="n">number_of_tapers</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">smoothing_filter</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
                           <span class="n">filter_width</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">frequency_divider</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
                           <span class="n">verbose</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Wrapper method of the modified wv_spec (wv_spec_to_array) subroutine in</span>
-<span class="sd">    the library of German A. Prieto.</span>
+<span class="sd">    Function to calculate the Wigner-Ville Distribution or Wigner-Ville</span>
+<span class="sd">    Spectrum of a signal using multitaper spectral estimates.</span>
+
+<span class="sd">    In general it gives better temporal and frequency resolution than a</span>
+<span class="sd">    spectrogram but introduces many artifacts and possibly negative values</span>
+<span class="sd">    which are not physical. This can be alleviated a bit by applying a</span>
+<span class="sd">    smoothing kernel which is also known as a reduced interference</span>
+<span class="sd">    distribution (RID).</span>
+
+<span class="sd">    Wraps the ``wv_spec()`` and ``wv_spec_to_array()`` subroutines of the</span>
+<span class="sd">    Fortran library.</span>
 
 <span class="sd">    It is very slow for large arrays so try with a small one (&lt; 5000 samples)</span>
-<span class="sd">    first, or adapt frac respectively.</span>
+<span class="sd">    first.</span>
 
-<span class="sd">    :param data: numpy.ndarray;</span>
-<span class="sd">        The input signal</span>
-<span class="sd">    :param delta: integer;</span>
-<span class="sd">        The input sampling interval</span>
-<span class="sd">    :param time_bandwidth: float;</span>
-<span class="sd">        Time bandwith product</span>
-<span class="sd">    :param number_of_tapers: int;</span>
-<span class="sd">        Number of tapers to use. If None the number will be automatically</span>
-<span class="sd">        determined</span>
-<span class="sd">    :param smoothing_filter: string;</span>
-<span class="sd">        One of &#39;boxcar&#39;, &#39;gauss&#39; or just None</span>
-<span class="sd">    :param filter_width: int;</span>
-<span class="sd">        Filter width in samples</span>
-<span class="sd">    :param frequency_divider: int,</span>
-<span class="sd">        This method will always calculate all frequencies from 0..nyquist_freq.</span>
-<span class="sd">        This parameter allows the adjustment of the maximum frequency, so that</span>
-<span class="sd">        the frequencies range from 0..nyquist_freq/int(frequency_divider).</span>
-<span class="sd">        Defaults to 1.</span>
-<span class="sd">    :param verbose: bool;</span>
-<span class="sd">        If True turn on verbose output</span>
+<span class="sd">    :param data: The input signal.</span>
+<span class="sd">    :type data: numpy.ndarray</span>
+<span class="sd">    :param delta: The sampling interval of the data.</span>
+<span class="sd">    :type delta: float</span>
+<span class="sd">    :param time_bandwidth: Time bandwidth product for the tapers.</span>
+<span class="sd">    :type time_bandwidth: float</span>
+<span class="sd">    :param number_of_tapers: Number of tapers to use. If ``None``, the number</span>
+<span class="sd">        will be automatically determined from the time bandwidth product</span>
+<span class="sd">        which is usually the optimal choice.</span>
+<span class="sd">    :type number_of_tapers: int</span>
+<span class="sd">    :param smoothing_filter: One of ``&quot;boxcar&quot;``, ``&quot;gauss&quot;`` or just ``None``</span>
+<span class="sd">    :type smoothing_filter: str</span>
+<span class="sd">    :param filter_width: Filter width in samples.</span>
+<span class="sd">    :type filter_width: int</span>
+<span class="sd">    :param frequency_divider: This method will always calculate all</span>
+<span class="sd">        frequencies from 0 ... Nyquist frequency. This parameter allows the</span>
+<span class="sd">        adjustment of the maximum frequency, so that the frequencies range</span>
+<span class="sd">        from 0 .. Nyquist frequency / int(frequency_divider).</span>
+<span class="sd">    :type frequency_divider: int</span>
+<span class="sd">    :param verbose: Verbose output on/off.</span>
+<span class="sd">    :type verbose: bool</span>
+
+<span class="sd">    .. rubric:: Example</span>
+
+<span class="sd">    This example demonstrates how to plot a signal, its multitaper spectral</span>
+<span class="sd">    estimate, and its Wigner-Ville time-frequency distribution. The signal</span>
+<span class="sd">    is sinusoidal overlaid with two simple linear chirps.</span>
+
+<span class="sd">    &gt;&gt;&gt; import matplotlib.pyplot as plt</span>
+<span class="sd">    &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">    &gt;&gt;&gt; from mtspec import mtspec, wigner_ville_spectrum</span>
+<span class="sd">    &gt;&gt;&gt; from mtspec.util import signal_bursts</span>
+<span class="sd">    &gt;&gt;&gt; fig = plt.figure()</span>
+
+<span class="sd">    Get the example signal.</span>
+
+<span class="sd">    &gt;&gt;&gt; data = signal_bursts()</span>
+
+<span class="sd">    Plot the data on the top axes.</span>
+
+<span class="sd">    &gt;&gt;&gt; ax1 = fig.add_axes([0.2,0.75, 0.79, 0.23])</span>
+<span class="sd">    &gt;&gt;&gt; ax1.plot(data, color=&quot;0.3&quot;)</span>
+<span class="sd">    &gt;&gt;&gt; ax1.set_xlim(0, len(data))</span>
+
+<span class="sd">    Plot its spectral estimate on the side.</span>
+
+<span class="sd">    &gt;&gt;&gt; ax2 = fig.add_axes([0.06,0.02,0.13,0.69])</span>
+<span class="sd">    &gt;&gt;&gt; spec, freq = mtspec(data, 10, 3.5)</span>
+<span class="sd">    &gt;&gt;&gt; ax2.plot(spec, freq, color=&quot;0.3&quot;)</span>
+<span class="sd">    &gt;&gt;&gt; ax2.set_xlim(0, spec.max())</span>
+<span class="sd">    &gt;&gt;&gt; ax2.set_ylim(freq[0], freq[-1])</span>
+<span class="sd">    &gt;&gt;&gt; ax2.set_xticks([])</span>
+
+<span class="sd">    Create and plot the Wigner-Ville distribution.</span>
+
+<span class="sd">    &gt;&gt;&gt; wv = wigner_ville_spectrum(data, 10, 3.5,</span>
+<span class="sd">    ...                            smoothing_filter=&#39;gauss&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; ax3 = fig.add_axes([0.2, 0.02, 0.79, 0.69])</span>
+<span class="sd">    &gt;&gt;&gt; ax3.set_yticks([])</span>
+<span class="sd">    &gt;&gt;&gt; ax3.set_xticks([])</span>
+<span class="sd">    &gt;&gt;&gt; # The square root only serves plotting purposes.</span>
+<span class="sd">    &gt;&gt;&gt; ax3.imshow(np.sqrt(abs(wv)), interpolation=&#39;lanczos&#39;,</span>
+<span class="sd">    ...            aspect=&#39;auto&#39;)</span>
+
+<span class="sd">    .. plot::</span>
+
+<span class="sd">        # Same as the above code snippet just a bit prettier.</span>
+<span class="sd">        import seaborn as sns</span>
+<span class="sd">        import matplotlib.pyplot as plt</span>
+<span class="sd">        from mtspec import mtspec, wigner_ville_spectrum</span>
+<span class="sd">        from mtspec.util import signal_bursts</span>
+<span class="sd">        import numpy as np</span>
+<span class="sd">        sns.set_style(&quot;whitegrid&quot;)</span>
+
+<span class="sd">        fig = plt.figure()</span>
+<span class="sd">        data = signal_bursts()</span>
+
+<span class="sd">        # Plot the data</span>
+<span class="sd">        ax1 = fig.add_axes([0.2,0.75, 0.79, 0.23])</span>
+<span class="sd">        ax1.plot(data, color=&quot;0.3&quot;)</span>
+<span class="sd">        ax1.set_xlim(0, len(data))</span>
+
+<span class="sd">        # Plot multitaper spectrum</span>
+<span class="sd">        ax2 = fig.add_axes([0.06,0.02,0.13,0.69])</span>
+<span class="sd">        spec, freq = mtspec(data, 10, 3.5)</span>
+<span class="sd">        ax2.plot(spec, freq, color=&quot;0.3&quot;)</span>
+<span class="sd">        ax2.set_xlim(0, spec.max())</span>
+<span class="sd">        ax2.set_ylim(freq[0], freq[-1])</span>
+<span class="sd">        ax2.set_xticks([])</span>
+
+<span class="sd">        # Create the wigner ville spectrum</span>
+<span class="sd">        wv = wigner_ville_spectrum(data, 10, 3.5, smoothing_filter=&#39;gauss&#39;)</span>
+
+<span class="sd">        # Plot the WV</span>
+<span class="sd">        ax3 = fig.add_axes([0.2, 0.02, 0.79, 0.69])</span>
+<span class="sd">        ax3.set_yticks([])</span>
+<span class="sd">        ax3.set_xticks([])</span>
+<span class="sd">        c = sns.cubehelix_palette(light=1.0, dark=0.0, rot=2.0, as_cmap=True,</span>
+<span class="sd">                                  reverse=True)</span>
+<span class="sd">        ax3.imshow(np.sqrt(abs(wv)), interpolation=&#39;lanczos&#39;, aspect=&#39;auto&#39;,</span>
+<span class="sd">                   cmap=c)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">require</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="s">&#39;float32&#39;</span><span class="p">)</span>
     <span class="n">mt</span> <span class="o">=</span> <span class="n">_MtspecType</span><span class="p">(</span><span class="s">&quot;float32&quot;</span><span class="p">)</span>
@@ -477,9 +587,9 @@
         <span class="n">verbose</span> <span class="o">=</span> <span class="bp">None</span>
 
     <span class="c"># Allocate the output array</span>
-    <span class="c"># f90 code internally pads zeros to 2*npts. That is we only return</span>
+    <span class="c"># f90 code internally pads zeros to 2 * npts. That is we only return</span>
     <span class="c"># every second frequency point, thus decrease the size of the array</span>
-    <span class="n">output</span> <span class="o">=</span> <span class="n">mt</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">npts</span><span class="o">//</span><span class="mi">2</span><span class="o">//</span><span class="nb">int</span><span class="p">(</span><span class="n">frequency_divider</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">npts</span><span class="p">))</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="n">mt</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">npts</span> <span class="o">//</span> <span class="mi">2</span> <span class="o">//</span> <span class="nb">int</span><span class="p">(</span><span class="n">frequency_divider</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">npts</span><span class="p">))</span>
 
     <span class="n">mtspeclib</span><span class="o">.</span><span class="n">wv_spec_to_array_</span><span class="p">(</span><span class="n">C</span><span class="o">.</span><span class="n">byref</span><span class="p">(</span><span class="n">C</span><span class="o">.</span><span class="n">c_int</span><span class="p">(</span><span class="n">npts</span><span class="p">)),</span>
                                 <span class="n">C</span><span class="o">.</span><span class="n">byref</span><span class="p">(</span><span class="n">C</span><span class="o">.</span><span class="n">c_float</span><span class="p">(</span><span class="n">delta</span><span class="p">)),</span>
@@ -493,7 +603,7 @@
     <span class="k">return</span> <span class="n">output</span>
 
 </div>
-<div class="viewcode-block" id="mt_coherence"><a class="viewcode-back" href="../../multitaper.html#mtspec.multitaper.mt_coherence">[docs]</a><span class="k">def</span> <span class="nf">mt_coherence</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">xi</span><span class="p">,</span> <span class="n">xj</span><span class="p">,</span> <span class="n">tbp</span><span class="p">,</span> <span class="n">kspec</span><span class="p">,</span> <span class="n">nf</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="mt_coherence"><a class="viewcode-back" href="../../multitaper_mt_coherence.html#mtspec.multitaper.mt_coherence">[docs]</a><span class="k">def</span> <span class="nf">mt_coherence</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">xi</span><span class="p">,</span> <span class="n">xj</span><span class="p">,</span> <span class="n">tbp</span><span class="p">,</span> <span class="n">kspec</span><span class="p">,</span> <span class="n">nf</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Construct the coherence spectrum from the yk&#39;s and the</span>
 <span class="sd">    weights of the usual multitaper spectrum estimation.</span>
@@ -653,8 +763,12 @@
 <li class="toctree-l1"><a class="reference internal" href="../../tutorial.html">Tutorial</a></li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../multitaper.html">mtspec API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../util.html">mtspec Utilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../multitaper_dpss.html">mtspec.dpss</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../multitaper_mtspec.html">mtspec.mtspec</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../multitaper_sine_psd.html">mtspec.sine_psd</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../multitaper_mt_coherence.html">mtspec.mt_coherence</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../multitaper_wigner_ville_spectrum.html">mtspec.wigner_ville_spectrum</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../util.html">mtspec.util</a></li>
 </ul>
 
 

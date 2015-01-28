@@ -258,7 +258,7 @@ dt:target, .highlight {
 }
 
 div.note {
-    background-color: #EEE;
+    background-color: #fafaea;
     border: 1px solid #CCC;
 }
 
@@ -370,7 +370,7 @@ ul, ol {
 }
 
 pre {
-    background: #EEE;
+    background: #fafaea;
     padding: 7px 30px;
     margin: 15px 0px;
     line-height: 1.3em;

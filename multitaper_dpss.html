@@ -1,0 +1,202 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>mtspec.dpss &mdash; mtspec 0.3.x documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.3.x',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="mtspec 0.3.x documentation" href="index.html" />
+    <link rel="next" title="mtspec.mtspec" href="multitaper_mtspec.html" />
+    <link rel="prev" title="Tutorial" href="tutorial.html" />
+    
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+
+    <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="multitaper_mtspec.html" title="mtspec.mtspec"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="tutorial.html" title="Tutorial"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">mtspec 0.3.x documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="mtspec-dpss">
+<h1>mtspec.dpss<a class="headerlink" href="#mtspec-dpss" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="mtspec.multitaper.dpss">
+<tt class="descclassname">mtspec.multitaper.</tt><tt class="descname">dpss</tt><big>(</big><em>npts</em>, <em>fw</em>, <em>number_of_tapers</em>, <em>auto_spline=True</em>, <em>npts_max=None</em><big>)</big><a class="reference internal" href="_modules/mtspec/multitaper.html#dpss"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mtspec.multitaper.dpss" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates DPSS also known as Slepian sequences or Slepian tapers.</p>
+<p>Calculation of the DPSS (Discrete Prolate Spheroidal Sequences) and the
+correspondent eigenvalues. The (1 - eigenvalue) terms are also calculated.</p>
+<p>Wraps the <tt class="docutils literal"><span class="pre">dpss()</span></tt> subroutine from the Fortran library.</p>
+<p>By default this routine will use spline interpolation if sequences with
+more than 200.000 samples are requested.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The tapers are the eigenvectors of the tridiagonal matrix sigma(i, j)
+[see Slepian(1978) eq 14 and 25]. They are also the eigenvectors of
+the Toeplitz matrix, eq. 18.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>npts</strong> (<em>int</em>) &#8211; The number of points in the series.</li>
+<li><strong>fw</strong> (<em>float</em>) &#8211; The time-bandwidth product (number of Rayleigh bins).</li>
+<li><strong>number_of_tapers</strong> (<em>int</em>) &#8211; The desired number of tapers.</li>
+<li><strong>auto_spline</strong> (<em>bool</em>) &#8211; Whether or not to automatically use spline
+interpolation for <tt class="docutils literal"><span class="pre">npts</span></tt> &gt; 200000.</li>
+<li><strong>npts_max</strong> (<em>None or int</em>) &#8211; The number of actual points to calculate the DPSS. If this
+number is smaller than <tt class="docutils literal"><span class="pre">npts</span></tt>, spline interpolation will be
+performed, regardless of the value of <tt class="docutils literal"><span class="pre">auto_spline</span></tt>.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><tt class="docutils literal"><span class="pre">(v,</span> <span class="pre">lambda,</span> <span class="pre">theta)</span></tt> with
+<tt class="docutils literal"><span class="pre">v(npts,</span> <span class="pre">number_of_tapers)</span></tt> the eigenvectors (tapers), <tt class="docutils literal"><span class="pre">lambda</span></tt> the
+eigenvalues of the <tt class="docutils literal"><span class="pre">v</span></tt>&#8216;s and <tt class="docutils literal"><span class="pre">theta</span></tt> the 1 - <tt class="docutils literal"><span class="pre">lambda</span></tt>
+(energy outside the bandwidth) values.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Example</p>
+<p>This example demonstrates how to calculate and plot the first five DPSS&#8217;.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">mtspec</span> <span class="kn">import</span> <span class="n">dpss</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tapers</span><span class="p">,</span> <span class="n">lamb</span><span class="p">,</span> <span class="n">theta</span> <span class="o">=</span> <span class="n">dpss</span><span class="p">(</span><span class="mi">512</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">tapers</span><span class="p">[:,</span> <span class="n">i</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>(<a class="reference external" href=".//multitaper_dpss-1.py">Source code</a>, <a class="reference external" href=".//multitaper_dpss-1.png">png</a>, <a class="reference external" href=".//multitaper_dpss-1.hires.png">hires.png</a>, <a class="reference external" href=".//multitaper_dpss-1.pdf">pdf</a>)</p>
+<div class="figure">
+<img alt="_images/multitaper_dpss-1.png" src="_images/multitaper_dpss-1.png" />
+</div>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="index.html">
+    <img class="logo" src="_static/logo.svg" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+
+
+<p>
+<iframe src="http://ghbtns.com/github-btn.html?user=krischer&repo=mtspec&type=watch&count=true&size=large"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+    
+
+<p>
+<a href="https://travis-ci.org/krischer/mtspec">
+    <img
+        alt="https://secure.travis-ci.org/krischer/mtspec.png?branch=master"
+        src="https://secure.travis-ci.org/krischer/mtspec.png?branch=master"
+    >
+</a>
+</p>
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="tutorial.html">Tutorial</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="">mtspec.dpss</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multitaper_mtspec.html">mtspec.mtspec</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multitaper_sine_psd.html">mtspec.sine_psd</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multitaper_mt_coherence.html">mtspec.mt_coherence</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multitaper_wigner_ville_spectrum.html">mtspec.wigner_ville_spectrum</a></li>
+<li class="toctree-l1"><a class="reference internal" href="util.html">mtspec.util</a></li>
+</ul>
+
+
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2009-2015, Lion Krischer, Moritz Beyreuther.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.2.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.6.3</a>
+      
+      |
+      <a href="_sources/multitaper_dpss.txt"
+          rel="nofollow">Page source</a></li>
+    </div>
+
+    
+
+    
+  </body>
+</html>
