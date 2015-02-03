@@ -34,6 +34,7 @@ from setuptools.extension import Extension
 
 import inspect
 import os
+import platform
 from subprocess import Popen, PIPE
 import sys
 
@@ -55,10 +56,19 @@ UnixCCompiler.src_extensions.append(".f90")
 
 def _compile(self, obj, src, ext, cc_args, extra_postargs, pp_opts):
     compiler_so = self.compiler_so
+    arch = platform.architecture()[0].lower()
     if ext == ".f90":
         if sys.platform == 'darwin' or sys.platform == 'linux2':
             compiler_so = ["gfortran"]
             cc_args = ["-O", "-fPIC", "-c", "-ffree-form"]
+            # Force architecture of shared library.
+            if arch == "32bit":
+                cc_args.append("-m32")
+            elif arch == "64bit":
+                cc_args.append("-m64")
+            else:
+                print("\nPlatform has architecture '%s' which is unknown to "
+                      "the setup script. Proceed with caution\n" % arch)
     try:
         self.spawn(compiler_so + cc_args + [src, '-o', obj] +
                    extra_postargs)
