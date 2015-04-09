@@ -20,16 +20,17 @@ References:
 from __future__ import (absolute_import, division, print_function,
                         unicode_literals)
 
-import matplotlib
-matplotlib.use("Agg")
-import matplotlib.pylab as plt
-
 import os
 import time
 import unittest
 
+import matplotlib.pylab as plt
+
 from ..multitaper import mtspec, sine_psd
 from ..util import _load_mtdata
+
+
+plt.switch_backend("Agg")
 
 
 class RecreateFigures(unittest.TestCase):
