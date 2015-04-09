@@ -16,12 +16,14 @@
 
 
 
+
+
 @import url("basic.css");
 
 /* -- page layout ----------------------------------------------------------- */
 
 body {
-    font-family: 'goudy old style', 'minion pro', 'bell mt', Georgia, 'Hiragino Mincho Pro';
+    font-family: 'goudy old style', 'minion pro', 'bell mt', Georgia, 'Hiragino Mincho Pro', serif;
     font-size: 17px;
     background-color: white;
     color: #000;
@@ -111,6 +113,7 @@ div.sphinxsidebarwrapper h1.logo-name {
 
 div.sphinxsidebarwrapper p.blurb {
     margin-top: 0;
+    font-style: normal;
 }
 
 div.sphinxsidebar h3,
@@ -159,7 +162,7 @@ div.sphinxsidebar ul li.toctree-l2 > a {
 
 div.sphinxsidebar input {
     border: 1px solid #CCC;
-    font-family: 'Georgia', serif;
+    font-family: 'goudy old style', 'minion pro', 'bell mt', Georgia, 'Hiragino Mincho Pro', serif;
     font-size: 1em;
 }
 
@@ -263,8 +266,8 @@ div.note {
 }
 
 div.seealso {
-    background-color: #ffc;
-    border: 1px solid #ff6;
+    background-color: #EEE;
+    border: 1px solid #CCC;
 }
 
 div.topic {
@@ -279,7 +282,7 @@ p.admonition-title:after {
     content: ":";
 }
 
-pre, tt {
+pre, tt, code {
     font-family: 'Consolas', 'Menlo', 'Deja Vu Sans Mono', 'Bitstream Vera Sans Mono', monospace;
     font-size: 0.9em;
 }
@@ -287,11 +290,11 @@ pre, tt {
 img.screenshot {
 }
 
-tt.descname, tt.descclassname {
+tt.descname, tt.descclassname, code.descname, code.descclassname {
     font-size: 0.95em;
 }
 
-tt.descname {
+tt.descname, code.descname {
     padding-right: 0.08em;
 }
 
@@ -386,13 +389,13 @@ dl dl pre {
     padding-left: 90px;
 }
 
-tt {
+tt, code {
     background-color: #ecf0f3;
     color: #222;
     /* padding: 1px 2px; */
 }
 
-tt.xref, a tt {
+tt.xref, code.xref, a tt {
     background-color: #FBFBFB;
     border-bottom: 1px solid white;
 }
@@ -417,7 +420,7 @@ a.footnote-reference:hover {
     border-bottom: 1px solid #6D4100;
 }
 
-a:hover tt {
+a:hover tt, a:hover code {
     background: #EEE;
 }
 
@@ -576,4 +579,13 @@ a:hover tt {
  */
 div#changelog > div.section > ul > li > p:only-child {
     margin-bottom: 0;
+}
+
+/* Hide fugly table cell borders in ..bibliography:: directive output */
+table.docutils.citation, table.docutils.citation td, table.docutils.citation th {
+  border: none;
+  /* Below needed in some edge cases; if not applied, bottom shadows appear */
+  -moz-box-shadow: none;
+  -webkit-box-shadow: none;
+  box-shadow: none;
 }
