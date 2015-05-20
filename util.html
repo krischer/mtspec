@@ -33,8 +33,8 @@
     <link rel="stylesheet" href="_static/custom.css" type="text/css" />
 
   </head>
-  <body>
-    <div class="related">
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -46,14 +46,14 @@
         <li class="right" >
           <a href="multitaper_wigner_ville_spectrum.html" title="mtspec.wigner_ville_spectrum"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">mtspec 0.3.x documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">mtspec 0.3.x documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          <div class="body">
+          <div class="body" role="main">
             
   <div class="section" id="mtspec-util">
 <h1>mtspec.util<a class="headerlink" href="#mtspec-util" title="Permalink to this headline">¶</a></h1>
@@ -72,7 +72,7 @@ Moritz Beyreuther, 2010-2015</td>
 </table>
 <dl class="function">
 <dt id="mtspec.util.exponential_chirp">
-<tt class="descclassname">mtspec.util.</tt><tt class="descname">exponential_chirp</tt><big>(</big><em>npts=2000</em><big>)</big><a class="reference internal" href="_modules/mtspec/util.html#exponential_chirp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mtspec.util.exponential_chirp" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">mtspec.util.</code><code class="descname">exponential_chirp</code><span class="sig-paren">(</span><em>npts=2000</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mtspec/util.html#exponential_chirp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mtspec.util.exponential_chirp" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generates an exponential chirp.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -90,7 +90,7 @@ Moritz Beyreuther, 2010-2015</td>
 
 <dl class="function">
 <dt id="mtspec.util.linear_chirp">
-<tt class="descclassname">mtspec.util.</tt><tt class="descname">linear_chirp</tt><big>(</big><em>npts=2000</em><big>)</big><a class="reference internal" href="_modules/mtspec/util.html#linear_chirp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mtspec.util.linear_chirp" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">mtspec.util.</code><code class="descname">linear_chirp</code><span class="sig-paren">(</span><em>npts=2000</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mtspec/util.html#linear_chirp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mtspec.util.linear_chirp" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generates a simple linear chirp.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -108,7 +108,7 @@ Moritz Beyreuther, 2010-2015</td>
 
 <dl class="function">
 <dt id="mtspec.util.signal_bursts">
-<tt class="descclassname">mtspec.util.</tt><tt class="descname">signal_bursts</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/mtspec/util.html#signal_bursts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mtspec.util.signal_bursts" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">mtspec.util.</code><code class="descname">signal_bursts</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mtspec/util.html#signal_bursts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mtspec.util.signal_bursts" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generates a signal with two bursts inside. Useful for testing time
 frequency distributions.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -129,7 +129,7 @@ frequency distributions.</p>
           </div>
         </div>
       </div>
-      <div class="sphinxsidebar">
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
 <p class="logo">
   <a href="index.html">
@@ -174,7 +174,7 @@ frequency distributions.</p>
 </ul>
 
 
-<div id="searchbox" style="display: none">
+<div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="search.html" method="get">
       <input type="text" name="q" />
@@ -195,7 +195,7 @@ frequency distributions.</p>
       &copy;2009-2015, Lion Krischer, Moritz Beyreuther.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.2.3</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.3</a>
       
       |

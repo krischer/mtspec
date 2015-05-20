@@ -34,8 +34,8 @@
     <link rel="stylesheet" href="_static/custom.css" type="text/css" />
 
   </head>
-  <body>
-    <div class="related">
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -50,24 +50,24 @@
         <li class="right" >
           <a href="tutorial.html" title="Tutorial"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">mtspec 0.3.x documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">mtspec 0.3.x documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          <div class="body">
+          <div class="body" role="main">
             
   <div class="section" id="mtspec-dpss">
 <h1>mtspec.dpss<a class="headerlink" href="#mtspec-dpss" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="mtspec.multitaper.dpss">
-<tt class="descclassname">mtspec.multitaper.</tt><tt class="descname">dpss</tt><big>(</big><em>npts</em>, <em>fw</em>, <em>number_of_tapers</em>, <em>auto_spline=True</em>, <em>npts_max=None</em><big>)</big><a class="reference internal" href="_modules/mtspec/multitaper.html#dpss"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mtspec.multitaper.dpss" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">mtspec.multitaper.</code><code class="descname">dpss</code><span class="sig-paren">(</span><em>npts</em>, <em>fw</em>, <em>number_of_tapers</em>, <em>auto_spline=True</em>, <em>npts_max=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mtspec/multitaper.html#dpss"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mtspec.multitaper.dpss" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculates DPSS also known as Slepian sequences or Slepian tapers.</p>
 <p>Calculation of the DPSS (Discrete Prolate Spheroidal Sequences) and the
 correspondent eigenvalues. The (1 - eigenvalue) terms are also calculated.</p>
-<p>Wraps the <tt class="docutils literal"><span class="pre">dpss()</span></tt> subroutine from the Fortran library.</p>
+<p>Wraps the <code class="docutils literal"><span class="pre">dpss()</span></code> subroutine from the Fortran library.</p>
 <p>By default this routine will use spline interpolation if sequences with
 more than 200.000 samples are requested.</p>
 <div class="admonition note">
@@ -85,16 +85,16 @@ the Toeplitz matrix, eq. 18.</p>
 <li><strong>fw</strong> (<em>float</em>) &#8211; The time-bandwidth product (number of Rayleigh bins).</li>
 <li><strong>number_of_tapers</strong> (<em>int</em>) &#8211; The desired number of tapers.</li>
 <li><strong>auto_spline</strong> (<em>bool</em>) &#8211; Whether or not to automatically use spline
-interpolation for <tt class="docutils literal"><span class="pre">npts</span></tt> &gt; 200000.</li>
+interpolation for <code class="docutils literal"><span class="pre">npts</span></code> &gt; 200000.</li>
 <li><strong>npts_max</strong> (<em>None or int</em>) &#8211; The number of actual points to calculate the DPSS. If this
-number is smaller than <tt class="docutils literal"><span class="pre">npts</span></tt>, spline interpolation will be
-performed, regardless of the value of <tt class="docutils literal"><span class="pre">auto_spline</span></tt>.</li>
+number is smaller than <code class="docutils literal"><span class="pre">npts</span></code>, spline interpolation will be
+performed, regardless of the value of <code class="docutils literal"><span class="pre">auto_spline</span></code>.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><tt class="docutils literal"><span class="pre">(v,</span> <span class="pre">lambda,</span> <span class="pre">theta)</span></tt> with
-<tt class="docutils literal"><span class="pre">v(npts,</span> <span class="pre">number_of_tapers)</span></tt> the eigenvectors (tapers), <tt class="docutils literal"><span class="pre">lambda</span></tt> the
-eigenvalues of the <tt class="docutils literal"><span class="pre">v</span></tt>&#8216;s and <tt class="docutils literal"><span class="pre">theta</span></tt> the 1 - <tt class="docutils literal"><span class="pre">lambda</span></tt>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><code class="docutils literal"><span class="pre">(v,</span> <span class="pre">lambda,</span> <span class="pre">theta)</span></code> with
+<code class="docutils literal"><span class="pre">v(npts,</span> <span class="pre">number_of_tapers)</span></code> the eigenvectors (tapers), <code class="docutils literal"><span class="pre">lambda</span></code> the
+eigenvalues of the <code class="docutils literal"><span class="pre">v</span></code>&#8216;s and <code class="docutils literal"><span class="pre">theta</span></code> the 1 - <code class="docutils literal"><span class="pre">lambda</span></code>
 (energy outside the bandwidth) values.</p>
 </td>
 </tr>
@@ -121,7 +121,7 @@ eigenvalues of the <tt class="docutils literal"><span class="pre">v</span></tt>&
           </div>
         </div>
       </div>
-      <div class="sphinxsidebar">
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
 <p class="logo">
   <a href="index.html">
@@ -166,7 +166,7 @@ eigenvalues of the <tt class="docutils literal"><span class="pre">v</span></tt>&
 </ul>
 
 
-<div id="searchbox" style="display: none">
+<div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="search.html" method="get">
       <input type="text" name="q" />
@@ -187,7 +187,7 @@ eigenvalues of the <tt class="docutils literal"><span class="pre">v</span></tt>&
       &copy;2009-2015, Lion Krischer, Moritz Beyreuther.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.2.3</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.3</a>
       
       |

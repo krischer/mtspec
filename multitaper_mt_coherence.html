@@ -34,8 +34,8 @@
     <link rel="stylesheet" href="_static/custom.css" type="text/css" />
 
   </head>
-  <body>
-    <div class="related">
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -50,20 +50,20 @@
         <li class="right" >
           <a href="multitaper_sine_psd.html" title="mtspec.sine_psd"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">mtspec 0.3.x documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">mtspec 0.3.x documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          <div class="body">
+          <div class="body" role="main">
             
   <div class="section" id="mtspec-mt-coherence">
 <h1>mtspec.mt_coherence<a class="headerlink" href="#mtspec-mt-coherence" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="mtspec.multitaper.mt_coherence">
-<tt class="descclassname">mtspec.multitaper.</tt><tt class="descname">mt_coherence</tt><big>(</big><em>df</em>, <em>xi</em>, <em>xj</em>, <em>tbp</em>, <em>kspec</em>, <em>nf</em>, <em>p</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/mtspec/multitaper.html#mt_coherence"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mtspec.multitaper.mt_coherence" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">mtspec.multitaper.</code><code class="descname">mt_coherence</code><span class="sig-paren">(</span><em>df</em>, <em>xi</em>, <em>xj</em>, <em>tbp</em>, <em>kspec</em>, <em>nf</em>, <em>p</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mtspec/multitaper.html#mt_coherence"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mtspec.multitaper.mt_coherence" title="Permalink to this definition">¶</a></dt>
 <dd><p>Construct the coherence spectrum from the yk&#8217;s and the
 weights of the usual multitaper spectrum estimation.
 Note this code uses the real(4) multitaper code.</p>
@@ -98,7 +98,7 @@ default adapt = 1</td>
 <p>OPTIONAL OUTPUTS, the outputs are returned as dictionary, with keys as
 specified below and values as numpy.ndarrays. In order to activate the
 output set the corresponding kwarg in the argument list, e.g.
-<tt class="docutils literal"><span class="pre">mt_coherence(df,</span> <span class="pre">xi,</span> <span class="pre">xj,</span> <span class="pre">tbp,</span> <span class="pre">kspec,</span> <span class="pre">nf,</span> <span class="pre">p,</span> <span class="pre">freq=True,</span> <span class="pre">cohe=True)</span></tt></p>
+<code class="docutils literal"><span class="pre">mt_coherence(df,</span> <span class="pre">xi,</span> <span class="pre">xj,</span> <span class="pre">tbp,</span> <span class="pre">kspec,</span> <span class="pre">nf,</span> <span class="pre">p,</span> <span class="pre">freq=True,</span> <span class="pre">cohe=True)</span></code></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -127,7 +127,7 @@ cohe variables need to be requested as well.</p>
           </div>
         </div>
       </div>
-      <div class="sphinxsidebar">
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
 <p class="logo">
   <a href="index.html">
@@ -172,7 +172,7 @@ cohe variables need to be requested as well.</p>
 </ul>
 
 
-<div id="searchbox" style="display: none">
+<div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="search.html" method="get">
       <input type="text" name="q" />
@@ -193,7 +193,7 @@ cohe variables need to be requested as well.</p>
       &copy;2009-2015, Lion Krischer, Moritz Beyreuther.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.2.3</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.3</a>
       
       |

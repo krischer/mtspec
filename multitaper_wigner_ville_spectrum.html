@@ -34,8 +34,8 @@
     <link rel="stylesheet" href="_static/custom.css" type="text/css" />
 
   </head>
-  <body>
-    <div class="related">
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -50,20 +50,20 @@
         <li class="right" >
           <a href="multitaper_mt_coherence.html" title="mtspec.mt_coherence"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">mtspec 0.3.x documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">mtspec 0.3.x documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          <div class="body">
+          <div class="body" role="main">
             
   <div class="section" id="mtspec-wigner-ville-spectrum">
 <h1>mtspec.wigner_ville_spectrum<a class="headerlink" href="#mtspec-wigner-ville-spectrum" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="mtspec.multitaper.wigner_ville_spectrum">
-<tt class="descclassname">mtspec.multitaper.</tt><tt class="descname">wigner_ville_spectrum</tt><big>(</big><em>data</em>, <em>delta</em>, <em>time_bandwidth=3.5</em>, <em>number_of_tapers=None</em>, <em>smoothing_filter=None</em>, <em>filter_width=100</em>, <em>frequency_divider=1</em>, <em>verbose=False</em><big>)</big><a class="reference internal" href="_modules/mtspec/multitaper.html#wigner_ville_spectrum"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mtspec.multitaper.wigner_ville_spectrum" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">mtspec.multitaper.</code><code class="descname">wigner_ville_spectrum</code><span class="sig-paren">(</span><em>data</em>, <em>delta</em>, <em>time_bandwidth=3.5</em>, <em>number_of_tapers=None</em>, <em>smoothing_filter=None</em>, <em>filter_width=100</em>, <em>frequency_divider=1</em>, <em>verbose=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mtspec/multitaper.html#wigner_ville_spectrum"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mtspec.multitaper.wigner_ville_spectrum" title="Permalink to this definition">¶</a></dt>
 <dd><p>Function to calculate the Wigner-Ville Distribution or Wigner-Ville
 Spectrum of a signal using multitaper spectral estimates.</p>
 <p>In general it gives better temporal and frequency resolution than a
@@ -71,7 +71,7 @@ spectrogram but introduces many artifacts and possibly negative values
 which are not physical. This can be alleviated a bit by applying a
 smoothing kernel which is also known as a reduced interference
 distribution (RID).</p>
-<p>Wraps the <tt class="docutils literal"><span class="pre">wv_spec()</span></tt> and <tt class="docutils literal"><span class="pre">wv_spec_to_array()</span></tt> subroutines of the
+<p>Wraps the <code class="docutils literal"><span class="pre">wv_spec()</span></code> and <code class="docutils literal"><span class="pre">wv_spec_to_array()</span></code> subroutines of the
 Fortran library.</p>
 <p>It is very slow for large arrays so try with a small one (&lt; 5000 samples)
 first.</p>
@@ -83,10 +83,10 @@ first.</p>
 <li><strong>data</strong> (<em>numpy.ndarray</em>) &#8211; The input signal.</li>
 <li><strong>delta</strong> (<em>float</em>) &#8211; The sampling interval of the data.</li>
 <li><strong>time_bandwidth</strong> (<em>float</em>) &#8211; Time bandwidth product for the tapers.</li>
-<li><strong>number_of_tapers</strong> (<em>int</em>) &#8211; Number of tapers to use. If <tt class="docutils literal"><span class="pre">None</span></tt>, the number
+<li><strong>number_of_tapers</strong> (<em>int</em>) &#8211; Number of tapers to use. If <code class="docutils literal"><span class="pre">None</span></code>, the number
 will be automatically determined from the time bandwidth product
 which is usually the optimal choice.</li>
-<li><strong>smoothing_filter</strong> (<em>str</em>) &#8211; One of <tt class="docutils literal"><span class="pre">&quot;boxcar&quot;</span></tt>, <tt class="docutils literal"><span class="pre">&quot;gauss&quot;</span></tt> or just <tt class="docutils literal"><span class="pre">None</span></tt></li>
+<li><strong>smoothing_filter</strong> (<em>str</em>) &#8211; One of <code class="docutils literal"><span class="pre">&quot;boxcar&quot;</span></code>, <code class="docutils literal"><span class="pre">&quot;gauss&quot;</span></code> or just <code class="docutils literal"><span class="pre">None</span></code></li>
 <li><strong>filter_width</strong> (<em>int</em>) &#8211; Filter width in samples.</li>
 <li><strong>frequency_divider</strong> (<em>int</em>) &#8211; This method will always calculate all
 frequencies from 0 ... Nyquist frequency. This parameter allows the
@@ -151,7 +151,7 @@ is sinusoidal overlaid with two simple linear chirps.</p>
           </div>
         </div>
       </div>
-      <div class="sphinxsidebar">
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
 <p class="logo">
   <a href="index.html">
@@ -196,7 +196,7 @@ is sinusoidal overlaid with two simple linear chirps.</p>
 </ul>
 
 
-<div id="searchbox" style="display: none">
+<div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="search.html" method="get">
       <input type="text" name="q" />
@@ -217,7 +217,7 @@ is sinusoidal overlaid with two simple linear chirps.</p>
       &copy;2009-2015, Lion Krischer, Moritz Beyreuther.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.2.3</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.3</a>
       
       |

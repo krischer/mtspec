@@ -34,8 +34,8 @@
     <link rel="stylesheet" href="_static/custom.css" type="text/css" />
 
   </head>
-  <body>
-    <div class="related">
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -50,20 +50,20 @@
         <li class="right" >
           <a href="multitaper_mtspec.html" title="mtspec.mtspec"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">mtspec 0.3.x documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">mtspec 0.3.x documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          <div class="body">
+          <div class="body" role="main">
             
   <div class="section" id="mtspec-sine-psd">
 <h1>mtspec.sine_psd<a class="headerlink" href="#mtspec-sine-psd" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="mtspec.multitaper.sine_psd">
-<tt class="descclassname">mtspec.multitaper.</tt><tt class="descname">sine_psd</tt><big>(</big><em>data</em>, <em>delta</em>, <em>number_of_tapers=None</em>, <em>number_of_iterations=2</em>, <em>degree_of_smoothing=1.0</em>, <em>statistics=False</em>, <em>verbose=False</em><big>)</big><a class="reference internal" href="_modules/mtspec/multitaper.html#sine_psd"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mtspec.multitaper.sine_psd" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">mtspec.multitaper.</code><code class="descname">sine_psd</code><span class="sig-paren">(</span><em>data</em>, <em>delta</em>, <em>number_of_tapers=None</em>, <em>number_of_iterations=2</em>, <em>degree_of_smoothing=1.0</em>, <em>statistics=False</em>, <em>verbose=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mtspec/multitaper.html#sine_psd"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mtspec.multitaper.sine_psd" title="Permalink to this definition">¶</a></dt>
 <dd><p>Wrapper method for the sine_psd subroutine in the library by German A.
 Prieto.</p>
 <p>The subroutine is in charge of estimating the adaptive sine multitaper as
@@ -104,7 +104,7 @@ library.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>data</strong> &#8211; <tt class="xref py py-class docutils literal"><span class="pre">numpy.ndarray</span></tt>
+<li><strong>data</strong> &#8211; <code class="xref py py-class docutils literal"><span class="pre">numpy.ndarray</span></code>
 Array with the data.</li>
 <li><strong>delta</strong> &#8211; float
 Sample spacing of the data.</li>
@@ -125,7 +125,7 @@ Passed to the fortran library. Defaults to False.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Returns a list with <tt class="xref py py-class docutils literal"><span class="pre">numpy.ndarray</span></tt>. See the note below
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Returns a list with <code class="xref py py-class docutils literal"><span class="pre">numpy.ndarray</span></code>. See the note below
 for details.</p>
 </td>
 </tr>
@@ -147,7 +147,7 @@ of tapers used for each frequency point.</p>
           </div>
         </div>
       </div>
-      <div class="sphinxsidebar">
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
 <p class="logo">
   <a href="index.html">
@@ -192,7 +192,7 @@ of tapers used for each frequency point.</p>
 </ul>
 
 
-<div id="searchbox" style="display: none">
+<div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="search.html" method="get">
       <input type="text" name="q" />
@@ -213,7 +213,7 @@ of tapers used for each frequency point.</p>
       &copy;2009-2015, Lion Krischer, Moritz Beyreuther.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.2.3</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.3</a>
       
       |

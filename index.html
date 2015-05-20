@@ -33,8 +33,8 @@
     <link rel="stylesheet" href="_static/custom.css" type="text/css" />
 
   </head>
-  <body>
-    <div class="related">
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -46,14 +46,14 @@
         <li class="right" >
           <a href="tutorial.html" title="Tutorial"
              accesskey="N">next</a> |</li>
-        <li><a href="#">mtspec 0.3.x documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="#">mtspec 0.3.x documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          <div class="body">
+          <div class="body" role="main">
             
   <div class="section" id="mtspec">
 <h1>mtspec<a class="headerlink" href="#mtspec" title="Permalink to this headline">¶</a></h1>
@@ -91,20 +91,20 @@ versions using FFTW which would introduce an additional dependency.</p>
 mainly a question of compiling the shared Fortran libraries - pull requests are
 welcome.</p>
 <ul class="simple">
-<li><tt class="docutils literal"><span class="pre">gfortran</span> <span class="pre">&gt;=</span> <span class="pre">4.7</span></tt></li>
-<li><tt class="docutils literal"><span class="pre">Python</span> <span class="pre">2.6,</span> <span class="pre">2.7,</span> <span class="pre">3.3,</span> <span class="pre">or</span> <span class="pre">3.4</span></tt></li>
-<li><tt class="docutils literal"><span class="pre">NumPy</span> <span class="pre">&gt;=</span> <span class="pre">1.7</span></tt></li>
-<li><tt class="docutils literal"><span class="pre">matplotlib</span></tt></li>
-<li><tt class="docutils literal"><span class="pre">flake8</span></tt></li>
+<li><code class="docutils literal"><span class="pre">gfortran</span> <span class="pre">&gt;=</span> <span class="pre">4.7</span></code></li>
+<li><code class="docutils literal"><span class="pre">Python</span> <span class="pre">2.6,</span> <span class="pre">2.7,</span> <span class="pre">3.3,</span> <span class="pre">or</span> <span class="pre">3.4</span></code></li>
+<li><code class="docutils literal"><span class="pre">NumPy</span> <span class="pre">&gt;=</span> <span class="pre">1.7</span></code></li>
+<li><code class="docutils literal"><span class="pre">matplotlib</span></code></li>
+<li><code class="docutils literal"><span class="pre">flake8</span></code></li>
 </ul>
 <div class="section" id="fortran-compiler">
 <h4>Fortran Compiler<a class="headerlink" href="#fortran-compiler" title="Permalink to this headline">¶</a></h4>
-<p>If you don&#8217;t have <tt class="docutils literal"><span class="pre">gfortran</span></tt>, please install it (on Linux) with</p>
+<p>If you don&#8217;t have <code class="docutils literal"><span class="pre">gfortran</span></code>, please install it (on Linux) with</p>
 <div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>sudo apt-get install gfortran
 </pre></div>
 </div>
 <p>or the equivalent of your distribution. On OSX we recommend to install
-<a class="reference external" href="http://brew.sh/">Homebrew</a> and then use it to install <tt class="docutils literal"><span class="pre">gfortran</span></tt>:</p>
+<a class="reference external" href="http://brew.sh/">Homebrew</a> and then use it to install <code class="docutils literal"><span class="pre">gfortran</span></code>:</p>
 <div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>brew install gcc
 </pre></div>
 </div>
@@ -120,7 +120,7 @@ dependencies are installed. Otherwise do yourself a favor and download the
 <a class="reference external" href="https://store.continuum.io/cshop/anaconda/">Anaconda</a> Python distribution.
 It is a free scientific Python distribution bundling almost all necessary
 modules with a convenient installer (does not require root access!).
-Once installed assert that <tt class="docutils literal"><span class="pre">pip</span></tt> and <tt class="docutils literal"><span class="pre">conda</span></tt> point to the Anaconda
+Once installed assert that <code class="docutils literal"><span class="pre">pip</span></code> and <code class="docutils literal"><span class="pre">conda</span></code> point to the Anaconda
 installation folder (you may need to open a new terminal after installing
 Anaconda). Then install <strong>mtspec</strong>&#8216;s dependencies with</p>
 <div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>conda install numpy matplotlib flake8 pip
@@ -128,7 +128,7 @@ Anaconda). Then install <strong>mtspec</strong>&#8216;s dependencies with</p>
 </div>
 <p>A possible complication arises <strong>if you are running on a server without a
 display</strong>. In that case please edit (on Linux)
-<tt class="docutils literal"><span class="pre">~/.config/matplotlib/matplotlibrc</span></tt> (create if it does not exist) and make
+<code class="docutils literal"><span class="pre">~/.config/matplotlib/matplotlibrc</span></code> (create if it does not exist) and make
 sure the following line is part of it:</p>
 <div class="highlight-bash"><div class="highlight"><pre>backend: agg
 </pre></div>
@@ -165,7 +165,7 @@ clone the git repository and install in an editable fashion:</p>
 </div>
 <div class="section" id="build-the-documentation">
 <h3>Build the Documentation<a class="headerlink" href="#build-the-documentation" title="Permalink to this headline">¶</a></h3>
-<p>The documentation requires <tt class="docutils literal"><span class="pre">sphinx</span></tt> and the Alabaster theme. Install both
+<p>The documentation requires <code class="docutils literal"><span class="pre">sphinx</span></code> and the Alabaster theme. Install both
 with</p>
 <div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>pip install sphinx alabaster
 </pre></div>
@@ -175,18 +175,18 @@ with</p>
 <span class="nv">$ </span>make html
 </pre></div>
 </div>
-<p>Finally open the <tt class="docutils literal"><span class="pre">doc/html_doc/index.html</span></tt> file with the browser of your
+<p>Finally open the <code class="docutils literal"><span class="pre">doc/html_doc/index.html</span></code> file with the browser of your
 choice.</p>
 </div>
 <div class="section" id="additional-notes">
 <h3>Additional Notes<a class="headerlink" href="#additional-notes" title="Permalink to this headline">¶</a></h3>
-<p>In case you get the error message <tt class="docutils literal"><span class="pre">&quot;Internal</span> <span class="pre">Error:</span> <span class="pre">printf</span> <span class="pre">is</span> <span class="pre">broken&quot;</span></tt>, you
+<p>In case you get the error message <code class="docutils literal"><span class="pre">&quot;Internal</span> <span class="pre">Error:</span> <span class="pre">printf</span> <span class="pre">is</span> <span class="pre">broken&quot;</span></code>, you
 can use the following workaround:</p>
 <div class="highlight-bash"><div class="highlight"><pre><span class="nb">export </span><span class="nv">LC_ALL</span><span class="o">=</span>C
 python script.py
 </pre></div>
 </div>
-<p>This is a known <tt class="docutils literal"><span class="pre">gfortran</span></tt> bug, see
+<p>This is a known <code class="docutils literal"><span class="pre">gfortran</span></code> bug, see
 <a class="reference external" href="http://projects.scipy.org/scipy/ticket/696">here</a>
 for an explanation.</p>
 </div>
@@ -210,7 +210,7 @@ for an explanation.</p>
           </div>
         </div>
       </div>
-      <div class="sphinxsidebar">
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
 <p class="logo">
   <a href="#">
@@ -255,7 +255,7 @@ for an explanation.</p>
 </ul>
 
 
-<div id="searchbox" style="display: none">
+<div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="search.html" method="get">
       <input type="text" name="q" />
@@ -276,7 +276,7 @@ for an explanation.</p>
       &copy;2009-2015, Lion Krischer, Moritz Beyreuther.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.2.3</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.3</a>
       
       |
