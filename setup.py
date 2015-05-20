@@ -174,9 +174,6 @@ setup_config = dict(
               'multitaper', 'seismology', 'signal processing'],
     packages=find_packages(),
     zip_safe=False,
-    # this is needed for "pip install instaseis==dev"
-    download_url=("https://github.com/krischer/mtspect/zipball/master"
-                  "#egg=instaseis=dev"),
     include_package_data=True
 )
 
