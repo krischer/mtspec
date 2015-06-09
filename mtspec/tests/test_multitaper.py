@@ -18,7 +18,7 @@ import os
 import unittest
 
 from ..multitaper import mtspec, sine_psd, dpss, wigner_ville_spectrum, \
-    mt_coherence
+    mt_coherence, mt_deconv
 from ..util import signal_bursts, _load_mtdata
 
 
@@ -358,6 +358,35 @@ class MtSpecTestCase(unittest.TestCase):
         self.assertEqual(np.isnan(cohe).any(), False)
         np.testing.assert_almost_equal(freq, out['freq'], 5)
         np.testing.assert_almost_equal(cohe/cohe, out['cohe']/cohe, 4)
+
+    def test_mtDeconv(self):
+        """
+        Deconvolution test case
+        """
+        datafile = os.path.join(
+            os.path.dirname(__file__), 'data', 'mt_deconv.npz')
+        prieto_deconv = np.load(datafile)['prieto_deconv']
+
+        sampling_rate = 1.0
+        time_bandwidth = 4.0
+        number_of_tapers = 7
+
+        pasc = _load_mtdata('PASC.dat.gz')
+        ado = _load_mtdata('ADO.dat.gz')
+
+        pasc -= pasc.mean()
+        ado -= ado.mean()
+
+        npts = len(pasc)
+
+        deconvolved, freq = mt_deconv(pasc, ado, sampling_rate,
+                                      time_bandwidth=time_bandwidth,
+                                      number_of_tapers=number_of_tapers,
+                                      nfft=npts,
+                                      demean=1, iadapt=0)
+        Pdeconv = deconvolved[-500:][::-1]
+
+        np.testing.assert_almost_equal(prieto_deconv[20:40], Pdeconv[20:40], 5)
 
 
 def rms(x, y):
