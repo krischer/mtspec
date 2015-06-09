@@ -63,6 +63,12 @@ or the equivalent of your distribution. On OSX we recommend to install
 .. code-block:: bash
 
     $ brew install gcc
+    
+On Windows, you’ll have download and install 
+`TDM-GCC <http://tdm-gcc.tdragon.net/>`_ after you’ve
+installed Anaconda and before you install mtspec. Don’t forget
+to mark the *fortran* option in the "gcc" part of the installation.
+
 
 Python and Dependencies
 ~~~~~~~~~~~~~~~~~~~~~~~

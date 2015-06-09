@@ -165,7 +165,8 @@ Recreate Fig. 3
     import matplotlib.pyplot as plt
     from mtspec import mtspec, sine_psd
     from mtspec.util import _load_mtdata
-
+    
+    data = _load_mtdata('PASC.dat.gz')
     fig = plt.figure()
     ax1 = fig.add_subplot(3, 1, 1)
     ax1.plot(data, color='black')
