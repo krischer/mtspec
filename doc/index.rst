@@ -185,5 +185,6 @@ API Doc
     multitaper_mtspec
     multitaper_sine_psd
     multitaper_mt_coherence
+    multitaper_mt_deconv
     multitaper_wigner_ville_spectrum
     util
