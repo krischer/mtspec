@@ -28,27 +28,12 @@
     
    
   
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
     <link rel="stylesheet" href="_static/custom.css" type="text/css" />
 
   </head>
-  <body role="document">
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
-          <a href="tutorial.html" title="Tutorial"
-             accesskey="N">next</a> |</li>
-        <li class="nav-item nav-item-0"><a href="#">mtspec 0.3.x documentation</a> &raquo;</li> 
-      </ul>
-    </div>  
+  <body role="document">  
 
     <div class="document">
       <div class="documentwrapper">
@@ -62,7 +47,7 @@
 <p><strong>mtspec</strong> is a Python wrapper for the
 <a class="reference external" href="http://wwwprof.uniandes.edu.co/~gprieto/software/mwlib.html">Multitaper Spectrum Estimation Library</a>
 by Germán Prieto. The relevant publication is</p>
-<div class="highlight-python"><div class="highlight"><pre>Prieto, G. A., R. L. Parker, F. L. Vernon. (2009),
+<div class="highlight-python"><div class="highlight"><pre><span></span>Prieto, G. A., R. L. Parker, F. L. Vernon. (2009),
 A Fortran 90 library for multitaper spectrum analysis,
 Computers and Geosciences, 35, pp. 1701-1710.
 doi:10.1016/ j.cageo.2008.06.007
@@ -100,12 +85,12 @@ welcome.</p>
 <div class="section" id="fortran-compiler">
 <h4>Fortran Compiler<a class="headerlink" href="#fortran-compiler" title="Permalink to this headline">¶</a></h4>
 <p>If you don&#8217;t have <code class="docutils literal"><span class="pre">gfortran</span></code>, please install it (on Linux) with</p>
-<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>sudo apt-get install gfortran
+<div class="highlight-bash"><div class="highlight"><pre><span></span>$ sudo apt-get install gfortran
 </pre></div>
 </div>
 <p>or the equivalent of your distribution. On OSX we recommend to install
 <a class="reference external" href="http://brew.sh/">Homebrew</a> and then use it to install <code class="docutils literal"><span class="pre">gfortran</span></code>:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>brew install gcc
+<div class="highlight-bash"><div class="highlight"><pre><span></span>$ brew install gcc
 </pre></div>
 </div>
 <p>On Windows, you’ll have download and install
@@ -123,14 +108,14 @@ modules with a convenient installer (does not require root access!).
 Once installed assert that <code class="docutils literal"><span class="pre">pip</span></code> and <code class="docutils literal"><span class="pre">conda</span></code> point to the Anaconda
 installation folder (you may need to open a new terminal after installing
 Anaconda). Then install <strong>mtspec</strong>&#8216;s dependencies with</p>
-<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>conda install numpy matplotlib flake8 pip
+<div class="highlight-bash"><div class="highlight"><pre><span></span>$ conda install numpy matplotlib flake8 pip
 </pre></div>
 </div>
 <p>A possible complication arises <strong>if you are running on a server without a
 display</strong>. In that case please edit (on Linux)
 <code class="docutils literal"><span class="pre">~/.config/matplotlib/matplotlibrc</span></code> (create if it does not exist) and make
 sure the following line is part of it:</p>
-<div class="highlight-bash"><div class="highlight"><pre>backend: agg
+<div class="highlight-bash"><div class="highlight"><pre><span></span>backend: agg
 </pre></div>
 </div>
 </div>
@@ -140,7 +125,7 @@ sure the following line is part of it:</p>
 <p>For normal usage just install <strong>mtspec</strong> with</p>
 <div class="section" id="user-installation">
 <h4>User Installation<a class="headerlink" href="#user-installation" title="Permalink to this headline">¶</a></h4>
-<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>pip install mtspec
+<div class="highlight-bash"><div class="highlight"><pre><span></span>$ pip install mtspec
 </pre></div>
 </div>
 </div>
@@ -148,9 +133,9 @@ sure the following line is part of it:</p>
 <h4>Developer Installation<a class="headerlink" href="#developer-installation" title="Permalink to this headline">¶</a></h4>
 <p>If you want the bleeding edge version or intend to edit <strong>mtspec</strong>&#8216;s code,
 clone the git repository and install in an editable fashion:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>git clone https://github.com/krischer/mtspec.git
-<span class="nv">$ </span><span class="nb">cd </span>mtspec
-<span class="nv">$ </span>pip install -v -e .
+<div class="highlight-bash"><div class="highlight"><pre><span></span>$ git clone https://github.com/krischer/mtspec.git
+$ <span class="nb">cd</span> mtspec
+$ pip install -v -e .
 </pre></div>
 </div>
 </div>
@@ -158,7 +143,7 @@ clone the git repository and install in an editable fashion:</p>
 <div class="section" id="testing">
 <h3>Testing<a class="headerlink" href="#testing" title="Permalink to this headline">¶</a></h3>
 <p>To assert that your installation is working properly, execute</p>
-<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>python -m mtspec.tests
+<div class="highlight-bash"><div class="highlight"><pre><span></span>$ python -m mtspec.tests
 </pre></div>
 </div>
 <p>and make sure all tests pass. Otherwise please contact the developers.</p>
@@ -167,12 +152,12 @@ clone the git repository and install in an editable fashion:</p>
 <h3>Build the Documentation<a class="headerlink" href="#build-the-documentation" title="Permalink to this headline">¶</a></h3>
 <p>The documentation requires <code class="docutils literal"><span class="pre">sphinx</span></code> and the Alabaster theme. Install both
 with</p>
-<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>pip install sphinx alabaster
+<div class="highlight-bash"><div class="highlight"><pre><span></span>$ pip install sphinx alabaster
 </pre></div>
 </div>
 <p>Build the doc with</p>
-<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span><span class="nb">cd </span>doc
-<span class="nv">$ </span>make html
+<div class="highlight-bash"><div class="highlight"><pre><span></span>$ <span class="nb">cd</span> doc
+$ make html
 </pre></div>
 </div>
 <p>Finally open the <code class="docutils literal"><span class="pre">doc/html_doc/index.html</span></code> file with the browser of your
@@ -182,7 +167,7 @@ choice.</p>
 <h3>Additional Notes<a class="headerlink" href="#additional-notes" title="Permalink to this headline">¶</a></h3>
 <p>In case you get the error message <code class="docutils literal"><span class="pre">&quot;Internal</span> <span class="pre">Error:</span> <span class="pre">printf</span> <span class="pre">is</span> <span class="pre">broken&quot;</span></code>, you
 can use the following workaround:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span class="nb">export </span><span class="nv">LC_ALL</span><span class="o">=</span>C
+<div class="highlight-bash"><div class="highlight"><pre><span></span><span class="nb">export</span> <span class="nv">LC_ALL</span><span class="o">=</span>C
 python script.py
 </pre></div>
 </div>
@@ -238,9 +223,11 @@ for an explanation.</p>
     <img
         alt="https://secure.travis-ci.org/krischer/mtspec.png?branch=master"
         src="https://secure.travis-ci.org/krischer/mtspec.png?branch=master"
-    >
+    />
 </a>
 </p>
+
+
 <h3>Navigation</h3>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="tutorial.html">Tutorial</a></li>
@@ -276,12 +263,12 @@ for an explanation.</p>
       &copy;2009-2015, Lion Krischer, Moritz Beyreuther.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.1</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.3</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
       
       |
       <a href="_sources/index.txt"
-          rel="nofollow">Page source</a></li>
+          rel="nofollow">Page source</a>
     </div>
 
     

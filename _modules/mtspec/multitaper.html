@@ -28,25 +28,12 @@
     
    
   
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
     <link rel="stylesheet" href="_static/custom.css" type="text/css" />
 
   </head>
-  <body role="document">
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../../genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="../../py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../../index.html">mtspec 0.3.x documentation</a> &raquo;</li>
-          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
-      </ul>
-    </div>  
+  <body role="document">  
 
     <div class="document">
       <div class="documentwrapper">
@@ -54,8 +41,8 @@
           <div class="body" role="main">
             
   <h1>Source code for mtspec.multitaper</h1><div class="highlight"><pre>
-<span class="c">#!/usr/bin/env python</span>
-<span class="c"># -*- coding: utf-8 -*-</span>
+<span></span><span class="ch">#!/usr/bin/env python</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Main functions of mtspec.</span>
 
@@ -146,69 +133,69 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">npts</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 
-    <span class="c"># Depending if nfft is specified or not initialte MtspecTytpe</span>
-    <span class="c"># for mtspec_pad_ or mtspec_d_</span>
+    <span class="c1"># Depending if nfft is specified or not initialte MtspecTytpe</span>
+    <span class="c1"># for mtspec_pad_ or mtspec_d_</span>
     <span class="k">if</span> <span class="n">nfft</span> <span class="ow">is</span> <span class="bp">None</span> <span class="ow">or</span> <span class="n">nfft</span> <span class="o">==</span> <span class="n">npts</span><span class="p">:</span>
         <span class="n">nfft</span> <span class="o">=</span> <span class="n">npts</span>
-        <span class="n">mt</span> <span class="o">=</span> <span class="n">_MtspecType</span><span class="p">(</span><span class="s">&quot;float64&quot;</span><span class="p">)</span>  <span class="c"># mtspec_d_</span>
+        <span class="n">mt</span> <span class="o">=</span> <span class="n">_MtspecType</span><span class="p">(</span><span class="s2">&quot;float64&quot;</span><span class="p">)</span>  <span class="c1"># mtspec_d_</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">mt</span> <span class="o">=</span> <span class="n">_MtspecType</span><span class="p">(</span><span class="s">&quot;float32&quot;</span><span class="p">)</span>  <span class="c"># mtspec_pad_</span>
+        <span class="n">mt</span> <span class="o">=</span> <span class="n">_MtspecType</span><span class="p">(</span><span class="s2">&quot;float32&quot;</span><span class="p">)</span>  <span class="c1"># mtspec_pad_</span>
         <span class="n">quadratic</span> <span class="o">=</span> <span class="bp">False</span>
-    <span class="c"># Use the optimal number of tapers in case no number is specified.</span>
+    <span class="c1"># Use the optimal number of tapers in case no number is specified.</span>
     <span class="k">if</span> <span class="n">number_of_tapers</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
         <span class="n">number_of_tapers</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">time_bandwidth</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
-    <span class="c"># Transform the data to work with the library.</span>
+    <span class="c1"># Transform the data to work with the library.</span>
     <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">require</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">mt</span><span class="o">.</span><span class="n">float</span><span class="p">,</span> <span class="n">mt</span><span class="o">.</span><span class="n">required</span><span class="p">)</span>
-    <span class="c"># Get some information necessary for the call to the Fortran library.</span>
+    <span class="c1"># Get some information necessary for the call to the Fortran library.</span>
     <span class="n">number_of_frequency_bins</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">nfft</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
-    <span class="c"># Create output arrays.</span>
+    <span class="c1"># Create output arrays.</span>
     <span class="n">spectrum</span> <span class="o">=</span> <span class="n">mt</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">number_of_frequency_bins</span><span class="p">)</span>
     <span class="n">frequency_bins</span> <span class="o">=</span> <span class="n">mt</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">number_of_frequency_bins</span><span class="p">)</span>
-    <span class="c"># Create optional outputs.</span>
+    <span class="c1"># Create optional outputs.</span>
     <span class="k">if</span> <span class="n">optional_output</span> <span class="ow">is</span> <span class="bp">True</span><span class="p">:</span>
         <span class="n">eigenspectra</span> <span class="o">=</span> <span class="n">mt</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">number_of_frequency_bins</span><span class="p">,</span> <span class="n">number_of_tapers</span><span class="p">))</span>
         <span class="n">eigencoefficients</span> <span class="o">=</span> <span class="n">mt</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">nfft</span><span class="p">,</span> <span class="n">number_of_tapers</span><span class="p">),</span> <span class="nb">complex</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
         <span class="n">weights</span> <span class="o">=</span> <span class="n">mt</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">number_of_frequency_bins</span><span class="p">,</span> <span class="n">number_of_tapers</span><span class="p">))</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">eigenspectra</span> <span class="o">=</span> <span class="n">eigencoefficients</span> <span class="o">=</span> <span class="n">weights</span> <span class="o">=</span> <span class="bp">None</span>
-    <span class="c"># Create statistics.</span>
+    <span class="c1"># Create statistics.</span>
     <span class="k">if</span> <span class="n">statistics</span> <span class="ow">is</span> <span class="bp">True</span><span class="p">:</span>
         <span class="n">jackknife_interval</span> <span class="o">=</span> <span class="n">mt</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">number_of_frequency_bins</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
         <span class="n">f_statistics</span> <span class="o">=</span> <span class="n">mt</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">number_of_frequency_bins</span><span class="p">)</span>
         <span class="n">degrees_of_freedom</span> <span class="o">=</span> <span class="n">mt</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">number_of_frequency_bins</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">jackknife_interval</span> <span class="o">=</span> <span class="n">f_statistics</span> <span class="o">=</span> <span class="n">degrees_of_freedom</span> <span class="o">=</span> <span class="bp">None</span>
-    <span class="c"># Verbose mode on or off.</span>
+    <span class="c1"># Verbose mode on or off.</span>
     <span class="k">if</span> <span class="n">verbose</span> <span class="ow">is</span> <span class="bp">True</span><span class="p">:</span>
-        <span class="n">verbose</span> <span class="o">=</span> <span class="n">C</span><span class="o">.</span><span class="n">byref</span><span class="p">(</span><span class="n">C</span><span class="o">.</span><span class="n">c_char</span><span class="p">(</span><span class="s">&#39;y&#39;</span><span class="p">))</span>
+        <span class="n">verbose</span> <span class="o">=</span> <span class="n">C</span><span class="o">.</span><span class="n">byref</span><span class="p">(</span><span class="n">C</span><span class="o">.</span><span class="n">c_char</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">))</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">verbose</span> <span class="o">=</span> <span class="bp">None</span>
-    <span class="c"># Determine whether or not to compute the quadratic multitaper.</span>
+    <span class="c1"># Determine whether or not to compute the quadratic multitaper.</span>
     <span class="k">if</span> <span class="n">quadratic</span> <span class="ow">is</span> <span class="bp">True</span><span class="p">:</span>
         <span class="n">quadratic</span> <span class="o">=</span> <span class="n">C</span><span class="o">.</span><span class="n">byref</span><span class="p">(</span><span class="n">C</span><span class="o">.</span><span class="n">c_int</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">quadratic</span> <span class="o">=</span> <span class="bp">None</span>
-    <span class="c"># Determine whether to use adaptive or constant weighting of the</span>
-    <span class="c"># eigenspectra.</span>
+    <span class="c1"># Determine whether to use adaptive or constant weighting of the</span>
+    <span class="c1"># eigenspectra.</span>
     <span class="k">if</span> <span class="n">adaptive</span> <span class="ow">is</span> <span class="bp">True</span><span class="p">:</span>
         <span class="n">adaptive</span> <span class="o">=</span> <span class="bp">None</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">adaptive</span> <span class="o">=</span> <span class="n">C</span><span class="o">.</span><span class="n">byref</span><span class="p">(</span><span class="n">C</span><span class="o">.</span><span class="n">c_int</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
-    <span class="c"># Determines whether or not to perform the F-test for lines. If rshape is 1</span>
-    <span class="c"># or 2, then don&#39;t put the lines back. If rshape is 2 only check around 60</span>
-    <span class="c"># Hz. See the fortran source code for more informations.</span>
+    <span class="c1"># Determines whether or not to perform the F-test for lines. If rshape is 1</span>
+    <span class="c1"># or 2, then don&#39;t put the lines back. If rshape is 2 only check around 60</span>
+    <span class="c1"># Hz. See the fortran source code for more informations.</span>
     <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">rshape</span><span class="p">)</span> <span class="o">==</span> <span class="nb">int</span><span class="p">:</span>
         <span class="n">rshape</span> <span class="o">=</span> <span class="n">C</span><span class="o">.</span><span class="n">byref</span><span class="p">(</span><span class="n">C</span><span class="o">.</span><span class="n">c_int</span><span class="p">(</span><span class="n">rshape</span><span class="p">))</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">rshape</span> <span class="o">=</span> <span class="bp">None</span>
-    <span class="c"># The threshold probability for the F-test. If none is given, the mtspec</span>
-    <span class="c"># library calculates a default value. See the fortran source code for</span>
-    <span class="c"># details.</span>
+    <span class="c1"># The threshold probability for the F-test. If none is given, the mtspec</span>
+    <span class="c1"># library calculates a default value. See the fortran source code for</span>
+    <span class="c1"># details.</span>
     <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">fcrit</span><span class="p">)</span> <span class="o">==</span> <span class="nb">float</span><span class="p">:</span>
         <span class="n">fcrit</span> <span class="o">=</span> <span class="n">C</span><span class="o">.</span><span class="n">byref</span><span class="p">(</span><span class="n">C</span><span class="o">.</span><span class="n">c_float</span><span class="p">(</span><span class="n">fcrit</span><span class="p">))</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">fcrit</span> <span class="o">=</span> <span class="bp">None</span>
-    <span class="c"># Call the library. Fortran passes pointers!</span>
+    <span class="c1"># Call the library. Fortran passes pointers!</span>
     <span class="n">args</span> <span class="o">=</span> <span class="p">[</span><span class="n">C</span><span class="o">.</span><span class="n">byref</span><span class="p">(</span><span class="n">C</span><span class="o">.</span><span class="n">c_int</span><span class="p">(</span><span class="n">npts</span><span class="p">)),</span> <span class="n">C</span><span class="o">.</span><span class="n">byref</span><span class="p">(</span><span class="n">C</span><span class="o">.</span><span class="n">c_int</span><span class="p">(</span><span class="n">nfft</span><span class="p">)),</span>
             <span class="n">C</span><span class="o">.</span><span class="n">byref</span><span class="p">(</span><span class="n">mt</span><span class="o">.</span><span class="n">c_float</span><span class="p">(</span><span class="n">delta</span><span class="p">)),</span> <span class="n">mt</span><span class="o">.</span><span class="n">p</span><span class="p">(</span><span class="n">data</span><span class="p">),</span>
             <span class="n">C</span><span class="o">.</span><span class="n">byref</span><span class="p">(</span><span class="n">mt</span><span class="o">.</span><span class="n">c_float</span><span class="p">(</span><span class="n">time_bandwidth</span><span class="p">)),</span>
@@ -218,23 +205,23 @@
             <span class="n">mt</span><span class="o">.</span><span class="n">p</span><span class="p">(</span><span class="n">eigencoefficients</span><span class="p">),</span> <span class="n">mt</span><span class="o">.</span><span class="n">p</span><span class="p">(</span><span class="n">weights</span><span class="p">),</span>
             <span class="n">mt</span><span class="o">.</span><span class="n">p</span><span class="p">(</span><span class="n">jackknife_interval</span><span class="p">),</span> <span class="n">mt</span><span class="o">.</span><span class="n">p</span><span class="p">(</span><span class="n">degrees_of_freedom</span><span class="p">),</span>
             <span class="n">mt</span><span class="o">.</span><span class="n">p</span><span class="p">(</span><span class="n">eigenspectra</span><span class="p">),</span> <span class="n">rshape</span><span class="p">,</span> <span class="n">mt</span><span class="o">.</span><span class="n">p</span><span class="p">(</span><span class="n">f_statistics</span><span class="p">),</span> <span class="n">fcrit</span><span class="p">,</span> <span class="bp">None</span><span class="p">]</span>
-    <span class="c"># diffrent arguments, depending on mtspec_pad_ or mtspec_d_, adapt</span>
+    <span class="c1"># diffrent arguments, depending on mtspec_pad_ or mtspec_d_, adapt</span>
     <span class="k">if</span> <span class="n">npts</span> <span class="o">==</span> <span class="n">nfft</span><span class="p">:</span>
         <span class="n">args</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 
-    <span class="c"># finally call the shared library function</span>
+    <span class="c1"># finally call the shared library function</span>
     <span class="n">mt</span><span class="o">.</span><span class="n">mtspec</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
 
-    <span class="c"># Figure out what to return. See the docstring of this method for details.</span>
+    <span class="c1"># Figure out what to return. See the docstring of this method for details.</span>
     <span class="n">return_values</span> <span class="o">=</span> <span class="p">[</span><span class="n">spectrum</span><span class="p">,</span> <span class="n">frequency_bins</span><span class="p">]</span>
     <span class="k">if</span> <span class="n">optional_output</span> <span class="ow">is</span> <span class="bp">True</span><span class="p">:</span>
         <span class="n">return_values</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">eigenspectra</span><span class="p">,</span> <span class="n">eigencoefficients</span><span class="p">,</span> <span class="n">weights</span><span class="p">])</span>
     <span class="k">if</span> <span class="n">statistics</span> <span class="ow">is</span> <span class="bp">True</span><span class="p">:</span>
         <span class="n">return_values</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">jackknife_interval</span><span class="p">,</span> <span class="n">f_statistics</span><span class="p">,</span>
                               <span class="n">degrees_of_freedom</span><span class="p">])</span>
-    <span class="k">return</span> <span class="n">return_values</span>
+    <span class="k">return</span> <span class="n">return_values</span></div>
 
-</div>
+
 <div class="viewcode-block" id="sine_psd"><a class="viewcode-back" href="../../multitaper_sine_psd.html#mtspec.multitaper.sine_psd">[docs]</a><span class="k">def</span> <span class="nf">sine_psd</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">delta</span><span class="p">,</span> <span class="n">number_of_tapers</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">number_of_iterations</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
              <span class="n">degree_of_smoothing</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">statistics</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -305,36 +292,36 @@
 <span class="sd">        containing the 1-std errors (a simple dof estimate) and the number</span>
 <span class="sd">        of tapers used for each frequency point.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c"># Verbose mode on or off.</span>
+    <span class="c1"># Verbose mode on or off.</span>
     <span class="k">if</span> <span class="n">verbose</span> <span class="ow">is</span> <span class="bp">True</span><span class="p">:</span>
-        <span class="n">verbose</span> <span class="o">=</span> <span class="n">C</span><span class="o">.</span><span class="n">byref</span><span class="p">(</span><span class="n">C</span><span class="o">.</span><span class="n">c_char</span><span class="p">(</span><span class="s">&#39;y&#39;</span><span class="p">))</span>
+        <span class="n">verbose</span> <span class="o">=</span> <span class="n">C</span><span class="o">.</span><span class="n">byref</span><span class="p">(</span><span class="n">C</span><span class="o">.</span><span class="n">c_char</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">))</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">verbose</span> <span class="o">=</span> <span class="bp">None</span>
-    <span class="c"># Set the number of tapers so it can be read by the library.</span>
+    <span class="c1"># Set the number of tapers so it can be read by the library.</span>
     <span class="k">if</span> <span class="n">number_of_tapers</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
         <span class="n">number_of_tapers</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="c"># initialize _MtspecType to save some space</span>
-    <span class="n">mt</span> <span class="o">=</span> <span class="n">_MtspecType</span><span class="p">(</span><span class="s">&quot;float32&quot;</span><span class="p">)</span>
-    <span class="c"># Transform the data to work with the library.</span>
+    <span class="c1"># initialize _MtspecType to save some space</span>
+    <span class="n">mt</span> <span class="o">=</span> <span class="n">_MtspecType</span><span class="p">(</span><span class="s2">&quot;float32&quot;</span><span class="p">)</span>
+    <span class="c1"># Transform the data to work with the library.</span>
     <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">require</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">mt</span><span class="o">.</span><span class="n">float</span><span class="p">,</span> <span class="n">mt</span><span class="o">.</span><span class="n">required</span><span class="p">)</span>
-    <span class="c"># Some variables necessary to call the library.</span>
+    <span class="c1"># Some variables necessary to call the library.</span>
     <span class="n">npts</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
     <span class="n">number_of_frequency_bins</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">npts</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
-    <span class="c"># Create output arrays.</span>
+    <span class="c1"># Create output arrays.</span>
     <span class="n">frequency_bins</span> <span class="o">=</span> <span class="n">mt</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">number_of_frequency_bins</span><span class="p">)</span>
     <span class="n">spectrum</span> <span class="o">=</span> <span class="n">mt</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">number_of_frequency_bins</span><span class="p">)</span>
-    <span class="c"># Create optional arrays or set to None.</span>
+    <span class="c1"># Create optional arrays or set to None.</span>
     <span class="k">if</span> <span class="n">statistics</span> <span class="ow">is</span> <span class="bp">True</span><span class="p">:</span>
-        <span class="c"># here an exception, mt sets the type float32, here we need int32</span>
-        <span class="c"># that is do all the type and POINTER definition once by hand</span>
+        <span class="c1"># here an exception, mt sets the type float32, here we need int32</span>
+        <span class="c1"># that is do all the type and POINTER definition once by hand</span>
         <span class="n">tapers_per_freq_point</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">number_of_frequency_bins</span><span class="p">,</span>
-                                         <span class="s">&#39;int32&#39;</span><span class="p">,</span> <span class="n">mt</span><span class="o">.</span><span class="n">required</span><span class="p">)</span>
+                                         <span class="s1">&#39;int32&#39;</span><span class="p">,</span> <span class="n">mt</span><span class="o">.</span><span class="n">required</span><span class="p">)</span>
         <span class="n">tapers_per_freq_point_p</span> <span class="o">=</span> \
             <span class="n">tapers_per_freq_point</span><span class="o">.</span><span class="n">ctypes</span><span class="o">.</span><span class="n">data_as</span><span class="p">(</span><span class="n">C</span><span class="o">.</span><span class="n">POINTER</span><span class="p">(</span><span class="n">C</span><span class="o">.</span><span class="n">c_int</span><span class="p">))</span>
         <span class="n">errors</span> <span class="o">=</span> <span class="n">mt</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">number_of_frequency_bins</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">tapers_per_freq_point_p</span> <span class="o">=</span> <span class="n">errors</span> <span class="o">=</span> <span class="bp">None</span>
-    <span class="c"># Call the library. Fortran passes pointers!</span>
+    <span class="c1"># Call the library. Fortran passes pointers!</span>
     <span class="n">mtspeclib</span><span class="o">.</span><span class="n">sine_psd_</span><span class="p">(</span>
         <span class="n">C</span><span class="o">.</span><span class="n">byref</span><span class="p">(</span><span class="n">C</span><span class="o">.</span><span class="n">c_int</span><span class="p">(</span><span class="n">npts</span><span class="p">)),</span>
         <span class="n">C</span><span class="o">.</span><span class="n">byref</span><span class="p">(</span><span class="n">C</span><span class="o">.</span><span class="n">c_float</span><span class="p">(</span><span class="n">delta</span><span class="p">)),</span> <span class="n">mt</span><span class="o">.</span><span class="n">p</span><span class="p">(</span><span class="n">data</span><span class="p">),</span>
@@ -344,13 +331,13 @@
         <span class="n">C</span><span class="o">.</span><span class="n">byref</span><span class="p">(</span><span class="n">C</span><span class="o">.</span><span class="n">c_int</span><span class="p">(</span><span class="n">number_of_frequency_bins</span><span class="p">)),</span>
         <span class="n">mt</span><span class="o">.</span><span class="n">p</span><span class="p">(</span><span class="n">frequency_bins</span><span class="p">),</span> <span class="n">mt</span><span class="o">.</span><span class="n">p</span><span class="p">(</span><span class="n">spectrum</span><span class="p">),</span>
         <span class="n">tapers_per_freq_point_p</span><span class="p">,</span> <span class="n">mt</span><span class="o">.</span><span class="n">p</span><span class="p">(</span><span class="n">errors</span><span class="p">),</span> <span class="n">verbose</span><span class="p">)</span>
-    <span class="c"># Calculate return values.</span>
+    <span class="c1"># Calculate return values.</span>
     <span class="n">return_values</span> <span class="o">=</span> <span class="p">[</span><span class="n">spectrum</span><span class="p">,</span> <span class="n">frequency_bins</span><span class="p">]</span>
     <span class="k">if</span> <span class="n">statistics</span> <span class="ow">is</span> <span class="bp">True</span><span class="p">:</span>
         <span class="n">return_values</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">errors</span><span class="p">,</span> <span class="n">tapers_per_freq_point</span><span class="p">])</span>
-    <span class="k">return</span> <span class="n">return_values</span>
+    <span class="k">return</span> <span class="n">return_values</span></div>
 
-</div>
+
 <div class="viewcode-block" id="dpss"><a class="viewcode-back" href="../../multitaper_dpss.html#mtspec.multitaper.dpss">[docs]</a><span class="k">def</span> <span class="nf">dpss</span><span class="p">(</span><span class="n">npts</span><span class="p">,</span> <span class="n">fw</span><span class="p">,</span> <span class="n">number_of_tapers</span><span class="p">,</span> <span class="n">auto_spline</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">npts_max</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Calculates DPSS also known as Slepian sequences or Slepian tapers.</span>
@@ -411,20 +398,20 @@
 <span class="sd">        plt.ylim(-0.09, 0.09)</span>
 <span class="sd">        plt.tight_layout()</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">mt</span> <span class="o">=</span> <span class="n">_MtspecType</span><span class="p">(</span><span class="s">&quot;float64&quot;</span><span class="p">)</span>
+    <span class="n">mt</span> <span class="o">=</span> <span class="n">_MtspecType</span><span class="p">(</span><span class="s2">&quot;float64&quot;</span><span class="p">)</span>
 
     <span class="n">v</span> <span class="o">=</span> <span class="n">mt</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">npts</span><span class="p">,</span> <span class="n">number_of_tapers</span><span class="p">))</span>
     <span class="n">lamb</span> <span class="o">=</span> <span class="n">mt</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">number_of_tapers</span><span class="p">)</span>
     <span class="n">theta</span> <span class="o">=</span> <span class="n">mt</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">number_of_tapers</span><span class="p">)</span>
 
-    <span class="c"># Set auto_spline to True.</span>
+    <span class="c1"># Set auto_spline to True.</span>
     <span class="k">if</span> <span class="n">npts_max</span> <span class="ow">and</span> <span class="n">npts_max</span> <span class="o">&lt;</span> <span class="n">npts</span><span class="p">:</span>
         <span class="n">auto_spline</span> <span class="o">=</span> <span class="bp">True</span>
-    <span class="c"># Always set npts_max.</span>
+    <span class="c1"># Always set npts_max.</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">npts_max</span> <span class="o">=</span> <span class="mi">200000</span>
 
-    <span class="c"># Call either the spline routine or the normal routine.</span>
+    <span class="c1"># Call either the spline routine or the normal routine.</span>
     <span class="k">if</span> <span class="n">auto_spline</span> <span class="ow">is</span> <span class="bp">True</span> <span class="ow">and</span> <span class="n">npts</span> <span class="o">&gt;</span> <span class="n">npts_max</span><span class="p">:</span>
         <span class="n">mtspeclib</span><span class="o">.</span><span class="n">dpss_spline_</span><span class="p">(</span>
             <span class="n">C</span><span class="o">.</span><span class="n">byref</span><span class="p">(</span><span class="n">C</span><span class="o">.</span><span class="n">c_int</span><span class="p">(</span><span class="n">npts_max</span><span class="p">)),</span> <span class="n">C</span><span class="o">.</span><span class="n">byref</span><span class="p">(</span><span class="n">C</span><span class="o">.</span><span class="n">c_int</span><span class="p">(</span><span class="n">npts</span><span class="p">)),</span>
@@ -435,9 +422,9 @@
                         <span class="n">C</span><span class="o">.</span><span class="n">byref</span><span class="p">(</span><span class="n">C</span><span class="o">.</span><span class="n">c_int</span><span class="p">(</span><span class="n">number_of_tapers</span><span class="p">)),</span> <span class="n">mt</span><span class="o">.</span><span class="n">p</span><span class="p">(</span><span class="n">v</span><span class="p">),</span>
                         <span class="n">mt</span><span class="o">.</span><span class="n">p</span><span class="p">(</span><span class="n">lamb</span><span class="p">),</span> <span class="n">mt</span><span class="o">.</span><span class="n">p</span><span class="p">(</span><span class="n">theta</span><span class="p">))</span>
 
-    <span class="k">return</span> <span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">lamb</span><span class="p">,</span> <span class="n">theta</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">lamb</span><span class="p">,</span> <span class="n">theta</span><span class="p">)</span></div>
 
-</div>
+
 <div class="viewcode-block" id="wigner_ville_spectrum"><a class="viewcode-back" href="../../multitaper_wigner_ville_spectrum.html#mtspec.multitaper.wigner_ville_spectrum">[docs]</a><span class="k">def</span> <span class="nf">wigner_ville_spectrum</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">delta</span><span class="p">,</span> <span class="n">time_bandwidth</span><span class="o">=</span><span class="mf">3.5</span><span class="p">,</span>
                           <span class="n">number_of_tapers</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">smoothing_filter</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
                           <span class="n">filter_width</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">frequency_divider</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
@@ -560,35 +547,35 @@
 <span class="sd">        ax3.imshow(np.sqrt(abs(wv)), interpolation=&#39;lanczos&#39;, aspect=&#39;auto&#39;,</span>
 <span class="sd">                   cmap=c)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">require</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="s">&#39;float32&#39;</span><span class="p">)</span>
-    <span class="n">mt</span> <span class="o">=</span> <span class="n">_MtspecType</span><span class="p">(</span><span class="s">&quot;float32&quot;</span><span class="p">)</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">require</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="s1">&#39;float32&#39;</span><span class="p">)</span>
+    <span class="n">mt</span> <span class="o">=</span> <span class="n">_MtspecType</span><span class="p">(</span><span class="s2">&quot;float32&quot;</span><span class="p">)</span>
 
     <span class="n">npts</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 
-    <span class="c"># Use the optimal number of tapers in case no number is specified.</span>
+    <span class="c1"># Use the optimal number of tapers in case no number is specified.</span>
     <span class="k">if</span> <span class="n">number_of_tapers</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
         <span class="n">number_of_tapers</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">time_bandwidth</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
 
-    <span class="c"># Determine filter.</span>
+    <span class="c1"># Determine filter.</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">smoothing_filter</span><span class="p">:</span>
         <span class="n">smoothing_filter</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="k">elif</span> <span class="n">smoothing_filter</span> <span class="o">==</span> <span class="s">&#39;boxcar&#39;</span><span class="p">:</span>
+    <span class="k">elif</span> <span class="n">smoothing_filter</span> <span class="o">==</span> <span class="s1">&#39;boxcar&#39;</span><span class="p">:</span>
         <span class="n">smoothing_filter</span> <span class="o">=</span> <span class="mi">1</span>
-    <span class="k">elif</span> <span class="n">smoothing_filter</span> <span class="o">==</span> <span class="s">&#39;gauss&#39;</span><span class="p">:</span>
+    <span class="k">elif</span> <span class="n">smoothing_filter</span> <span class="o">==</span> <span class="s1">&#39;gauss&#39;</span><span class="p">:</span>
         <span class="n">smoothing_filter</span> <span class="o">=</span> <span class="mi">2</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">msg</span> <span class="o">=</span> <span class="s">&#39;Invalid value for smoothing filter.&#39;</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;Invalid value for smoothing filter.&#39;</span>
         <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
-    <span class="c"># Verbose mode on or off.</span>
+    <span class="c1"># Verbose mode on or off.</span>
     <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-        <span class="n">verbose</span> <span class="o">=</span> <span class="n">C</span><span class="o">.</span><span class="n">byref</span><span class="p">(</span><span class="n">C</span><span class="o">.</span><span class="n">c_char</span><span class="p">(</span><span class="s">&#39;y&#39;</span><span class="p">))</span>
+        <span class="n">verbose</span> <span class="o">=</span> <span class="n">C</span><span class="o">.</span><span class="n">byref</span><span class="p">(</span><span class="n">C</span><span class="o">.</span><span class="n">c_char</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">))</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">verbose</span> <span class="o">=</span> <span class="bp">None</span>
 
-    <span class="c"># Allocate the output array</span>
-    <span class="c"># f90 code internally pads zeros to 2 * npts. That is we only return</span>
-    <span class="c"># every second frequency point, thus decrease the size of the array</span>
+    <span class="c1"># Allocate the output array</span>
+    <span class="c1"># f90 code internally pads zeros to 2 * npts. That is we only return</span>
+    <span class="c1"># every second frequency point, thus decrease the size of the array</span>
     <span class="n">output</span> <span class="o">=</span> <span class="n">mt</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">npts</span> <span class="o">//</span> <span class="mi">2</span> <span class="o">//</span> <span class="nb">int</span><span class="p">(</span><span class="n">frequency_divider</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">npts</span><span class="p">))</span>
 
     <span class="n">mtspeclib</span><span class="o">.</span><span class="n">wv_spec_to_array_</span><span class="p">(</span><span class="n">C</span><span class="o">.</span><span class="n">byref</span><span class="p">(</span><span class="n">C</span><span class="o">.</span><span class="n">c_int</span><span class="p">(</span><span class="n">npts</span><span class="p">)),</span>
@@ -600,9 +587,9 @@
                                 <span class="n">C</span><span class="o">.</span><span class="n">byref</span><span class="p">(</span><span class="n">C</span><span class="o">.</span><span class="n">c_float</span><span class="p">(</span><span class="n">filter_width</span><span class="p">)),</span>
                                 <span class="n">C</span><span class="o">.</span><span class="n">byref</span><span class="p">(</span><span class="n">C</span><span class="o">.</span><span class="n">c_int</span><span class="p">(</span><span class="n">frequency_divider</span><span class="p">)),</span> <span class="n">verbose</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">output</span>
+    <span class="k">return</span> <span class="n">output</span></div>
 
-</div>
+
 <div class="viewcode-block" id="mt_coherence"><a class="viewcode-back" href="../../multitaper_mt_coherence.html#mtspec.multitaper.mt_coherence">[docs]</a><span class="k">def</span> <span class="nf">mt_coherence</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">xi</span><span class="p">,</span> <span class="n">xj</span><span class="p">,</span> <span class="n">tbp</span><span class="p">,</span> <span class="n">kspec</span><span class="p">,</span> <span class="n">nf</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Construct the coherence spectrum from the yk&#39;s and the</span>
@@ -644,22 +631,22 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">npts</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">xi</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">xj</span><span class="p">)</span> <span class="o">!=</span> <span class="n">npts</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s">&quot;Inpurt ndarrays have mismatching length&quot;</span><span class="p">)</span>
-    <span class="n">mt</span> <span class="o">=</span> <span class="n">_MtspecType</span><span class="p">(</span><span class="s">&#39;float32&#39;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Inpurt ndarrays have mismatching length&quot;</span><span class="p">)</span>
+    <span class="n">mt</span> <span class="o">=</span> <span class="n">_MtspecType</span><span class="p">(</span><span class="s1">&#39;float32&#39;</span><span class="p">)</span>
 
-    <span class="c"># convert type of input arguments if necessary</span>
+    <span class="c1"># convert type of input arguments if necessary</span>
     <span class="n">xi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">require</span><span class="p">(</span><span class="n">xi</span><span class="p">,</span> <span class="n">mt</span><span class="o">.</span><span class="n">float</span><span class="p">,</span> <span class="n">mt</span><span class="o">.</span><span class="n">required</span><span class="p">)</span>
     <span class="n">xj</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">require</span><span class="p">(</span><span class="n">xj</span><span class="p">,</span> <span class="n">mt</span><span class="o">.</span><span class="n">float</span><span class="p">,</span> <span class="n">mt</span><span class="o">.</span><span class="n">required</span><span class="p">)</span>
 
-    <span class="c"># fill up optional arguments, if not given set them None</span>
+    <span class="c1"># fill up optional arguments, if not given set them None</span>
     <span class="n">args</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">(</span><span class="s">&#39;freq&#39;</span><span class="p">,</span> <span class="s">&#39;cohe&#39;</span><span class="p">,</span> <span class="s">&#39;phase&#39;</span><span class="p">,</span> <span class="s">&#39;speci&#39;</span><span class="p">,</span> <span class="s">&#39;specj&#39;</span><span class="p">,</span> <span class="s">&#39;conf&#39;</span><span class="p">,</span>
-                <span class="s">&#39;cohe_ci&#39;</span><span class="p">,</span> <span class="s">&#39;phase_ci&#39;</span><span class="p">,</span> <span class="s">&#39;iadapt&#39;</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;freq&#39;</span><span class="p">,</span> <span class="s1">&#39;cohe&#39;</span><span class="p">,</span> <span class="s1">&#39;phase&#39;</span><span class="p">,</span> <span class="s1">&#39;speci&#39;</span><span class="p">,</span> <span class="s1">&#39;specj&#39;</span><span class="p">,</span> <span class="s1">&#39;conf&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;cohe_ci&#39;</span><span class="p">,</span> <span class="s1">&#39;phase_ci&#39;</span><span class="p">,</span> <span class="s1">&#39;iadapt&#39;</span><span class="p">):</span>
         <span class="n">kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">(</span><span class="s">&#39;cohe_ci&#39;</span><span class="p">,</span> <span class="s">&#39;phase_ci&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">kwargs</span><span class="p">[</span><span class="n">key</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;cohe_ci&#39;</span><span class="p">,</span> <span class="s1">&#39;phase_ci&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">kwargs</span><span class="p">[</span><span class="n">key</span><span class="p">]:</span>
             <span class="n">kwargs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">mt</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">nf</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
             <span class="n">args</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mt</span><span class="o">.</span><span class="n">p</span><span class="p">(</span><span class="n">kwargs</span><span class="p">[</span><span class="n">key</span><span class="p">]))</span>
-        <span class="k">elif</span> <span class="n">key</span> <span class="o">==</span> <span class="s">&#39;iadapt&#39;</span> <span class="ow">and</span> <span class="n">kwargs</span><span class="p">[</span><span class="n">key</span><span class="p">]:</span>
+        <span class="k">elif</span> <span class="n">key</span> <span class="o">==</span> <span class="s1">&#39;iadapt&#39;</span> <span class="ow">and</span> <span class="n">kwargs</span><span class="p">[</span><span class="n">key</span><span class="p">]:</span>
             <span class="n">args</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">C</span><span class="o">.</span><span class="n">byref</span><span class="p">(</span><span class="n">C</span><span class="o">.</span><span class="n">c_int</span><span class="p">(</span><span class="n">kwargs</span><span class="p">[</span><span class="n">key</span><span class="p">])))</span>
         <span class="k">elif</span> <span class="n">kwargs</span><span class="p">[</span><span class="n">key</span><span class="p">]:</span>
             <span class="n">kwargs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">mt</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">nf</span><span class="p">)</span>
@@ -673,17 +660,17 @@
                        <span class="n">C</span><span class="o">.</span><span class="n">byref</span><span class="p">(</span><span class="n">C</span><span class="o">.</span><span class="n">c_int</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">kspec</span><span class="p">))),</span> <span class="n">C</span><span class="o">.</span><span class="n">byref</span><span class="p">(</span><span class="n">C</span><span class="o">.</span><span class="n">c_int</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">nf</span><span class="p">))),</span>
                        <span class="n">C</span><span class="o">.</span><span class="n">byref</span><span class="p">(</span><span class="n">C</span><span class="o">.</span><span class="n">c_float</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">p</span><span class="p">))),</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span>
 
-    <span class="c"># remove None values from dictionary</span>
-    <span class="k">return</span> <span class="nb">dict</span><span class="p">([(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">v</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">])</span>
+    <span class="c1"># remove None values from dictionary</span>
+    <span class="k">return</span> <span class="nb">dict</span><span class="p">([(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">v</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">])</span></div>
 
-</div>
+
 <span class="k">class</span> <span class="nc">_MtspecType</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Simple class that stores type definition for interfacing with</span>
 <span class="sd">    the fortran code and provides some helper functions.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">struct</span> <span class="o">=</span> <span class="p">{</span><span class="s">&quot;float32&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">C</span><span class="o">.</span><span class="n">c_float</span><span class="p">,</span> <span class="n">mtspeclib</span><span class="o">.</span><span class="n">mtspec_pad_</span><span class="p">),</span>
-              <span class="s">&quot;float64&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">C</span><span class="o">.</span><span class="n">c_double</span><span class="p">,</span> <span class="n">mtspeclib</span><span class="o">.</span><span class="n">mtspec_d_</span><span class="p">)}</span>
+    <span class="n">struct</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;float32&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">C</span><span class="o">.</span><span class="n">c_float</span><span class="p">,</span> <span class="n">mtspeclib</span><span class="o">.</span><span class="n">mtspec_pad_</span><span class="p">),</span>
+              <span class="s2">&quot;float64&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">C</span><span class="o">.</span><span class="n">c_double</span><span class="p">,</span> <span class="n">mtspeclib</span><span class="o">.</span><span class="n">mtspec_d_</span><span class="p">)}</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dtype</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -692,12 +679,12 @@
 <span class="sd">        :param dtype: &#39;float32&#39; or &#39;float64&#39;</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">dtype</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">struct</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;dtype must be either &#39;float32&#39; or &#39;float64&#39;&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;dtype must be either &#39;float32&#39; or &#39;float64&#39;&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">float</span> <span class="o">=</span> <span class="n">dtype</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">complex</span> <span class="o">=</span> <span class="s">&#39;complex</span><span class="si">%d</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="nb">float</span><span class="p">(</span><span class="n">dtype</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">:]))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">complex</span> <span class="o">=</span> <span class="s1">&#39;complex</span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="nb">float</span><span class="p">(</span><span class="n">dtype</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">:]))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">c_float</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">struct</span><span class="p">[</span><span class="n">dtype</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">pointer</span> <span class="o">=</span> <span class="n">C</span><span class="o">.</span><span class="n">POINTER</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">c_float</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">required</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;F_CONTIGUOUS&#39;</span><span class="p">,</span> <span class="s">&#39;ALIGNED&#39;</span><span class="p">,</span> <span class="s">&#39;WRITEABLE&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">required</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;F_CONTIGUOUS&#39;</span><span class="p">,</span> <span class="s1">&#39;ALIGNED&#39;</span><span class="p">,</span> <span class="s1">&#39;WRITEABLE&#39;</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">mtspec</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">struct</span><span class="p">[</span><span class="n">dtype</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
 
     <span class="k">def</span> <span class="nf">empty</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="nb">complex</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
@@ -718,7 +705,7 @@
 
 <span class="sd">        :param ndarray: numpy input array or None</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c"># short variable name for passing as argument in function calls</span>
+        <span class="c1"># short variable name for passing as argument in function calls</span>
         <span class="k">if</span> <span class="n">ndarray</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">None</span>
         <span class="k">return</span> <span class="n">ndarray</span><span class="o">.</span><span class="n">ctypes</span><span class="o">.</span><span class="n">data_as</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pointer</span><span class="p">)</span>
@@ -755,9 +742,11 @@
     <img
         alt="https://secure.travis-ci.org/krischer/mtspec.png?branch=master"
         src="https://secure.travis-ci.org/krischer/mtspec.png?branch=master"
-    >
+    />
 </a>
 </p>
+
+
 <h3>Navigation</h3>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorial.html">Tutorial</a></li>
@@ -793,8 +782,8 @@
       &copy;2009-2015, Lion Krischer, Moritz Beyreuther.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.1</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.3</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
       
     </div>
 
