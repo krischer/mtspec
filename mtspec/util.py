@@ -32,7 +32,7 @@ def _load_lib():
         # Enable a couple of different library naming schemes.
         possible_files = glob.glob(os.path.join(LIB_DIR, "mtspec*.*"))
         if not possible_files:
-            raise ValueError("Could not find suitable instaseis shared "
+            raise ValueError("Could not find suitable mtspec shared "
                              "library.")
         filename = possible_files[0]
         lib = C.CDLL(filename)

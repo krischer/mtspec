@@ -33,13 +33,13 @@ class CodeFormattingTestCase(unittest.TestCase):
             warnings.warn(msg)
         test_dir = os.path.dirname(os.path.abspath(inspect.getfile(
             inspect.currentframe())))
-        instaseis_dir = os.path.dirname(test_dir)
+        mtspec_dir = os.path.dirname(test_dir)
 
         # Ignore automatically generated files.
         ignore_files = [os.path.join("gui", "qt_window.py")]
-        ignore_files = [os.path.join(instaseis_dir, _i) for _i in ignore_files]
+        ignore_files = [os.path.join(mtspec_dir, _i) for _i in ignore_files]
         files = []
-        for dirpath, _, filenames in os.walk(instaseis_dir):
+        for dirpath, _, filenames in os.walk(mtspec_dir):
             filenames = [_i for _i in filenames if
                          os.path.splitext(_i)[-1] == os.path.extsep + "py"]
             if not filenames:
