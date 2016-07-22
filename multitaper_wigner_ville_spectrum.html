@@ -28,13 +28,15 @@
     <link rel="prev" title="mtspec.mt_coherence" href="multitaper_mt_coherence.html" />
     
    
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
     <link rel="stylesheet" href="_static/custom.css" type="text/css" />
 
   </head>
-  <body role="document">  
+  <body role="document">
+  
 
     <div class="document">
       <div class="documentwrapper">
@@ -84,25 +86,25 @@ from 0 .. Nyquist frequency / int(frequency_divider).</li>
 <p>This example demonstrates how to plot a signal, its multitaper spectral
 estimate, and its Wigner-Ville time-frequency distribution. The signal
 is sinusoidal overlaid with two simple linear chirps.</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">mtspec</span> <span class="kn">import</span> <span class="n">mtspec</span><span class="p">,</span> <span class="n">wigner_ville_spectrum</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">mtspec.util</span> <span class="kn">import</span> <span class="n">signal_bursts</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">mtspec</span> <span class="k">import</span> <span class="n">mtspec</span><span class="p">,</span> <span class="n">wigner_ville_spectrum</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">mtspec.util</span> <span class="k">import</span> <span class="n">signal_bursts</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>Get the example signal.</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">signal_bursts</span><span class="p">()</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">signal_bursts</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>Plot the data on the top axes.</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ax1</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_axes</span><span class="p">([</span><span class="mf">0.2</span><span class="p">,</span><span class="mf">0.75</span><span class="p">,</span> <span class="mf">0.79</span><span class="p">,</span> <span class="mf">0.23</span><span class="p">])</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ax1</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_axes</span><span class="p">([</span><span class="mf">0.2</span><span class="p">,</span><span class="mf">0.75</span><span class="p">,</span> <span class="mf">0.79</span><span class="p">,</span> <span class="mf">0.23</span><span class="p">])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;0.3&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">ax1</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
 </pre></div>
 </div>
 <p>Plot its spectral estimate on the side.</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ax2</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_axes</span><span class="p">([</span><span class="mf">0.06</span><span class="p">,</span><span class="mf">0.02</span><span class="p">,</span><span class="mf">0.13</span><span class="p">,</span><span class="mf">0.69</span><span class="p">])</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ax2</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_axes</span><span class="p">([</span><span class="mf">0.06</span><span class="p">,</span><span class="mf">0.02</span><span class="p">,</span><span class="mf">0.13</span><span class="p">,</span><span class="mf">0.69</span><span class="p">])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">spec</span><span class="p">,</span> <span class="n">freq</span> <span class="o">=</span> <span class="n">mtspec</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mf">3.5</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">ax2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">spec</span><span class="p">,</span> <span class="n">freq</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;0.3&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">ax2</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">spec</span><span class="o">.</span><span class="n">max</span><span class="p">())</span>
@@ -111,7 +113,7 @@ is sinusoidal overlaid with two simple linear chirps.</p>
 </pre></div>
 </div>
 <p>Create and plot the Wigner-Ville distribution.</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">wv</span> <span class="o">=</span> <span class="n">wigner_ville_spectrum</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mf">3.5</span><span class="p">,</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">wv</span> <span class="o">=</span> <span class="n">wigner_ville_spectrum</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mf">3.5</span><span class="p">,</span>
 <span class="gp">... </span>                           <span class="n">smoothing_filter</span><span class="o">=</span><span class="s1">&#39;gauss&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">ax3</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_axes</span><span class="p">([</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">,</span> <span class="mf">0.79</span><span class="p">,</span> <span class="mf">0.69</span><span class="p">])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">ax3</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">([])</span>
@@ -146,10 +148,12 @@ is sinusoidal overlaid with two simple linear chirps.</p>
 
 
 
+
 <p>
-<iframe src="https://ghbtns.com/github-btn.html?user=krischer&repo=mtspec&type=watch&count=true&size=large"
+<iframe src="https://ghbtns.com/github-btn.html?user=krischer&repo=mtspec&type=watch&count=true&size=large&v=2"
   allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
 </p>
+
 
 
 
@@ -159,8 +163,8 @@ is sinusoidal overlaid with two simple linear chirps.</p>
 <p>
 <a href="https://travis-ci.org/krischer/mtspec">
     <img
-        alt="https://secure.travis-ci.org/krischer/mtspec.png?branch=master"
-        src="https://secure.travis-ci.org/krischer/mtspec.png?branch=master"
+        alt="https://secure.travis-ci.org/krischer/mtspec.svg?branch=master"
+        src="https://secure.travis-ci.org/krischer/mtspec.svg?branch=master"
     />
 </a>
 </p>
@@ -175,7 +179,7 @@ is sinusoidal overlaid with two simple linear chirps.</p>
 <li class="toctree-l1"><a class="reference internal" href="multitaper_mtspec.html">mtspec.mtspec</a></li>
 <li class="toctree-l1"><a class="reference internal" href="multitaper_sine_psd.html">mtspec.sine_psd</a></li>
 <li class="toctree-l1"><a class="reference internal" href="multitaper_mt_coherence.html">mtspec.mt_coherence</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="">mtspec.wigner_ville_spectrum</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">mtspec.wigner_ville_spectrum</a></li>
 <li class="toctree-l1"><a class="reference internal" href="util.html">mtspec.util</a></li>
 </ul>
 
@@ -188,9 +192,6 @@ is sinusoidal overlaid with two simple linear chirps.</p>
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -201,8 +202,8 @@ is sinusoidal overlaid with two simple linear chirps.</p>
       &copy;2009-2015, Lion Krischer, Moritz Beyreuther.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.5</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
       
       |
       <a href="_sources/multitaper_wigner_ville_spectrum.txt"
