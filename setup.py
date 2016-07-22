@@ -54,21 +54,26 @@ CCompiler.language_map['.f90'] = "c"
 UnixCCompiler.src_extensions.append(".f90")
 
 
+arch = platform.architecture()[0].lower()
+# Force architecture of shared library.
+if arch == "32bit":
+    arch_flag = "-m32"
+elif arch == "64bit":
+    arch_flag = "-m64"
+else:
+    print("\nPlatform has architecture '%s' which is unknown to "
+          "the setup script. Proceed with caution\n" % arch)
+    arch_flag = None
+
+
 def _compile(self, obj, src, ext, cc_args, extra_postargs, pp_opts):
     compiler_so = self.compiler_so
-    arch = platform.architecture()[0].lower()
     if ext == ".f90":
         if sys.platform == 'darwin' or sys.platform == 'linux2':
             compiler_so = ["gfortran"]
             cc_args = ["-O", "-fPIC", "-c", "-ffree-form"]
-            # Force architecture of shared library.
-            if arch == "32bit":
-                cc_args.append("-m32")
-            elif arch == "64bit":
-                cc_args.append("-m64")
-            else:
-                print("\nPlatform has architecture '%s' which is unknown to "
-                      "the setup script. Proceed with caution\n" % arch)
+            if arch_flag:
+                cc_args.append(arch_flag)
     try:
         self.spawn(compiler_so + cc_args + [src, '-o', obj] +
                    extra_postargs)
@@ -111,9 +116,16 @@ def get_libgfortran_dir():
 
 
 src = os.path.join('mtspec', 'src', 'src') + os.sep
+
+if arch_flag:
+    extra_link_args = [arch_flag]
+else:
+    extra_link_args = None
+
 lib = MyExtension('mtspec',
                   libraries=["gfortran"],
                   library_dirs=get_libgfortran_dir(),
+                  extra_link_args=extra_link_args,
                   sources=[
                       src + 'spectra.f90', src + 'adaptspec.f90',
                       src + 'atanh2.f90',
