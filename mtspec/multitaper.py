@@ -621,6 +621,101 @@ def mt_coherence(df, xi, xj, tbp, kspec, nf, p, **kwargs):
     return dict([(k, v) for k, v in kwargs.items() if v is not None])
 
 
+def mt_deconv(xi, xj, delta, nfft=None, time_bandwidth=None,
+              number_of_tapers=None, optional_output=False, **kwargs):
+    """
+    Construct the deconvolution of the 2 traces
+
+    INPUT
+
+    :param xi: :class:`numpy.ndarray`; data for first series
+    :param xj: :class:`numpy.ndarray`; data for second series
+    :param delta: float
+         Sample spacing of the data.
+
+    :param nfft: int
+         Number of points for fft. If nfft == None, no zero padding
+         will be applied before the fft
+    :param time_bandwidth: float
+         Time-bandwidth product. Common values are 2, 3, 4 and numbers in
+         between.
+
+    :param number_of_tapers: integer, optional
+         Number of tapers to use. Defaults to int(2*time_bandwidth) - 1. This
+         is maximum senseful amount. More tapers will have no great influence
+         on the final spectrum but increase the calculation time. Use fewer
+         tapers for a faster calculation.
+
+    :param iadapt: int, optional; 0 - adaptive, 1 - constant weights
+    :param demean: bool, optional; if True, force complex TF to be demeaned.
+    :param fmax: float, optional;	maximum frequency for lowpass cosine filter
+
+
+    :return: Returns a list with :class:`numpy.ndarray`. See the note below.
+
+    .. note::
+
+        This method will at return at least two arrays: The deconvolved time
+        series and the frequency bins used. If optional_output is true it will
+        also return (in the given order) arrays containing the spectral ratio
+        of the two spectra, the spectrum of the first and the spectrum of the
+        second series.
+
+    """
+    npts = len(xi)
+    if len(xj) != npts:
+        raise Exception("Input ndarrays have mismatching length")
+
+    if nfft is None or nfft == npts:
+        nfft = npts
+
+    mt = _MtspecType("float32")
+
+    # Use the optimal number of tapers in case no number is specified.
+    if number_of_tapers is None:
+        number_of_tapers = int(2 * time_bandwidth) - 1
+
+    # Transform the data to work with the library.
+    xi = np.require(xi, mt.float, mt.required)
+    xj = np.require(xj, mt.float, mt.required)
+    # Get some information necessary for the call to the Fortran library.
+    nf = nfft // 2 + 1
+
+    # fill up optional arguments, if not given set them None
+    args = []
+    for key in ('freq', 'tfun', 'spec_ratio', 'speci', 'specj', 'iadapt',
+                'demean', 'fmax'):
+        kwargs.setdefault(key, None)
+        if key in ('iadapt', 'demean') and kwargs[key]:
+            args.append(C.byref(C.c_int(kwargs[key])))
+        elif key in ('fmax') and kwargs[key]:
+            args.append(C.byref(C.c_float(kwargs[key])))
+        elif key == 'tfun':
+            kwargs[key] = mt.empty(nfft)
+            args.append(mt.p(kwargs[key]))
+        elif key in ('freq', 'spec_ratio', 'speci', 'specj'):
+            kwargs[key] = mt.empty(nf)
+            args.append(mt.p(kwargs[key]))
+        else:
+            args.append(kwargs[key])
+
+    mtspeclib.mt_deconv_(C.byref(C.c_int(int(npts))),
+                         C.byref(C.c_int(int(nfft))),
+                         C.byref(C.c_float(float(delta))),
+                         mt.p(xi), mt.p(xj),
+                         C.byref(C.c_float(float(time_bandwidth))),
+                         C.byref(C.c_int(int(number_of_tapers))),
+                         C.byref(C.c_int(int(nf))),
+                         *args)
+
+    return_values = [kwargs['tfun'], kwargs['freq']]
+    if optional_output is True:
+        return_values.extend([kwargs['spec_ratio'], kwargs['speci'],
+                              kwargs['specj']])
+
+    return return_values
+
+
 class _MtspecType(object):
     """
     Simple class that stores type definition for interfacing with

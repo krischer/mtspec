@@ -14,3 +14,4 @@ A Python wrapper for the multitaper library of German A. Prieto (see link_).
 """
 from .multitaper import mtspec, sine_psd, dpss  # NOQA
 from .multitaper import wigner_ville_spectrum, mt_coherence  # NOQA
+from .multitaper import mt_deconv  # NOQA
