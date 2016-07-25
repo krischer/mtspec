@@ -147,7 +147,7 @@
     <span class="k">if</span> <span class="n">number_of_tapers</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
         <span class="n">number_of_tapers</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">time_bandwidth</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
     <span class="c1"># Transform the data to work with the library.</span>
-    <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">require</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">mt</span><span class="o">.</span><span class="n">float</span><span class="p">,</span> <span class="n">mt</span><span class="o">.</span><span class="n">required</span><span class="p">)</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">require</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">mt</span><span class="o">.</span><span class="n">float</span><span class="p">,</span> <span class="n">requirements</span><span class="o">=</span><span class="p">[</span><span class="n">mt</span><span class="o">.</span><span class="n">order</span><span class="p">])</span>
     <span class="c1"># Get some information necessary for the call to the Fortran library.</span>
     <span class="n">number_of_frequency_bins</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">nfft</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
     <span class="c1"># Create output arrays.</span>
@@ -305,7 +305,7 @@
     <span class="c1"># initialize _MtspecType to save some space</span>
     <span class="n">mt</span> <span class="o">=</span> <span class="n">_MtspecType</span><span class="p">(</span><span class="s2">&quot;float32&quot;</span><span class="p">)</span>
     <span class="c1"># Transform the data to work with the library.</span>
-    <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">require</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">mt</span><span class="o">.</span><span class="n">float</span><span class="p">,</span> <span class="n">mt</span><span class="o">.</span><span class="n">required</span><span class="p">)</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">require</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">mt</span><span class="o">.</span><span class="n">float</span><span class="p">,</span> <span class="n">requirements</span><span class="o">=</span><span class="p">[</span><span class="n">mt</span><span class="o">.</span><span class="n">order</span><span class="p">])</span>
     <span class="c1"># Some variables necessary to call the library.</span>
     <span class="n">npts</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
     <span class="n">number_of_frequency_bins</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">npts</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
@@ -317,7 +317,7 @@
         <span class="c1"># here an exception, mt sets the type float32, here we need int32</span>
         <span class="c1"># that is do all the type and POINTER definition once by hand</span>
         <span class="n">tapers_per_freq_point</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">number_of_frequency_bins</span><span class="p">,</span>
-                                         <span class="s1">&#39;int32&#39;</span><span class="p">,</span> <span class="n">mt</span><span class="o">.</span><span class="n">required</span><span class="p">)</span>
+                                         <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;int32&#39;</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="n">mt</span><span class="o">.</span><span class="n">order</span><span class="p">)</span>
         <span class="n">tapers_per_freq_point_p</span> <span class="o">=</span> \
             <span class="n">tapers_per_freq_point</span><span class="o">.</span><span class="n">ctypes</span><span class="o">.</span><span class="n">data_as</span><span class="p">(</span><span class="n">C</span><span class="o">.</span><span class="n">POINTER</span><span class="p">(</span><span class="n">C</span><span class="o">.</span><span class="n">c_int</span><span class="p">))</span>
         <span class="n">errors</span> <span class="o">=</span> <span class="n">mt</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">number_of_frequency_bins</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
@@ -389,12 +389,11 @@
 <span class="sd">    .. plot ::</span>
 
 <span class="sd">        # Same as the code snippet in the docstring, just a bit prettier.</span>
-<span class="sd">        import seaborn as sns</span>
-<span class="sd">        sns.set_style(&quot;ticks&quot;)</span>
 <span class="sd">        import matplotlib.pyplot as plt</span>
+<span class="sd">        plt.style.use(&quot;ggplot&quot;)</span>
 <span class="sd">        from mtspec import dpss</span>
 <span class="sd">        tapers, lamb, theta = dpss(512, 2.5, 5)</span>
-<span class="sd">        for i in xrange(5):</span>
+<span class="sd">        for i in range(5):</span>
 <span class="sd">            plt.plot(tapers[:, i])</span>
 <span class="sd">        plt.xlim(0, 512)</span>
 <span class="sd">        plt.ylim(-0.09, 0.09)</span>
@@ -488,14 +487,14 @@
 <span class="sd">    Plot the data on the top axes.</span>
 
 <span class="sd">    &gt;&gt;&gt; ax1 = fig.add_axes([0.2,0.75, 0.79, 0.23])</span>
-<span class="sd">    &gt;&gt;&gt; ax1.plot(data, color=&quot;0.3&quot;)</span>
+<span class="sd">    &gt;&gt;&gt; ax1.plot(data, color=&quot;0.1&quot;)</span>
 <span class="sd">    &gt;&gt;&gt; ax1.set_xlim(0, len(data))</span>
 
 <span class="sd">    Plot its spectral estimate on the side.</span>
 
 <span class="sd">    &gt;&gt;&gt; ax2 = fig.add_axes([0.06,0.02,0.13,0.69])</span>
 <span class="sd">    &gt;&gt;&gt; spec, freq = mtspec(data, 10, 3.5)</span>
-<span class="sd">    &gt;&gt;&gt; ax2.plot(spec, freq, color=&quot;0.3&quot;)</span>
+<span class="sd">    &gt;&gt;&gt; ax2.plot(spec, freq, color=&quot;0.1&quot;)</span>
 <span class="sd">    &gt;&gt;&gt; ax2.set_xlim(0, spec.max())</span>
 <span class="sd">    &gt;&gt;&gt; ax2.set_ylim(freq[0], freq[-1])</span>
 <span class="sd">    &gt;&gt;&gt; ax2.set_xticks([])</span>
@@ -509,30 +508,29 @@
 <span class="sd">    &gt;&gt;&gt; ax3.set_xticks([])</span>
 <span class="sd">    &gt;&gt;&gt; # The square root only serves plotting purposes.</span>
 <span class="sd">    &gt;&gt;&gt; ax3.imshow(np.sqrt(abs(wv)), interpolation=&#39;lanczos&#39;,</span>
-<span class="sd">    ...            aspect=&#39;auto&#39;)</span>
+<span class="sd">    ...            aspect=&#39;auto&#39;, cmap=&quot;magma&quot;)</span>
 
 <span class="sd">    .. plot::</span>
 
 <span class="sd">        # Same as the above code snippet just a bit prettier.</span>
-<span class="sd">        import seaborn as sns</span>
 <span class="sd">        import matplotlib.pyplot as plt</span>
+<span class="sd">        plt.style.use(&quot;ggplot&quot;)</span>
 <span class="sd">        from mtspec import mtspec, wigner_ville_spectrum</span>
 <span class="sd">        from mtspec.util import signal_bursts</span>
 <span class="sd">        import numpy as np</span>
-<span class="sd">        sns.set_style(&quot;whitegrid&quot;)</span>
 
 <span class="sd">        fig = plt.figure()</span>
 <span class="sd">        data = signal_bursts()</span>
 
 <span class="sd">        # Plot the data</span>
 <span class="sd">        ax1 = fig.add_axes([0.2,0.75, 0.79, 0.23])</span>
-<span class="sd">        ax1.plot(data, color=&quot;0.3&quot;)</span>
+<span class="sd">        ax1.plot(data, color=&quot;0.1&quot;)</span>
 <span class="sd">        ax1.set_xlim(0, len(data))</span>
 
 <span class="sd">        # Plot multitaper spectrum</span>
 <span class="sd">        ax2 = fig.add_axes([0.06,0.02,0.13,0.69])</span>
 <span class="sd">        spec, freq = mtspec(data, 10, 3.5)</span>
-<span class="sd">        ax2.plot(spec, freq, color=&quot;0.3&quot;)</span>
+<span class="sd">        ax2.plot(spec, freq, color=&quot;0.1&quot;)</span>
 <span class="sd">        ax2.set_xlim(0, spec.max())</span>
 <span class="sd">        ax2.set_ylim(freq[0], freq[-1])</span>
 <span class="sd">        ax2.set_xticks([])</span>
@@ -544,10 +542,8 @@
 <span class="sd">        ax3 = fig.add_axes([0.2, 0.02, 0.79, 0.69])</span>
 <span class="sd">        ax3.set_yticks([])</span>
 <span class="sd">        ax3.set_xticks([])</span>
-<span class="sd">        c = sns.cubehelix_palette(light=1.0, dark=0.0, rot=2.0, as_cmap=True,</span>
-<span class="sd">                                  reverse=True)</span>
 <span class="sd">        ax3.imshow(np.sqrt(abs(wv)), interpolation=&#39;lanczos&#39;, aspect=&#39;auto&#39;,</span>
-<span class="sd">                   cmap=c)</span>
+<span class="sd">                   cmap=&quot;magma&quot;)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">require</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="s1">&#39;float32&#39;</span><span class="p">)</span>
     <span class="n">mt</span> <span class="o">=</span> <span class="n">_MtspecType</span><span class="p">(</span><span class="s2">&quot;float32&quot;</span><span class="p">)</span>
@@ -637,8 +633,8 @@
     <span class="n">mt</span> <span class="o">=</span> <span class="n">_MtspecType</span><span class="p">(</span><span class="s1">&#39;float32&#39;</span><span class="p">)</span>
 
     <span class="c1"># convert type of input arguments if necessary</span>
-    <span class="n">xi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">require</span><span class="p">(</span><span class="n">xi</span><span class="p">,</span> <span class="n">mt</span><span class="o">.</span><span class="n">float</span><span class="p">,</span> <span class="n">mt</span><span class="o">.</span><span class="n">required</span><span class="p">)</span>
-    <span class="n">xj</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">require</span><span class="p">(</span><span class="n">xj</span><span class="p">,</span> <span class="n">mt</span><span class="o">.</span><span class="n">float</span><span class="p">,</span> <span class="n">mt</span><span class="o">.</span><span class="n">required</span><span class="p">)</span>
+    <span class="n">xi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">require</span><span class="p">(</span><span class="n">xi</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">mt</span><span class="o">.</span><span class="n">float</span><span class="p">,</span> <span class="n">requirements</span><span class="o">=</span><span class="p">[</span><span class="n">mt</span><span class="o">.</span><span class="n">order</span><span class="p">])</span>
+    <span class="n">xj</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">require</span><span class="p">(</span><span class="n">xj</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">mt</span><span class="o">.</span><span class="n">float</span><span class="p">,</span> <span class="n">requirements</span><span class="o">=</span><span class="p">[</span><span class="n">mt</span><span class="o">.</span><span class="n">order</span><span class="p">])</span>
 
     <span class="c1"># fill up optional arguments, if not given set them None</span>
     <span class="n">args</span> <span class="o">=</span> <span class="p">[]</span>
@@ -686,7 +682,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">complex</span> <span class="o">=</span> <span class="s1">&#39;complex</span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="nb">float</span><span class="p">(</span><span class="n">dtype</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">:]))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">c_float</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">struct</span><span class="p">[</span><span class="n">dtype</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">pointer</span> <span class="o">=</span> <span class="n">C</span><span class="o">.</span><span class="n">POINTER</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">c_float</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">required</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;F_CONTIGUOUS&#39;</span><span class="p">,</span> <span class="s1">&#39;ALIGNED&#39;</span><span class="p">,</span> <span class="s1">&#39;WRITEABLE&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">order</span> <span class="o">=</span> <span class="s2">&quot;F&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">mtspec</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">struct</span><span class="p">[</span><span class="n">dtype</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
 
     <span class="k">def</span> <span class="nf">empty</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="nb">complex</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
@@ -697,8 +693,8 @@
 <span class="sd">        :param shape: The shape of the array in np.empty format</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="nb">complex</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">complex</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">required</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">float</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">required</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">complex</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">order</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">float</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">order</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">p</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ndarray</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -780,7 +776,7 @@
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy;2009-2015, Lion Krischer, Moritz Beyreuther.
+      &copy;2009-2016, Lion Krischer, Moritz Beyreuther.
       
       |
       Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.1</a>

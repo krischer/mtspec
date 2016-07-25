@@ -1,6 +1,7 @@
 import matplotlib as mpl
 mpl.rcParams['font.size'] = 9.0
 import matplotlib.pyplot as plt
+plt.style.use("ggplot")
 from mtspec import mtspec, sine_psd
 from mtspec.util import _load_mtdata
 

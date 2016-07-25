@@ -43,7 +43,7 @@ mainly a question of compiling the shared Fortran libraries - pull requests are
 welcome.
 
 * ``gfortran >= 4.7``
-* ``Python 2.6, 2.7, 3.3, or 3.4``
+* ``Python 2.7, 3.3, 3.4, or 3.5``
 * ``NumPy >= 1.7``
 * ``matplotlib``
 * ``flake8``
@@ -63,8 +63,8 @@ or the equivalent of your distribution. On OSX we recommend to install
 .. code-block:: bash
 
     $ brew install gcc
-    
-On Windows, you’ll have download and install 
+
+On Windows, you’ll have download and install
 `TDM-GCC <http://tdm-gcc.tdragon.net/>`_ after you’ve
 installed Anaconda and before you install mtspec. Don’t forget
 to mark the *fortran* option in the "gcc" part of the installation.

@@ -3,7 +3,7 @@ Tutorial
 
 This tutorial gives source code and examples as well as figures how to
 create the first three Figures of the multitaper paper of Prieto.
-A simple example for the dpss method and the Wigner Ville spectrum is
+A simple example for the DPSS method and the Wigner Ville spectrum is
 included as well. More information can be found in the Prieto paper itself
 (reference_).
 
@@ -17,49 +17,74 @@ Recreate Fig. 1
     import matplotlib as mpl
     mpl.rcParams['font.size'] = 9.0
     import matplotlib.pyplot as plt
+    plt.style.use("ggplot")
     from mtspec import mtspec
     from mtspec.util import _load_mtdata
 
     data = _load_mtdata('v22_174_series.dat.gz')
 
-    spec, freq, jackknife, _, _ = mtspec(data, 4930., 3.5, number_of_tapers=5,
-                                         nfft=312, statistics=True)
+    spec, freq, jackknife, _, _ = mtspec(
+        data=data, delta=4930.0, time_bandwidth=3.5,
+        number_of_tapers=5, nfft=312, statistics=True)
 
     fig = plt.figure()
     ax1 = fig.add_subplot(2, 1, 1)
-    ax1.plot(data, color='black')
-    ax1.set_xlim(0, len(data))
+    # Plot thousands of years.
+    ax1.plot(np.arange(len(data)) * 4.930, data, color='black')
+    ax1.set_xlim(0, 800)
+    ax1.set_ylim(-1.0, 1.0)
+    ax1.set_xlabel("Time [1000 years]")
+    ax1.set_ylabel("Change in $\delta^{18}O$")
 
     ax2 = fig.add_subplot(2, 1, 2)
     ax2.set_yscale('log')
+    freq *= 1E6
     ax2.plot(freq, spec, color='black')
-    ax2.plot(freq, jackknife[:, 0], '--', color = 'red')
-    ax2.plot(freq, jackknife[:, 1], '--', color = 'red')
+    ax2.fill_between(freq, jackknife[:, 0], jackknife[:, 1], color="red",
+                     alpha=0.3)
     ax2.set_xlim(freq[0], freq[-1])
+    ax2.set_ylim(0.1E1, 1E5)
+    ax2.set_xlabel("Frequency [c Ma$^{-1}]$")
+    ax2.set_ylabel("Power Spectral Density ($\delta^{18}O/ca^{-1}$)")
+
+    plt.tight_layout()
 
 ::
 
+    import matplotlib as mpl
+    mpl.rcParams['font.size'] = 9.0
     import matplotlib.pyplot as plt
+    plt.style.use("ggplot")
     from mtspec import mtspec
     from mtspec.util import _load_mtdata
 
     data = _load_mtdata('v22_174_series.dat.gz')
 
-    spec, freq, jackknife, _, _ = mtspec(data, 4930., 3.5, number_of_tapers=5,
-                                         nfft=312, statistics=True)
+    spec, freq, jackknife, _, _ = mtspec(
+        data=data, delta=4930.0, time_bandwidth=3.5,
+        number_of_tapers=5, nfft=312, statistics=True)
 
     fig = plt.figure()
     ax1 = fig.add_subplot(2, 1, 1)
-    ax1.plot(data, color='black')
-    ax1.set_xlim(0, len(data))
+    # Plot thousands of years.
+    ax1.plot(np.arange(len(data)) * 4.930, data, color='black')
+    ax1.set_xlim(0, 800)
+    ax1.set_ylim(-1.0, 1.0)
+    ax1.set_xlabel("Time [1000 years]")
+    ax1.set_ylabel("Change in $\delta^{18}O$")
 
     ax2 = fig.add_subplot(2, 1, 2)
     ax2.set_yscale('log')
+    freq *= 1E6
     ax2.plot(freq, spec, color='black')
-    ax2.plot(freq, jackknife[:, 0], '--', color = 'red')
-    ax2.plot(freq, jackknife[:, 1], '--', color = 'red')
+    ax2.fill_between(freq, jackknife[:, 0], jackknife[:, 1],
+                     color="red", alpha=0.3)
     ax2.set_xlim(freq[0], freq[-1])
-    plt.show()
+    ax2.set_ylim(0.1E1, 1E5)
+    ax2.set_xlabel("Frequency [c Ma$^{-1}]$")
+    ax2.set_ylabel("Power Spectral Density ($\delta^{18}O/ca^{-1}$)")
+
+    plt.tight_layout()
 
 
 Recreate Fig. 2
@@ -69,6 +94,7 @@ Recreate Fig. 2
     import matplotlib as mpl
     mpl.rcParams['font.size'] = 9.0
     import matplotlib.pyplot as plt
+    plt.style.use("ggplot")
     from mtspec import mtspec
     from mtspec.util import _load_mtdata
 
@@ -76,20 +102,31 @@ Recreate Fig. 2
     spec, freq, jackknife, fstatistics, _ = mtspec(data, 4930., 3.5,
             number_of_tapers=5, nfft=312, statistics=True, rshape=0,
             fcrit=0.9)
+    # In to million years.
+    freq *= 1E6
 
     fig = plt.figure()
     ax1 = fig.add_subplot(2, 1, 1)
     ax1.plot(freq, fstatistics, color='black')
     ax1.set_xlim(freq[0], freq[-1])
+    ax1.set_xlabel("Frequency [c Ma$^{-1}]$")
+    ax1.set_ylabel("F-statistics for periodic lines")
 
     ax2 = fig.add_subplot(2, 1, 2)
     ax2.set_yscale('log')
     ax2.plot(freq, spec, color='black')
     ax2.set_xlim(freq[0], freq[-1])
+    ax2.set_xlabel("Frequency [c Ma$^{-1}]$")
+    ax2.set_ylabel("Power Spectral Density ($\delta^{18}O/ca^{-1}$)")
+
+    plt.tight_layout()
 
 ::
 
+    import matplotlib as mpl
+    mpl.rcParams['font.size'] = 9.0
     import matplotlib.pyplot as plt
+    plt.style.use("ggplot")
     from mtspec import mtspec
     from mtspec.util import _load_mtdata
 
@@ -97,17 +134,25 @@ Recreate Fig. 2
     spec, freq, jackknife, fstatistics, _ = mtspec(data, 4930., 3.5,
             number_of_tapers=5, nfft=312, statistics=True, rshape=0,
             fcrit=0.9)
+    # In to million years.
+    freq *= 1E6
 
     fig = plt.figure()
     ax1 = fig.add_subplot(2, 1, 1)
     ax1.plot(freq, fstatistics, color='black')
     ax1.set_xlim(freq[0], freq[-1])
+    ax1.set_xlabel("Frequency [c Ma$^{-1}]$")
+    ax1.set_ylabel("F-statistics for periodic lines")
 
     ax2 = fig.add_subplot(2, 1, 2)
     ax2.set_yscale('log')
     ax2.plot(freq, spec, color='black')
     ax2.set_xlim(freq[0], freq[-1])
-    plt.show()
+    ax2.set_xlabel("Frequency [c Ma$^{-1}]$")
+    ax2.set_ylabel("Power Spectral Density ($\delta^{18}O/ca^{-1}$)")
+
+    plt.tight_layout()
+
 
 
 Recreate Fig. 3
@@ -117,6 +162,7 @@ Recreate Fig. 3
     import matplotlib as mpl
     mpl.rcParams['font.size'] = 9.0
     import matplotlib.pyplot as plt
+    plt.style.use("ggplot")
     from mtspec import mtspec, sine_psd
     from mtspec.util import _load_mtdata
 
@@ -165,7 +211,7 @@ Recreate Fig. 3
     import matplotlib.pyplot as plt
     from mtspec import mtspec, sine_psd
     from mtspec.util import _load_mtdata
-    
+
     data = _load_mtdata('PASC.dat.gz')
     fig = plt.figure()
     ax1 = fig.add_subplot(3, 1, 1)
@@ -206,25 +252,27 @@ Recreate Fig. 3
     plt.show()
 
 
-dpss Example
+DPSS Example
 ------------
 .. plot::
 
     import matplotlib as mpl
     mpl.rcParams['font.size'] = 9.0
     import matplotlib.pyplot as plt
+    plt.style.use("ggplot")
     from mtspec import dpss
 
     tapers, lamb, theta = dpss(512, 2.5, 10)
 
     ax = plt.figure().add_subplot(111)
-    for i in xrange(10):
+    for i in range(10):
         ax.plot(tapers[:,i])
     ax.set_xlim(0, len(tapers[:,0]))
 
 ::
 
     import matplotlib.pyplot as plt
+    plt.style.use("ggplot")
     from mtspec import dpss
 
     tapers, lamb, theta = dpss(512, 2.5, 10)
@@ -243,6 +291,7 @@ Wigner-Ville Spectrum
     import matplotlib as mpl
     mpl.rcParams['font.size'] = 9.0
     import matplotlib.pyplot as plt
+    plt.style.use("ggplot")
     from mtspec import mtspec, wigner_ville_spectrum
     from mtspec.util import signal_bursts
     import numpy as np
@@ -252,13 +301,13 @@ Wigner-Ville Spectrum
 
     # Plot the data
     ax1 = fig.add_axes([0.2,0.75, 0.79, 0.24])
-    ax1.plot(data)
+    ax1.plot(data, color="k")
     ax1.set_xlim(0, len(data))
 
     # Plot multitaper spectrum
     ax2 = fig.add_axes([0.06,0.02,0.13,0.69])
     spec, freq = mtspec(data, 10, 3.5)
-    ax2.plot(spec, freq)
+    ax2.plot(spec, freq, color="k")
     ax2.set_xlim(0, spec.max())
     ax2.set_ylim(freq[0], freq[-1])
     ax2.set_xticks([])
@@ -270,7 +319,7 @@ Wigner-Ville Spectrum
     ax3 = fig.add_axes([0.2, 0.02, 0.79, 0.69])
     ax3.set_yticks([])
     ax3.set_xticks([])
-    ax3.imshow(abs(wv), interpolation='nearest', aspect='auto')
+    ax3.imshow(abs(wv), interpolation='nearest', aspect='auto', cmap="magma")
     plt.show()
 
 ::
@@ -317,6 +366,7 @@ The following plot shows an example of this behaviour. The signal consists of a 
     import matplotlib as mpl
     mpl.rcParams['font.size'] = 9.0
     import matplotlib.pylab as plt
+    plt.style.use("ggplot")
     from mtspec import wigner_ville_spectrum
     from mtspec.util import linear_chirp, exponential_chirp
     import numpy as np
@@ -338,7 +388,7 @@ The following plot shows an example of this behaviour. The signal consists of a 
     ax2 = fig.add_axes([0.01, 0.025, 0.48, 0.64])
     ax2.set_yticks([])
     ax2.set_xticks([])
-    ax2.imshow(abs(wv), interpolation='nearest', aspect='auto')
+    ax2.imshow(abs(wv), interpolation='nearest', aspect='auto', cmap="magma")
     ax2.set_title('With smoothing')
 
     # Get the WV spectrum.
@@ -348,7 +398,7 @@ The following plot shows an example of this behaviour. The signal consists of a 
     ax3 = fig.add_axes([0.51, 0.025, 0.48, 0.64])
     ax3.set_yticks([])
     ax3.set_xticks([])
-    ax3.imshow(abs(wv), interpolation='nearest', aspect='auto')
+    ax3.imshow(abs(wv), interpolation='nearest', aspect='auto', cmap="magma")
     ax3.set_title('Without smoothing')
 
     plt.show()
@@ -362,6 +412,7 @@ Multitaper coherence example
     import matplotlib as mpl
     mpl.rcParams['font.size'] = 9.0
     import matplotlib.pyplot as plt
+    plt.style.use("ggplot")
     from mtspec import mt_coherence
     import numpy as np
 
@@ -383,13 +434,21 @@ Multitaper coherence example
     plt.subplot(211)
     plt.plot(np.arange(npts)/sampling_rate, xi)
     plt.plot(np.arange(npts)/sampling_rate, xj)
+    plt.xlabel("Time [sec]")
+    plt.ylabel("Amplitude")
     plt.subplot(212)
     plt.plot(out['freq'], out['cohe'])
+    plt.xlabel("Frequency [Hz]")
+    plt.ylabel("Coherency")
+    plt.tight_layout()
     plt.show()
 
 ::
 
+    import matplotlib as mpl
+    mpl.rcParams['font.size'] = 9.0
     import matplotlib.pyplot as plt
+    plt.style.use("ggplot")
     from mtspec import mt_coherence
     import numpy as np
 
@@ -411,6 +470,11 @@ Multitaper coherence example
     plt.subplot(211)
     plt.plot(np.arange(npts)/sampling_rate, xi)
     plt.plot(np.arange(npts)/sampling_rate, xj)
+    plt.xlabel("Time [sec]")
+    plt.ylabel("Amplitude")
     plt.subplot(212)
     plt.plot(out['freq'], out['cohe'])
+    plt.xlabel("Frequency [Hz]")
+    plt.ylabel("Coherency")
+    plt.tight_layout()
     plt.show()

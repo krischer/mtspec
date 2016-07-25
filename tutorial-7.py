@@ -1,6 +1,7 @@
 import matplotlib as mpl
 mpl.rcParams['font.size'] = 9.0
 import matplotlib.pyplot as plt
+plt.style.use("ggplot")
 from mtspec import mt_coherence
 import numpy as np
 
@@ -22,6 +23,11 @@ out = mt_coherence(dt, xi, xj, tbp, kspec, nf, p, freq=True,
 plt.subplot(211)
 plt.plot(np.arange(npts)/sampling_rate, xi)
 plt.plot(np.arange(npts)/sampling_rate, xj)
+plt.xlabel("Time [sec]")
+plt.ylabel("Amplitude")
 plt.subplot(212)
 plt.plot(out['freq'], out['cohe'])
+plt.xlabel("Frequency [Hz]")
+plt.ylabel("Coherency")
+plt.tight_layout()
 plt.show()
