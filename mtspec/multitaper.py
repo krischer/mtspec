@@ -102,7 +102,7 @@ def mtspec(data, delta, time_bandwidth, nfft=None, number_of_tapers=None,
     if number_of_tapers is None:
         number_of_tapers = int(2 * time_bandwidth) - 1
     # Transform the data to work with the library.
-    data = np.require(data, mt.float, mt.required)
+    data = np.require(data, dtype=mt.float, requirements=[mt.order])
     # Get some information necessary for the call to the Fortran library.
     number_of_frequency_bins = int(nfft / 2) + 1
     # Create output arrays.
@@ -260,7 +260,7 @@ def sine_psd(data, delta, number_of_tapers=None, number_of_iterations=2,
     # initialize _MtspecType to save some space
     mt = _MtspecType("float32")
     # Transform the data to work with the library.
-    data = np.require(data, mt.float, mt.required)
+    data = np.require(data, dtype=mt.float, requirements=[mt.order])
     # Some variables necessary to call the library.
     npts = len(data)
     number_of_frequency_bins = int(npts / 2) + 1
@@ -272,7 +272,7 @@ def sine_psd(data, delta, number_of_tapers=None, number_of_iterations=2,
         # here an exception, mt sets the type float32, here we need int32
         # that is do all the type and POINTER definition once by hand
         tapers_per_freq_point = np.empty(number_of_frequency_bins,
-                                         'int32', mt.required)
+                                         dtype='int32', order=mt.order)
         tapers_per_freq_point_p = \
             tapers_per_freq_point.ctypes.data_as(C.POINTER(C.c_int))
         errors = mt.empty((number_of_frequency_bins, 2))
@@ -588,8 +588,8 @@ def mt_coherence(df, xi, xj, tbp, kspec, nf, p, **kwargs):
     mt = _MtspecType('float32')
 
     # convert type of input arguments if necessary
-    xi = np.require(xi, mt.float, mt.required)
-    xj = np.require(xj, mt.float, mt.required)
+    xi = np.require(xi, dtype=mt.float, requirements=[mt.order])
+    xj = np.require(xj, dtype=mt.float, requirements=[mt.order])
 
     # fill up optional arguments, if not given set them None
     args = []
@@ -637,7 +637,7 @@ class _MtspecType(object):
         self.complex = 'complex%d' % (2 * float(dtype[-2:]))
         self.c_float = self.struct[dtype][0]
         self.pointer = C.POINTER(self.c_float)
-        self.required = ['F_CONTIGUOUS', 'ALIGNED', 'WRITEABLE']
+        self.order = "F"
         self.mtspec = self.struct[dtype][1]
 
     def empty(self, shape, complex=False):
@@ -648,8 +648,8 @@ class _MtspecType(object):
         :param shape: The shape of the array in np.empty format
         """
         if complex:
-            return np.empty(shape, self.complex, self.required)
-        return np.empty(shape, self.float, self.required)
+            return np.empty(shape, dtype=self.complex, order=self.order)
+        return np.empty(shape, dtype=self.float, order=self.order)
 
     def p(self, ndarray):
         """
