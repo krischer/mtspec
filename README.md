@@ -1,6 +1,6 @@
 # mtspec - Multitaper Spectral Estimation
 
-[Documentation](http://krischer.github.io/mtspec/)
+[![Build Status](https://travis-ci.org/krischer/mtspec.svg?branch=master)](https://travis-ci.org/krischer/mtspec) [Documentation](http://krischer.github.io/mtspec/)
 
 ![Logo](http://krischer.github.io/mtspec/_static/logo.svg)
 
