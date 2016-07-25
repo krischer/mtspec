@@ -344,12 +344,11 @@ def dpss(npts, fw, number_of_tapers, auto_spline=True, npts_max=None):
     .. plot ::
 
         # Same as the code snippet in the docstring, just a bit prettier.
-        import seaborn as sns
-        sns.set_style("ticks")
         import matplotlib.pyplot as plt
+        plt.style.use("ggplot")
         from mtspec import dpss
         tapers, lamb, theta = dpss(512, 2.5, 5)
-        for i in xrange(5):
+        for i in range(5):
             plt.plot(tapers[:, i])
         plt.xlim(0, 512)
         plt.ylim(-0.09, 0.09)
@@ -443,14 +442,14 @@ def wigner_ville_spectrum(data, delta, time_bandwidth=3.5,
     Plot the data on the top axes.
 
     >>> ax1 = fig.add_axes([0.2,0.75, 0.79, 0.23])
-    >>> ax1.plot(data, color="0.3")
+    >>> ax1.plot(data, color="0.1")
     >>> ax1.set_xlim(0, len(data))
 
     Plot its spectral estimate on the side.
 
     >>> ax2 = fig.add_axes([0.06,0.02,0.13,0.69])
     >>> spec, freq = mtspec(data, 10, 3.5)
-    >>> ax2.plot(spec, freq, color="0.3")
+    >>> ax2.plot(spec, freq, color="0.1")
     >>> ax2.set_xlim(0, spec.max())
     >>> ax2.set_ylim(freq[0], freq[-1])
     >>> ax2.set_xticks([])
@@ -464,30 +463,29 @@ def wigner_ville_spectrum(data, delta, time_bandwidth=3.5,
     >>> ax3.set_xticks([])
     >>> # The square root only serves plotting purposes.
     >>> ax3.imshow(np.sqrt(abs(wv)), interpolation='lanczos',
-    ...            aspect='auto')
+    ...            aspect='auto', cmap="magma")
 
     .. plot::
 
         # Same as the above code snippet just a bit prettier.
-        import seaborn as sns
         import matplotlib.pyplot as plt
+        plt.style.use("ggplot")
         from mtspec import mtspec, wigner_ville_spectrum
         from mtspec.util import signal_bursts
         import numpy as np
-        sns.set_style("whitegrid")
 
         fig = plt.figure()
         data = signal_bursts()
 
         # Plot the data
         ax1 = fig.add_axes([0.2,0.75, 0.79, 0.23])
-        ax1.plot(data, color="0.3")
+        ax1.plot(data, color="0.1")
         ax1.set_xlim(0, len(data))
 
         # Plot multitaper spectrum
         ax2 = fig.add_axes([0.06,0.02,0.13,0.69])
         spec, freq = mtspec(data, 10, 3.5)
-        ax2.plot(spec, freq, color="0.3")
+        ax2.plot(spec, freq, color="0.1")
         ax2.set_xlim(0, spec.max())
         ax2.set_ylim(freq[0], freq[-1])
         ax2.set_xticks([])
@@ -499,10 +497,8 @@ def wigner_ville_spectrum(data, delta, time_bandwidth=3.5,
         ax3 = fig.add_axes([0.2, 0.02, 0.79, 0.69])
         ax3.set_yticks([])
         ax3.set_xticks([])
-        c = sns.cubehelix_palette(light=1.0, dark=0.0, rot=2.0, as_cmap=True,
-                                  reverse=True)
         ax3.imshow(np.sqrt(abs(wv)), interpolation='lanczos', aspect='auto',
-                   cmap=c)
+                   cmap="magma")
     """
     data = np.require(data, 'float32')
     mt = _MtspecType("float32")
