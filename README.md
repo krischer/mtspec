@@ -1,6 +1,8 @@
 # mtspec - Multitaper Spectral Estimation
 
-[![Build Status](https://travis-ci.org/krischer/mtspec.svg?branch=master)](https://travis-ci.org/krischer/mtspec) [Documentation](http://krischer.github.io/mtspec/)
+[![Build Status](https://travis-ci.org/krischer/mtspec.svg?branch=master)](https://travis-ci.org/krischer/mtspec) [![PyPI Version](https://img.shields.io/pypi/v/mtspec.svg)](https://pypi.python.org/pypi/mtspec) [![Supported Python versions](https://img.shields.io/pypi/pyversions/mtspec.svg)](https://pypi.python.org/pypi/mtspec/) [![License](https://img.shields.io/pypi/l/mtspec.svg)](https://pypi.python.org/pypi/mtspec/)
+
+[Documentation](http://krischer.github.io/mtspec/)
 
 ![Logo](http://krischer.github.io/mtspec/_static/logo.svg)
 
