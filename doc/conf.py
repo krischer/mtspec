@@ -64,7 +64,7 @@ master_doc = 'index'
 
 # General substitutions.
 project = 'mtspec'
-copyright = '2009-2015, Lion Krischer, Moritz Beyreuther'
+copyright = '2009-2016, Lion Krischer, Moritz Beyreuther'
 
 # The default replacements for |version| and |release|, also used in various
 # other places throughout the built documents.
