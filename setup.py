@@ -13,6 +13,14 @@ For more information see: https://github.com/krischer/mtspec
 
 ::
 
+    Main Changes in 0.3.0 (July 25, 2016)
+    -------------------------------------
+    * Probably a lot (its been a while since a proper release ...).
+    * Full CI integration.
+    * Nicer docs.
+    * Support for Python 2.7, 3.3, 3.4, and 3.5.
+    * Installs on a lot more platforms.
+
     Main Changes in 0.2.6
     ---------------------
     * Bugfix #6, access violation on windows
