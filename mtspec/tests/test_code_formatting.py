@@ -5,7 +5,7 @@ Tests all Python files of the project with flake8. This ensure PEP8 conformance
 and some other sanity checks as well.
 
 :copyright:
-    Lion Krischer (krischer@geophysik.uni-muenchen.de), 2015
+    Lion Krischer (krischer@geophysik.uni-muenchen.de), 2015-2016
 :license:
     GNU General Public License, Version 3
     (http://www.gnu.org/copyleft/gpl.html)

@@ -3,7 +3,7 @@
 """
 :copyright:
     Lion Krischer (krischer@geophysik.uni-muenchen.de) and
-    Moritz Beyreuther, 2010-2015
+    Moritz Beyreuther, 2010-2016
 :license:
     GNU General Public License, Version 3
     (http://www.gnu.org/copyleft/gpl.html)

@@ -6,7 +6,7 @@ Simple test runner so the tests can be run with
 python -m mtspec.tests
 
 :copyright:
-    Lion Krischer (krischer@geophysik.uni-muenchen.de), 2012-2015
+    Lion Krischer (krischer@geophysik.uni-muenchen.de), 2012-2016
 :license:
     GNU General Public License, Version 3
     (http://www.gnu.org/copyleft/gpl.html)
