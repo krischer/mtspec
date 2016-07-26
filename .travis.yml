@@ -26,9 +26,11 @@ before_install:
   # The next couple lines fix a crash with multiprocessing on Travis and are not specific to using Miniconda
   - sudo rm -rf /dev/shm
   - sudo ln -s /run/shm /dev/shm
-  - conda install --yes numpy matplotlib flake8 sphinx seaborn python=$TRAVIS_PYTHON_VERSION
-  # Only install the theme for Python 2.7 as it builds the docs.
-  - if [[ $TRAVIS_PYTHON_VERSION == '2.7' ]]; then pip install alabaster ; fi
+  - conda install --yes numpy python=$TRAVIS_PYTHON_VERSION
+  # Matplotlib is only required for the documentation - only Python 3.5 builds that.
+  - if [[ $TRAVIS_PYTHON_VERSION == '3.5' ]]; then conda install --yes matplotlib sphinx ; fi
+  - if [[ $TRAVIS_PYTHON_VERSION == '3.5' ]]; then pip install alabaster ; fi
+  - pip install flake8  # Make sure this is up-to-date (don't use conda).
   - pip install coveralls
 
 install:
@@ -43,8 +45,8 @@ install:
 script:
   - coverage run --source=mtspec -m mtspec.tests
   # Docs only need to be built once.
-  - if [[ $TRAVIS_PYTHON_VERSION == '2.7' ]]; then cd $TRAVIS_BUILD_DIR/doc; make html ; fi
+  - if [[ $TRAVIS_PYTHON_VERSION == '3.5' ]]; then cd $TRAVIS_BUILD_DIR/doc; make html ; fi
 
 after_success:
   - cd $TRAVIS_BUILD_DIR; coveralls
-  - if [[ $TRAVIS_PYTHON_VERSION == '2.7' ]]; then bash $TRAVIS_BUILD_DIR/.travis-update-gh-pages.sh ; fi
+  - if [[ $TRAVIS_PYTHON_VERSION == '3.5' ]]; then bash $TRAVIS_BUILD_DIR/.travis-update-gh-pages.sh ; fi
