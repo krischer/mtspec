@@ -9,9 +9,16 @@ Python wrapper for the multitaper `mtspec` Fortran library::
     A Fortran 90 library for multitaper spectrum analysis,
     Computers and Geosciences, 35, pp. 1701-1710.
 
-For more information see: https://github.com/krischer/mtspec
+For more information, see https://github.com/krischer/mtspec and
+http://krischer.github.io/mtspec/.
 
 ::
+
+    Main Changes in 0.3.1 (July 26, 2016)
+    -------------------------------------
+    * Flake8 and matplotlib are no longer hard test dependencies.
+    * Code formatting test are skipped for release builds.
+    * mtspec.__version__ is available.
 
     Main Changes in 0.3.0 (July 25, 2016)
     -------------------------------------
