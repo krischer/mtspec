@@ -35,6 +35,21 @@ To get started, please have a look at the tutorial.
 Installation
 ------------
 
+Easy Way
+^^^^^^^^
+
+The simplest way to install ``mtspec`` is to download
+`(Ana)conda <https://www.continuum.io/why-anaconda>`_, install it, and run:
+
+.. code-block:: bash
+
+    $ conda config --add channels conda-forge
+    $ conda install mtspec
+
+This will take care of everything and you can stop reading here. The rest of
+the installation instructions are for custom installations.
+
+
 Requirements
 ^^^^^^^^^^^^
 
