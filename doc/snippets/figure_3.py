@@ -6,42 +6,42 @@ from mtspec.util import _load_mtdata
 
 data = _load_mtdata('PASC.dat.gz')
 
-fig = plt.figure()
-ax1 = fig.add_subplot(3, 1, 1)
-ax1.plot(data, color='black')
-ax1.set_xlim(0, len(data))
+plt.subplot(311)
+plt.plot(data, color='black')
+plt.xlim(0, len(data))
 
 spec, freq = mtspec(data, 1.0, 1.5, number_of_tapers=1)
 
-ax2 = fig.add_subplot(3, 2, 3)
-ax2.set_yscale('log')
-ax2.set_xscale('log')
-ax2.plot(freq, spec, color='black')
-ax2.set_xlim(freq[0], freq[-1])
+plt.subplot(323)
+plt.loglog(freq, spec, color='black')
+plt.xlim(freq[0], freq[-1])
+plt.text(x=0.5, y=0.85, s="Single Taper",
+         transform=plt.gca().transAxes, ha="center")
 
 spec, freq = mtspec(data, 1.0, 4.5, number_of_tapers=5)
 
-ax3 = fig.add_subplot(3, 2, 4)
-ax3.set_yscale('log')
-ax3.set_xscale('log')
-ax3.plot(freq, spec, color='black')
-ax3.set_xlim(freq[0], freq[-1])
+plt.subplot(324)
+plt.loglog(freq, spec, color='black')
+plt.xlim(freq[0], freq[-1])
+plt.text(x=0.5, y=0.85, s="5 Tapers Multitaper",
+         transform=plt.gca().transAxes, ha="center")
 
 spec, freq = sine_psd(data, 1.0)
 
-ax4 = fig.add_subplot(3, 2, 5)
-ax4.set_yscale('log')
-ax4.set_xscale('log')
-ax4.plot(freq, spec, color='black')
-ax4.set_xlim(freq[0], freq[-1])
+plt.subplot(325)
+plt.loglog(freq, spec, color='black')
+plt.xlim(freq[0], freq[-1])
+plt.text(x=0.5, y=0.85, s="Sine Multitaper",
+         transform=plt.gca().transAxes, ha="center")
 
-spec, freq = mtspec(data, 1.0, 4.5, number_of_tapers=5, quadratic=True)
+spec, freq = mtspec(data, 1.0, 4.5, number_of_tapers=5,
+                    quadratic=True)
 
-ax5 = fig.add_subplot(3, 2, 6)
-ax5.set_yscale('log')
-ax5.set_xscale('log')
-ax5.plot(freq, spec, color='black')
-ax5.set_xlim(freq[0], freq[-1])
+plt.subplot(326)
+plt.loglog(freq, spec, color='black')
+plt.xlim(freq[0], freq[-1])
+plt.text(x=0.5, y=0.85, s="Quadratic Multitaper",
+         transform=plt.gca().transAxes, ha="center")
 
 plt.tight_layout()
 plt.show()

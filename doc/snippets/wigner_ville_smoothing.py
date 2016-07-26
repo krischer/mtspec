@@ -23,7 +23,8 @@ wv = wigner_ville_spectrum(data, 10, 5.0, smoothing_filter='gauss',
 ax2 = fig.add_axes([0.01, 0.025, 0.48, 0.64])
 ax2.set_yticks([])
 ax2.set_xticks([])
-ax2.imshow(abs(wv), interpolation='nearest', aspect='auto', cmap="magma")
+ax2.imshow(abs(wv), interpolation='nearest', aspect='auto',
+           cmap="magma")
 ax2.set_title('With smoothing')
 
 # Get the WV spectrum.
@@ -33,7 +34,8 @@ wv = wigner_ville_spectrum(data, 10, 5.0, smoothing_filter=None)
 ax3 = fig.add_axes([0.51, 0.025, 0.48, 0.64])
 ax3.set_yticks([])
 ax3.set_xticks([])
-ax3.imshow(abs(wv), interpolation='nearest', aspect='auto', cmap="magma")
+ax3.imshow(abs(wv), interpolation='nearest', aspect='auto',
+           cmap="magma")
 ax3.set_title('Without smoothing')
 
 plt.show()

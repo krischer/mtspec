@@ -27,6 +27,7 @@ wv = wigner_ville_spectrum(data, 10, 3.5, smoothing_filter='gauss')
 ax3 = fig.add_axes([0.2, 0.02, 0.79, 0.69])
 ax3.set_yticks([])
 ax3.set_xticks([])
-ax3.imshow(abs(wv), interpolation='nearest', aspect='auto', cmap="magma")
+ax3.imshow(abs(wv), interpolation='nearest', aspect='auto',
+           cmap="magma")
 
 plt.show()

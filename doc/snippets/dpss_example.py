@@ -3,11 +3,11 @@ plt.style.use("ggplot")
 
 from mtspec import dpss
 
-tapers, lamb, theta = dpss(512, 2.5, 10)
+tapers, _, _ = dpss(npts=512, fw=2.5, number_of_tapers=8)
 
-ax = plt.figure().add_subplot(111)
-for i in range(10):
-    ax.plot(tapers[:,i])
-ax.set_xlim(0, len(tapers[:,0]))
+for i in range(8):
+    plt.plot(tapers[:, i])
+plt.xlim(0, len(tapers[:, 0]))
 
+plt.tight_layout()
 plt.show()

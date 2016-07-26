@@ -26,8 +26,11 @@ more details.
    :language: python
 
 
-Recreate Fig. 2
----------------
+Fig. 2: F Statistics
+--------------------
+
+The top shows the F statistics and the bottom a spectrum reshaped with these.
+Function documentation: :func:`mtspec.multitaper.mtspec`.
 
 .. plot:: snippets/figure_2.py
 
@@ -35,8 +38,13 @@ Recreate Fig. 2
     :language: python
 
 
-Recreate Fig. 3
----------------
+Fig. 3: Various Multitaper Variants
+-----------------------------------
+
+Comparison of different multitaper spectral estimates and various settings.
+Top shows data, bottom 4 plots are spectral estimations. Function
+documentations: :func:`mtspec.multitaper.mtspec` and
+:func:`mtspec.multitaper.sine_psd`.
 
 .. plot:: snippets/figure_3.py
 
@@ -47,6 +55,9 @@ Recreate Fig. 3
 DPSS Example
 ------------
 
+A simple example showing how to calculate and plot a couple DPSS. Function
+documentation: :func:`mtspec.multitaper.dpss`.
+
 .. plot:: snippets/dpss_example.py
 
 .. literalinclude:: snippets/dpss_example.py
@@ -55,6 +66,9 @@ DPSS Example
 
 Wigner-Ville Spectrum
 ---------------------
+
+Time frequency like spectral estimation using the Wigner-Ville method.
+Function documentation: :func:`mtspec.multitaper.wigner_ville_spectrum`.
 
 .. plot:: snippets/wigner_ville_spectrum_example.py
 
@@ -81,6 +95,9 @@ the right one without it.
 
 Multitaper coherence example
 ----------------------------
+
+Calculate the coherency of two signals using multitapers. Function
+documentation: :func:`mtspec.multitaper.mt_coherence`.
 
 .. plot:: snippets/multitaper_coherency_example.py
 
