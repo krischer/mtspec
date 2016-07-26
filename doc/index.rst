@@ -45,8 +45,6 @@ welcome.
 * ``gfortran >= 4.7``
 * ``Python 2.7, 3.3, 3.4, or 3.5``
 * ``NumPy >= 1.7``
-* ``matplotlib``
-* ``flake8``
 
 Fortran Compiler
 ~~~~~~~~~~~~~~~~
@@ -84,16 +82,7 @@ Anaconda). Then install **mtspec**'s dependencies with
 
 .. code-block:: bash
 
-    $ conda install numpy matplotlib flake8 pip
-
-A possible complication arises **if you are running on a server without a
-display**. In that case please edit (on Linux)
-``~/.config/matplotlib/matplotlibrc`` (create if it does not exist) and make
-sure the following line is part of it:
-
-.. code-block:: bash
-
-    backend: agg
+    $ conda install numpy pip
 
 
 Installing mtspec
@@ -131,6 +120,9 @@ To assert that your installation is working properly, execute
     $ python -m mtspec.tests
 
 and make sure all tests pass. Otherwise please contact the developers.
+
+If you intend to develop for ``mtspec``, please also install ``flake8>=3`` -
+the tests will then also include code formatting checks.
 
 Build the Documentation
 ^^^^^^^^^^^^^^^^^^^^^^^
