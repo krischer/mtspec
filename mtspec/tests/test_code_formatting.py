@@ -15,7 +15,10 @@ from __future__ import (absolute_import, division, print_function,
 
 import inspect
 import os
+import re
 import unittest
+
+import mtspec
 
 
 try:
@@ -29,12 +32,19 @@ else:
         HAS_FLAKE8_AT_LEAST_VERSION_3 = False
 
 
+# Skip tests for release builds identified by a clean version number.
+_pattern = re.compile(r"^\d+\.\d+\.\d+$")
+CLEAN_VERSION_NUMBER = bool(_pattern.match(mtspec.__version__))
+
+
 class CodeFormattingTestCase(unittest.TestCase):
     """
     Test suite enforcing the code formatting.
     """
+    @unittest.skipIf(CLEAN_VERSION_NUMBER,
+                     "Code formatting test skipped for release builds.")
     @unittest.skipIf(not HAS_FLAKE8_AT_LEAST_VERSION_3,
-                     "Formatting test requires at least flake8 version 3.0")
+                     "Formatting test requires at least flake8 version 3.0.")
     def test_flake8(self):
         test_dir = os.path.dirname(os.path.abspath(inspect.getfile(
             inspect.currentframe())))
