@@ -81,8 +81,6 @@ welcome.</p>
 <li><code class="docutils literal"><span class="pre">gfortran</span> <span class="pre">&gt;=</span> <span class="pre">4.7</span></code></li>
 <li><code class="docutils literal"><span class="pre">Python</span> <span class="pre">2.7,</span> <span class="pre">3.3,</span> <span class="pre">3.4,</span> <span class="pre">or</span> <span class="pre">3.5</span></code></li>
 <li><code class="docutils literal"><span class="pre">NumPy</span> <span class="pre">&gt;=</span> <span class="pre">1.7</span></code></li>
-<li><code class="docutils literal"><span class="pre">matplotlib</span></code></li>
-<li><code class="docutils literal"><span class="pre">flake8</span></code></li>
 </ul>
 <div class="section" id="fortran-compiler">
 <h4>Fortran Compiler<a class="headerlink" href="#fortran-compiler" title="Permalink to this headline">¶</a></h4>
@@ -110,14 +108,7 @@ modules with a convenient installer (does not require root access!).
 Once installed assert that <code class="docutils literal"><span class="pre">pip</span></code> and <code class="docutils literal"><span class="pre">conda</span></code> point to the Anaconda
 installation folder (you may need to open a new terminal after installing
 Anaconda). Then install <strong>mtspec</strong>&#8216;s dependencies with</p>
-<div class="highlight-bash"><div class="highlight"><pre><span></span>$ conda install numpy matplotlib flake8 pip
-</pre></div>
-</div>
-<p>A possible complication arises <strong>if you are running on a server without a
-display</strong>. In that case please edit (on Linux)
-<code class="docutils literal"><span class="pre">~/.config/matplotlib/matplotlibrc</span></code> (create if it does not exist) and make
-sure the following line is part of it:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span></span>backend: agg
+<div class="highlight-bash"><div class="highlight"><pre><span></span>$ conda install numpy pip
 </pre></div>
 </div>
 </div>
@@ -149,6 +140,8 @@ $ pip install -v -e .
 </pre></div>
 </div>
 <p>and make sure all tests pass. Otherwise please contact the developers.</p>
+<p>If you intend to develop for <code class="docutils literal"><span class="pre">mtspec</span></code>, please also install <code class="docutils literal"><span class="pre">flake8&gt;=3</span></code> -
+the tests will then also include code formatting checks.</p>
 </div>
 <div class="section" id="build-the-documentation">
 <h3>Build the Documentation<a class="headerlink" href="#build-the-documentation" title="Permalink to this headline">¶</a></h3>
