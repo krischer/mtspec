@@ -13,15 +13,13 @@ from __future__ import (absolute_import, division, print_function,
 
 import unittest
 
-from . import test_multitaper, test_recreatepaperfigures, \
-    test_code_formatting
+from . import test_multitaper, test_code_formatting
 
 
 def suite():
     suite = unittest.TestSuite()
     suite.addTest(test_multitaper.suite())
     suite.addTest(test_code_formatting.suite())
-    suite.addTest(test_recreatepaperfigures.suite())
     return suite
 
 
