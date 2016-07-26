@@ -172,6 +172,9 @@ setup_config = dict(
     install_requires=[
         'numpy',
     ],
+    extras_require={
+        'tests': ['flake8>=3']
+    },
     ext_package='mtspec.lib',
     ext_modules=[lib],
     classifiers=[
