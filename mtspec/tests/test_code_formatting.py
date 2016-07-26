@@ -13,24 +13,29 @@ and some other sanity checks as well.
 from __future__ import (absolute_import, division, print_function,
                         unicode_literals)
 
-import flake8
-import flake8.engine
-import flake8.main
 import inspect
 import os
 import unittest
-import warnings
+
+
+try:
+    import flake8
+except:
+    HAS_FLAKE8_AT_LEAST_VERSION_3 = False
+else:
+    if int(flake8.__version__.split(".")[0]) >= 3:
+        HAS_FLAKE8_AT_LEAST_VERSION_3 = True
+    else:
+        HAS_FLAKE8_AT_LEAST_VERSION_3 = False
 
 
 class CodeFormattingTestCase(unittest.TestCase):
     """
     Test suite enforcing the code formatting.
     """
+    @unittest.skipIf(not HAS_FLAKE8_AT_LEAST_VERSION_3,
+                     "Formatting test requires at least flake8 version 3.0")
     def test_flake8(self):
-        if flake8.__version__ <= "2":
-            msg = ("Module was designed to be tested with flake8 >= 2.0. "
-                   "Please update.")
-            warnings.warn(msg)
         test_dir = os.path.dirname(os.path.abspath(inspect.getfile(
             inspect.currentframe())))
         mtspec_dir = os.path.dirname(test_dir)
@@ -50,17 +55,14 @@ class CodeFormattingTestCase(unittest.TestCase):
                     continue
                 files.append(full_path)
 
-        # Get the style checker with the default style.
-        flake8_style = flake8.engine.get_style_guide(
-            parse_argv=False, config_file=flake8.main.DEFAULT_CONFIG)
+        # Import the legacy API as flake8 3.0 currently has not official
+        # public API - this has to be changed at some point.
+        from flake8.api import legacy as flake8
+        style_guide = flake8.get_style_guide()
+        report = style_guide.check_files(files)
 
-        report = flake8_style.check_files(files)
-
-        # Make sure at least 8 files are tested. This happens to be the number
-        # of python files at the time of writing this test case.
-        self.assertTrue(report.counters["files"] >= 8)
-        # And no errors occured.
-        self.assertEqual(report.get_count(), 0)
+        # Make sure no error occured.
+        self.assertEqual(report.total_errors, 0)
 
 
 def suite():
