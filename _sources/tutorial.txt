@@ -1,480 +1,105 @@
 Tutorial
 ========
 
-This tutorial gives source code and examples as well as figures how to
-create the first three Figures of the multitaper paper of Prieto.
-A simple example for the DPSS method and the Wigner Ville spectrum is
-included as well. More information can be found in the Prieto paper itself
-(reference_).
+This tutorial shows source code on how to recreate the first three figures from
+the multitaper paper of Prieto. Simple examples for the DPSS method, the
+Wigner Ville spectrum, and multitaper coherency calculations are included as
+well. More information can be found in the Prieto paper (reference_).
 
-.. _reference: https://github.com/krischer/mtspec
+.. _reference: http://dx.doi.org/10.1016/j.cageo.2008.06.007
 
-
-Recreate Fig. 1
----------------
-.. plot::
-
-    import matplotlib as mpl
-    mpl.rcParams['font.size'] = 9.0
-    import matplotlib.pyplot as plt
-    plt.style.use("ggplot")
-    from mtspec import mtspec
-    from mtspec.util import _load_mtdata
-
-    data = _load_mtdata('v22_174_series.dat.gz')
-
-    spec, freq, jackknife, _, _ = mtspec(
-        data=data, delta=4930.0, time_bandwidth=3.5,
-        number_of_tapers=5, nfft=312, statistics=True)
-
-    fig = plt.figure()
-    ax1 = fig.add_subplot(2, 1, 1)
-    # Plot thousands of years.
-    ax1.plot(np.arange(len(data)) * 4.930, data, color='black')
-    ax1.set_xlim(0, 800)
-    ax1.set_ylim(-1.0, 1.0)
-    ax1.set_xlabel("Time [1000 years]")
-    ax1.set_ylabel("Change in $\delta^{18}O$")
-
-    ax2 = fig.add_subplot(2, 1, 2)
-    ax2.set_yscale('log')
-    freq *= 1E6
-    ax2.plot(freq, spec, color='black')
-    ax2.fill_between(freq, jackknife[:, 0], jackknife[:, 1], color="red",
-                     alpha=0.3)
-    ax2.set_xlim(freq[0], freq[-1])
-    ax2.set_ylim(0.1E1, 1E5)
-    ax2.set_xlabel("Frequency [c Ma$^{-1}]$")
-    ax2.set_ylabel("Power Spectral Density ($\delta^{18}O/ca^{-1}$)")
-
-    plt.tight_layout()
-
-::
-
-    import matplotlib as mpl
-    mpl.rcParams['font.size'] = 9.0
-    import matplotlib.pyplot as plt
-    plt.style.use("ggplot")
-    from mtspec import mtspec
-    from mtspec.util import _load_mtdata
-
-    data = _load_mtdata('v22_174_series.dat.gz')
-
-    spec, freq, jackknife, _, _ = mtspec(
-        data=data, delta=4930.0, time_bandwidth=3.5,
-        number_of_tapers=5, nfft=312, statistics=True)
-
-    fig = plt.figure()
-    ax1 = fig.add_subplot(2, 1, 1)
-    # Plot thousands of years.
-    ax1.plot(np.arange(len(data)) * 4.930, data, color='black')
-    ax1.set_xlim(0, 800)
-    ax1.set_ylim(-1.0, 1.0)
-    ax1.set_xlabel("Time [1000 years]")
-    ax1.set_ylabel("Change in $\delta^{18}O$")
-
-    ax2 = fig.add_subplot(2, 1, 2)
-    ax2.set_yscale('log')
-    freq *= 1E6
-    ax2.plot(freq, spec, color='black')
-    ax2.fill_between(freq, jackknife[:, 0], jackknife[:, 1],
-                     color="red", alpha=0.3)
-    ax2.set_xlim(freq[0], freq[-1])
-    ax2.set_ylim(0.1E1, 1E5)
-    ax2.set_xlabel("Frequency [c Ma$^{-1}]$")
-    ax2.set_ylabel("Power Spectral Density ($\delta^{18}O/ca^{-1}$)")
-
-    plt.tight_layout()
+.. contents::
+    :local:
 
 
-Recreate Fig. 2
----------------
-.. plot::
+Fig. 1: Multitaper Spectrum Estimate with Confidence Intervals
+--------------------------------------------------------------
 
-    import matplotlib as mpl
-    mpl.rcParams['font.size'] = 9.0
-    import matplotlib.pyplot as plt
-    plt.style.use("ggplot")
-    from mtspec import mtspec
-    from mtspec.util import _load_mtdata
+This example shows data at the top and a multitaper spectrum estimate on the
+bottom with 95% confidence intervals shaded in red.
+See the documentation of the :func:`mtspec.multitaper.mtspec` function for
+more details.
 
-    data = _load_mtdata('v22_174_series.dat.gz')
-    spec, freq, jackknife, fstatistics, _ = mtspec(data, 4930., 3.5,
-            number_of_tapers=5, nfft=312, statistics=True, rshape=0,
-            fcrit=0.9)
-    # In to million years.
-    freq *= 1E6
+.. plot:: snippets/figure_1.py
 
-    fig = plt.figure()
-    ax1 = fig.add_subplot(2, 1, 1)
-    ax1.plot(freq, fstatistics, color='black')
-    ax1.set_xlim(freq[0], freq[-1])
-    ax1.set_xlabel("Frequency [c Ma$^{-1}]$")
-    ax1.set_ylabel("F-statistics for periodic lines")
-
-    ax2 = fig.add_subplot(2, 1, 2)
-    ax2.set_yscale('log')
-    ax2.plot(freq, spec, color='black')
-    ax2.set_xlim(freq[0], freq[-1])
-    ax2.set_xlabel("Frequency [c Ma$^{-1}]$")
-    ax2.set_ylabel("Power Spectral Density ($\delta^{18}O/ca^{-1}$)")
-
-    plt.tight_layout()
-
-::
-
-    import matplotlib as mpl
-    mpl.rcParams['font.size'] = 9.0
-    import matplotlib.pyplot as plt
-    plt.style.use("ggplot")
-    from mtspec import mtspec
-    from mtspec.util import _load_mtdata
-
-    data = _load_mtdata('v22_174_series.dat.gz')
-    spec, freq, jackknife, fstatistics, _ = mtspec(data, 4930., 3.5,
-            number_of_tapers=5, nfft=312, statistics=True, rshape=0,
-            fcrit=0.9)
-    # In to million years.
-    freq *= 1E6
-
-    fig = plt.figure()
-    ax1 = fig.add_subplot(2, 1, 1)
-    ax1.plot(freq, fstatistics, color='black')
-    ax1.set_xlim(freq[0], freq[-1])
-    ax1.set_xlabel("Frequency [c Ma$^{-1}]$")
-    ax1.set_ylabel("F-statistics for periodic lines")
-
-    ax2 = fig.add_subplot(2, 1, 2)
-    ax2.set_yscale('log')
-    ax2.plot(freq, spec, color='black')
-    ax2.set_xlim(freq[0], freq[-1])
-    ax2.set_xlabel("Frequency [c Ma$^{-1}]$")
-    ax2.set_ylabel("Power Spectral Density ($\delta^{18}O/ca^{-1}$)")
-
-    plt.tight_layout()
+.. literalinclude:: snippets/figure_1.py
+   :language: python
 
 
+Fig. 2: F Statistics
+--------------------
 
-Recreate Fig. 3
----------------
-.. plot::
+The top shows the F statistics and the bottom a spectrum reshaped with these.
+Function documentation: :func:`mtspec.multitaper.mtspec`.
 
-    import matplotlib as mpl
-    mpl.rcParams['font.size'] = 9.0
-    import matplotlib.pyplot as plt
-    plt.style.use("ggplot")
-    from mtspec import mtspec, sine_psd
-    from mtspec.util import _load_mtdata
+.. plot:: snippets/figure_2.py
 
-    data = _load_mtdata('PASC.dat.gz')
+.. literalinclude:: snippets/figure_2.py
+    :language: python
 
-    fig = plt.figure()
-    ax1 = fig.add_subplot(3, 1, 1)
-    ax1.plot(data, color='black')
-    ax1.set_xlim(0, len(data))
 
-    spec, freq = mtspec(data, 1.0, 1.5, number_of_tapers=1)
+Fig. 3: Various Multitaper Variants
+-----------------------------------
 
-    ax2 = fig.add_subplot(3, 2, 3)
-    ax2.set_yscale('log')
-    ax2.set_xscale('log')
-    ax2.plot(freq, spec, color='black')
-    ax2.set_xlim(freq[0], freq[-1])
+Comparison of different multitaper spectral estimates and various settings.
+Top shows data, bottom 4 plots are spectral estimations. Function
+documentations: :func:`mtspec.multitaper.mtspec` and
+:func:`mtspec.multitaper.sine_psd`.
 
-    spec, freq = mtspec(data, 1.0, 4.5, number_of_tapers=5)
+.. plot:: snippets/figure_3.py
 
-    ax3 = fig.add_subplot(3, 2, 4)
-    ax3.set_yscale('log')
-    ax3.set_xscale('log')
-    ax3.plot(freq, spec, color='black')
-    ax3.set_xlim(freq[0], freq[-1])
-
-    spec, freq = sine_psd(data, 1.0)
-
-    ax4 = fig.add_subplot(3, 2, 5)
-    ax4.set_yscale('log')
-    ax4.set_xscale('log')
-    ax4.plot(freq, spec, color='black')
-    ax4.set_xlim(freq[0], freq[-1])
-
-    spec, freq = mtspec(data, 1.0, 4.5, number_of_tapers=5, quadratic=True)
-
-    ax5 = fig.add_subplot(3, 2, 6)
-    ax5.set_yscale('log')
-    ax5.set_xscale('log')
-    ax5.plot(freq, spec, color='black')
-    ax5.set_xlim(freq[0], freq[-1])
-    data = _load_mtdata('PASC.dat.gz')
-
-::
-
-    import matplotlib.pyplot as plt
-    from mtspec import mtspec, sine_psd
-    from mtspec.util import _load_mtdata
-
-    data = _load_mtdata('PASC.dat.gz')
-    fig = plt.figure()
-    ax1 = fig.add_subplot(3, 1, 1)
-    ax1.plot(data, color='black')
-    ax1.set_xlim(0, len(data))
-
-    spec, freq = mtspec(data, 1.0, 1.5, number_of_tapers=1)
-
-    ax2 = fig.add_subplot(3, 2, 3)
-    ax2.set_yscale('log')
-    ax2.set_xscale('log')
-    ax2.plot(freq, spec, color='black')
-    ax2.set_xlim(freq[0], freq[-1])
-
-    spec, freq = mtspec(data, 1.0, 4.5, number_of_tapers=5)
-
-    ax3 = fig.add_subplot(3, 2, 4)
-    ax3.set_yscale('log')
-    ax3.set_xscale('log')
-    ax3.plot(freq, spec, color='black')
-    ax3.set_xlim(freq[0], freq[-1])
-
-    spec, freq = sine_psd(data, 1.0)
-
-    ax4 = fig.add_subplot(3, 2, 5)
-    ax4.set_yscale('log')
-    ax4.set_xscale('log')
-    ax4.plot(freq, spec, color='black')
-    ax4.set_xlim(freq[0], freq[-1])
-
-    spec, freq = mtspec(data, 1.0, 4.5, number_of_tapers=5, quadratic=True)
-
-    ax5 = fig.add_subplot(3, 2, 6)
-    ax5.set_yscale('log')
-    ax5.set_xscale('log')
-    ax5.plot(freq, spec, color='black')
-    ax5.set_xlim(freq[0], freq[-1])
-    plt.show()
+.. literalinclude:: snippets/figure_3.py
+    :language: python
 
 
 DPSS Example
 ------------
-.. plot::
 
-    import matplotlib as mpl
-    mpl.rcParams['font.size'] = 9.0
-    import matplotlib.pyplot as plt
-    plt.style.use("ggplot")
-    from mtspec import dpss
+A simple example showing how to calculate and plot a couple DPSS. Function
+documentation: :func:`mtspec.multitaper.dpss`.
 
-    tapers, lamb, theta = dpss(512, 2.5, 10)
+.. plot:: snippets/dpss_example.py
 
-    ax = plt.figure().add_subplot(111)
-    for i in range(10):
-        ax.plot(tapers[:,i])
-    ax.set_xlim(0, len(tapers[:,0]))
-
-::
-
-    import matplotlib.pyplot as plt
-    plt.style.use("ggplot")
-    from mtspec import dpss
-
-    tapers, lamb, theta = dpss(512, 2.5, 10)
-
-    ax = plt.figure().add_subplot(111)
-    for i in xrange(10):
-        ax.plot(tapers[:,i])
-    ax.set_xlim(0, len(tapers[:,0]))
-    plt.show()
+.. literalinclude:: snippets/dpss_example.py
+    :language: python
 
 
 Wigner-Ville Spectrum
 ---------------------
-.. plot::
 
-    import matplotlib as mpl
-    mpl.rcParams['font.size'] = 9.0
-    import matplotlib.pyplot as plt
-    plt.style.use("ggplot")
-    from mtspec import mtspec, wigner_ville_spectrum
-    from mtspec.util import signal_bursts
-    import numpy as np
+Time frequency like spectral estimation using the Wigner-Ville method.
+Function documentation: :func:`mtspec.multitaper.wigner_ville_spectrum`.
 
-    fig = plt.figure()
-    data = signal_bursts()
+.. plot:: snippets/wigner_ville_spectrum_example.py
 
-    # Plot the data
-    ax1 = fig.add_axes([0.2,0.75, 0.79, 0.24])
-    ax1.plot(data, color="k")
-    ax1.set_xlim(0, len(data))
+.. literalinclude:: snippets/wigner_ville_spectrum_example.py
+    :language: python
 
-    # Plot multitaper spectrum
-    ax2 = fig.add_axes([0.06,0.02,0.13,0.69])
-    spec, freq = mtspec(data, 10, 3.5)
-    ax2.plot(spec, freq, color="k")
-    ax2.set_xlim(0, spec.max())
-    ax2.set_ylim(freq[0], freq[-1])
-    ax2.set_xticks([])
-
-    # Create the wigner ville spectrum
-    wv = wigner_ville_spectrum(data, 10, 3.5, smoothing_filter='gauss')
-
-    # Plot the WV
-    ax3 = fig.add_axes([0.2, 0.02, 0.79, 0.69])
-    ax3.set_yticks([])
-    ax3.set_xticks([])
-    ax3.imshow(abs(wv), interpolation='nearest', aspect='auto', cmap="magma")
-    plt.show()
-
-::
-
-    import matplotlib.pyplot as plt
-    from mtspec import mtspec, wigner_ville_spectrum
-    from mtspec.util import signal_bursts
-    import numpy as np
-
-    fig = plt.figure()
-    data = signal_bursts()
-
-    # Plot the data
-    ax1 = fig.add_axes([0.2,0.75, 0.79, 0.24])
-    ax1.plot(data)
-    ax1.set_xlim(0, len(data))
-
-    # Plot multitaper spectrum
-    ax2 = fig.add_axes([0.06,0.02,0.13,0.69])
-    spec, freq = mtspec(data, 10, 3.5)
-    ax2.plot(spec, freq)
-    ax2.set_xlim(0, spec.max())
-    ax2.set_ylim(freq[0], freq[-1])
-    ax2.set_xticks([])
-
-    # Create the wigner ville spectrum
-    wv = wigner_ville_spectrum(data, 10, 3.5, smoothing_filter='gauss')
-
-    # Plot the WV
-    ax3 = fig.add_axes([0.2, 0.02, 0.79, 0.69])
-    ax3.set_yticks([])
-    ax3.set_xticks([])
-    ax3.imshow(abs(wv), interpolation='nearest', aspect='auto')
-    plt.show()
 
 Wigner-Ville Smoothing
 ++++++++++++++++++++++
-One of the main disadvantages of the Wigner-Ville method is occurrence of interference terms. This can be somewhat alleviated by smoothing it at the cost of the clarity of the distribution.
 
-The following plot shows an example of this behaviour. The signal consists of a linear chirp and an exponential chirp. The left figure is with smoothing and the right one without it.
+One of the main disadvantages of the Wigner-Ville method is occurrence of
+interference terms. This can be somewhat alleviated by smoothing it at the
+cost of the clarity of the distribution.
 
-.. plot::
+The following plot shows an example of this behaviour. The signal consists of
+a linear chirp and an exponential chirp. The left figure is with smoothing and
+the right one without it.
 
-    import matplotlib as mpl
-    mpl.rcParams['font.size'] = 9.0
-    import matplotlib.pylab as plt
-    plt.style.use("ggplot")
-    from mtspec import wigner_ville_spectrum
-    from mtspec.util import linear_chirp, exponential_chirp
-    import numpy as np
+.. plot:: snippets/wigner_ville_smoothing.py
 
-    fig = plt.figure()
-    data = linear_chirp() + exponential_chirp()
-
-    # Plot the data
-    ax1 = fig.add_axes([0.05,0.75, 0.90, 0.24])
-    ax1.plot(data)
-    ax1.set_xlim(0, len(data))
-    ax1.set_yticks([])
-
-    # Get the smoothed WV spectrum.
-    wv = wigner_ville_spectrum(data, 10, 5.0, smoothing_filter='gauss',
-                               filter_width=25)
-
-    # Plot the WV
-    ax2 = fig.add_axes([0.01, 0.025, 0.48, 0.64])
-    ax2.set_yticks([])
-    ax2.set_xticks([])
-    ax2.imshow(abs(wv), interpolation='nearest', aspect='auto', cmap="magma")
-    ax2.set_title('With smoothing')
-
-    # Get the WV spectrum.
-    wv = wigner_ville_spectrum(data, 10, 5.0, smoothing_filter=None)
-
-    # Plot the WV
-    ax3 = fig.add_axes([0.51, 0.025, 0.48, 0.64])
-    ax3.set_yticks([])
-    ax3.set_xticks([])
-    ax3.imshow(abs(wv), interpolation='nearest', aspect='auto', cmap="magma")
-    ax3.set_title('Without smoothing')
-
-    plt.show()
-[`source code <https://github.com/krischer/mtspec/blob/master/doc/wv_smoothing.py>`_]
+.. literalinclude:: snippets/wigner_ville_smoothing.py
+    :language: python
 
 
 Multitaper coherence example
 ----------------------------
-.. plot::
 
-    import matplotlib as mpl
-    mpl.rcParams['font.size'] = 9.0
-    import matplotlib.pyplot as plt
-    plt.style.use("ggplot")
-    from mtspec import mt_coherence
-    import numpy as np
+Calculate the coherency of two signals using multitapers. Function
+documentation: :func:`mtspec.multitaper.mt_coherence`.
 
-    # generate random series with 1Hz sinus inside
-    np.random.seed(815)
-    npts = 256
-    sampling_rate = 10.0
-    # one sine wave in one second (sampling_rate samples)
-    one_hz_sin = np.sin(np.arange(0, sampling_rate) /\
-                        sampling_rate * 2 * np.pi)
-    one_hz_sin = np.tile(one_hz_sin, npts//sampling_rate + 1)[:npts]
-    xi = np.random.randn(npts) + one_hz_sin
-    xj = np.random.randn(npts) + one_hz_sin
-    dt, tbp, kspec, nf, p = 1.0/sampling_rate, 3.5, 5, npts/2, .90
-    # calculate mt_coherence
-    out = mt_coherence(dt, xi, xj, tbp, kspec, nf, p, freq=True,
-                           cohe=True, iadapt=1)
-    # the plotting part
-    plt.subplot(211)
-    plt.plot(np.arange(npts)/sampling_rate, xi)
-    plt.plot(np.arange(npts)/sampling_rate, xj)
-    plt.xlabel("Time [sec]")
-    plt.ylabel("Amplitude")
-    plt.subplot(212)
-    plt.plot(out['freq'], out['cohe'])
-    plt.xlabel("Frequency [Hz]")
-    plt.ylabel("Coherency")
-    plt.tight_layout()
-    plt.show()
+.. plot:: snippets/multitaper_coherency_example.py
 
-::
-
-    import matplotlib as mpl
-    mpl.rcParams['font.size'] = 9.0
-    import matplotlib.pyplot as plt
-    plt.style.use("ggplot")
-    from mtspec import mt_coherence
-    import numpy as np
-
-    # generate random series with 1Hz sinus inside
-    np.random.seed(815)
-    npts = 256
-    sampling_rate = 10.0
-    # one sine wave in one second (sampling_rate samples)
-    one_hz_sin = np.sin(np.arange(0, sampling_rate) /\
-                        sampling_rate * 2 * np.pi)
-    one_hz_sin = np.tile(one_hz_sin, npts//sampling_rate + 1)[:npts]
-    xi = np.random.randn(npts) + one_hz_sin
-    xj = np.random.randn(npts) + one_hz_sin
-    dt, tbp, kspec, nf, p = 1.0/sampling_rate, 3.5, 5, npts/2, .90
-    # calculate mt_coherence
-    out = mt_coherence(dt, xi, xj, tbp, kspec, nf, p, freq=True,
-                           cohe=True, iadapt=1)
-    # the plotting part
-    plt.subplot(211)
-    plt.plot(np.arange(npts)/sampling_rate, xi)
-    plt.plot(np.arange(npts)/sampling_rate, xj)
-    plt.xlabel("Time [sec]")
-    plt.ylabel("Amplitude")
-    plt.subplot(212)
-    plt.plot(out['freq'], out['cohe'])
-    plt.xlabel("Frequency [Hz]")
-    plt.ylabel("Coherency")
-    plt.tight_layout()
-    plt.show()
+.. literalinclude:: snippets/multitaper_coherency_example.py
+    :language: python

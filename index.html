@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>mtspec &mdash; mtspec 0.3.1 documentation</title>
+    <title>mtspec &mdash; mtspec 0.3.x documentation</title>
     
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.3.1',
+        VERSION:     '0.3.x',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="mtspec 0.3.1 documentation" href="#" />
+    <link rel="top" title="mtspec 0.3.x documentation" href="#" />
     <link rel="next" title="Tutorial" href="tutorial.html" />
     
    
@@ -72,6 +72,17 @@ versions using FFTW which would introduce an additional dependency.</p>
 </div>
 <div class="section" id="installation">
 <h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="easy-way">
+<h3>Easy Way<a class="headerlink" href="#easy-way" title="Permalink to this headline">¶</a></h3>
+<p>The simplest way to install <code class="docutils literal"><span class="pre">mtspec</span></code> is to download
+<a class="reference external" href="https://www.continuum.io/why-anaconda">(Ana)conda</a>, install it, and run:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>$ conda config --add channels conda-forge
+$ conda install mtspec
+</pre></div>
+</div>
+<p>This will take care of everything and you can stop reading here. The rest of
+the installation instructions are for custom installations.</p>
+</div>
 <div class="section" id="requirements">
 <h3>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h3>
 <p><strong>mtspec</strong> currently runs on Linux and Mac OS X. Adding support for Windows is

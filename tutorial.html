@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Tutorial &mdash; mtspec 0.3.1 documentation</title>
+    <title>Tutorial &mdash; mtspec 0.3.x documentation</title>
     
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.3.1',
+        VERSION:     '0.3.x',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="mtspec 0.3.1 documentation" href="index.html" />
+    <link rel="top" title="mtspec 0.3.x documentation" href="index.html" />
     <link rel="next" title="mtspec.dpss" href="multitaper_dpss.html" />
     <link rel="prev" title="mtspec" href="index.html" />
     
@@ -45,186 +45,231 @@
             
   <div class="section" id="tutorial">
 <h1>Tutorial<a class="headerlink" href="#tutorial" title="Permalink to this headline">¶</a></h1>
-<p>This tutorial gives source code and examples as well as figures how to
-create the first three Figures of the multitaper paper of Prieto.
-A simple example for the DPSS method and the Wigner Ville spectrum is
-included as well. More information can be found in the Prieto paper itself
-(<a class="reference external" href="https://github.com/krischer/mtspec">reference</a>).</p>
-<div class="section" id="recreate-fig-1">
-<h2>Recreate Fig. 1<a class="headerlink" href="#recreate-fig-1" title="Permalink to this headline">¶</a></h2>
-<p>(<a class="reference external" href=".//tutorial-1.py">Source code</a>, <a class="reference external" href=".//tutorial-1.png">png</a>, <a class="reference external" href=".//tutorial-1.hires.png">hires.png</a>, <a class="reference external" href=".//tutorial-1.pdf">pdf</a>)</p>
-<div class="figure">
-<img alt="_images/tutorial-1.png" src="_images/tutorial-1.png" />
+<p>This tutorial shows source code on how to recreate the first three figures from
+the multitaper paper of Prieto. Simple examples for the DPSS method, the
+Wigner Ville spectrum, and multitaper coherency calculations are included as
+well. More information can be found in the Prieto paper (<a class="reference external" href="http://dx.doi.org/10.1016/j.cageo.2008.06.007">reference</a>).</p>
+<div class="contents local topic" id="contents">
+<ul class="simple">
+<li><a class="reference internal" href="#fig-1-multitaper-spectrum-estimate-with-confidence-intervals" id="id1">Fig. 1: Multitaper Spectrum Estimate with Confidence Intervals</a></li>
+<li><a class="reference internal" href="#fig-2-f-statistics" id="id2">Fig. 2: F Statistics</a></li>
+<li><a class="reference internal" href="#fig-3-various-multitaper-variants" id="id3">Fig. 3: Various Multitaper Variants</a></li>
+<li><a class="reference internal" href="#dpss-example" id="id4">DPSS Example</a></li>
+<li><a class="reference internal" href="#wigner-ville-spectrum" id="id5">Wigner-Ville Spectrum</a><ul>
+<li><a class="reference internal" href="#wigner-ville-smoothing" id="id6">Wigner-Ville Smoothing</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#multitaper-coherence-example" id="id7">Multitaper coherence example</a></li>
+</ul>
 </div>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib</span> <span class="k">as</span> <span class="nn">mpl</span>
-<span class="n">mpl</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;font.size&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">9.0</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<div class="section" id="fig-1-multitaper-spectrum-estimate-with-confidence-intervals">
+<h2><a class="toc-backref" href="#id1">Fig. 1: Multitaper Spectrum Estimate with Confidence Intervals</a><a class="headerlink" href="#fig-1-multitaper-spectrum-estimate-with-confidence-intervals" title="Permalink to this headline">¶</a></h2>
+<p>This example shows data at the top and a multitaper spectrum estimate on the
+bottom with 95% confidence intervals shaded in red.
+See the documentation of the <a class="reference internal" href="multitaper_mtspec.html#mtspec.multitaper.mtspec" title="mtspec.multitaper.mtspec"><code class="xref py py-func docutils literal"><span class="pre">mtspec.multitaper.mtspec()</span></code></a> function for
+more details.</p>
+<p>(<a class="reference external" href="./snippets/figure_1.py">Source code</a>, <a class="reference external" href="./snippets/figure_1.png">png</a>, <a class="reference external" href="./snippets/figure_1.hires.png">hires.png</a>, <a class="reference external" href="./snippets/figure_1.pdf">pdf</a>)</p>
+<div class="figure">
+<img alt="_images/figure_1.png" src="_images/figure_1.png" />
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s2">&quot;ggplot&quot;</span><span class="p">)</span>
-<span class="kn">from</span> <span class="nn">mtspec</span> <span class="k">import</span> <span class="n">mtspec</span>
-<span class="kn">from</span> <span class="nn">mtspec.util</span> <span class="k">import</span> <span class="n">_load_mtdata</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">mtspec</span> <span class="kn">import</span> <span class="n">mtspec</span>
+<span class="kn">from</span> <span class="nn">mtspec.util</span> <span class="kn">import</span> <span class="n">_load_mtdata</span>
 
 <span class="n">data</span> <span class="o">=</span> <span class="n">_load_mtdata</span><span class="p">(</span><span class="s1">&#39;v22_174_series.dat.gz&#39;</span><span class="p">)</span>
 
+<span class="c1"># Calculate the spectral estimation.</span>
 <span class="n">spec</span><span class="p">,</span> <span class="n">freq</span><span class="p">,</span> <span class="n">jackknife</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">mtspec</span><span class="p">(</span>
     <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="mf">4930.0</span><span class="p">,</span> <span class="n">time_bandwidth</span><span class="o">=</span><span class="mf">3.5</span><span class="p">,</span>
-    <span class="n">number_of_tapers</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">nfft</span><span class="o">=</span><span class="mi">312</span><span class="p">,</span> <span class="n">statistics</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">number_of_tapers</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">nfft</span><span class="o">=</span><span class="mi">312</span><span class="p">,</span> <span class="n">statistics</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 
 <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
 <span class="n">ax1</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-<span class="c1"># Plot thousands of years.</span>
+<span class="c1"># Plot in thousands of years.</span>
 <span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">))</span> <span class="o">*</span> <span class="mf">4.930</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
 <span class="n">ax1</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">800</span><span class="p">)</span>
 <span class="n">ax1</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
 <span class="n">ax1</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Time [1000 years]&quot;</span><span class="p">)</span>
-<span class="n">ax1</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Change in $\delta^</span><span class="si">{18}</span><span class="s2">O$&quot;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Change in $\delta^{18}O$&quot;</span><span class="p">)</span>
 
 <span class="n">ax2</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
 <span class="n">ax2</span><span class="o">.</span><span class="n">set_yscale</span><span class="p">(</span><span class="s1">&#39;log&#39;</span><span class="p">)</span>
-<span class="n">freq</span> <span class="o">*=</span> <span class="mi">1</span><span class="n">E6</span>
+<span class="c1"># Convert frequency to Ma.</span>
+<span class="n">freq</span> <span class="o">*=</span> <span class="mf">1E6</span>
 <span class="n">ax2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">freq</span><span class="p">,</span> <span class="n">spec</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
 <span class="n">ax2</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="n">freq</span><span class="p">,</span> <span class="n">jackknife</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">jackknife</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span>
                  <span class="n">color</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
 <span class="n">ax2</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="n">freq</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">freq</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
-<span class="n">ax2</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mf">0.1E1</span><span class="p">,</span> <span class="mi">1</span><span class="n">E5</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mf">0.1E1</span><span class="p">,</span> <span class="mf">1E5</span><span class="p">)</span>
 <span class="n">ax2</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Frequency [c Ma$^{-1}]$&quot;</span><span class="p">)</span>
-<span class="n">ax2</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Power Spectral Density ($\delta^</span><span class="si">{18}</span><span class="s2">O/ca^{-1}$)&quot;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Power Spectral Density ($\delta^{18}O/ca^{-1}$)&quot;</span><span class="p">)</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
-<div class="section" id="recreate-fig-2">
-<h2>Recreate Fig. 2<a class="headerlink" href="#recreate-fig-2" title="Permalink to this headline">¶</a></h2>
-<p>(<a class="reference external" href=".//tutorial-2.py">Source code</a>, <a class="reference external" href=".//tutorial-2.png">png</a>, <a class="reference external" href=".//tutorial-2.hires.png">hires.png</a>, <a class="reference external" href=".//tutorial-2.pdf">pdf</a>)</p>
+<div class="section" id="fig-2-f-statistics">
+<h2><a class="toc-backref" href="#id2">Fig. 2: F Statistics</a><a class="headerlink" href="#fig-2-f-statistics" title="Permalink to this headline">¶</a></h2>
+<p>The top shows the F statistics and the bottom a spectrum reshaped with these.
+Function documentation: <a class="reference internal" href="multitaper_mtspec.html#mtspec.multitaper.mtspec" title="mtspec.multitaper.mtspec"><code class="xref py py-func docutils literal"><span class="pre">mtspec.multitaper.mtspec()</span></code></a>.</p>
+<p>(<a class="reference external" href="./snippets/figure_2.py">Source code</a>, <a class="reference external" href="./snippets/figure_2.png">png</a>, <a class="reference external" href="./snippets/figure_2.hires.png">hires.png</a>, <a class="reference external" href="./snippets/figure_2.pdf">pdf</a>)</p>
 <div class="figure">
-<img alt="_images/tutorial-2.png" src="_images/tutorial-2.png" />
+<img alt="_images/figure_2.png" src="_images/figure_2.png" />
 </div>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib</span> <span class="k">as</span> <span class="nn">mpl</span>
-<span class="n">mpl</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;font.size&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">9.0</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s2">&quot;ggplot&quot;</span><span class="p">)</span>
-<span class="kn">from</span> <span class="nn">mtspec</span> <span class="k">import</span> <span class="n">mtspec</span>
-<span class="kn">from</span> <span class="nn">mtspec.util</span> <span class="k">import</span> <span class="n">_load_mtdata</span>
 
-<span class="n">data</span> <span class="o">=</span> <span class="n">_load_mtdata</span><span class="p">(</span><span class="s1">&#39;v22_174_series.dat.gz&#39;</span><span class="p">)</span>
-<span class="n">spec</span><span class="p">,</span> <span class="n">freq</span><span class="p">,</span> <span class="n">jackknife</span><span class="p">,</span> <span class="n">fstatistics</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">mtspec</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="mf">4930.</span><span class="p">,</span> <span class="mf">3.5</span><span class="p">,</span>
-        <span class="n">number_of_tapers</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">nfft</span><span class="o">=</span><span class="mi">312</span><span class="p">,</span> <span class="n">statistics</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">rshape</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-        <span class="n">fcrit</span><span class="o">=</span><span class="mf">0.9</span><span class="p">)</span>
-<span class="c1"># In to million years.</span>
-<span class="n">freq</span> <span class="o">*=</span> <span class="mi">1</span><span class="n">E6</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 
-<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
-<span class="n">ax1</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-<span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">freq</span><span class="p">,</span> <span class="n">fstatistics</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
-<span class="n">ax1</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="n">freq</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">freq</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
-<span class="n">ax1</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Frequency [c Ma$^{-1}]$&quot;</span><span class="p">)</span>
-<span class="n">ax1</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;F-statistics for periodic lines&quot;</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">mtspec</span> <span class="kn">import</span> <span class="n">mtspec</span>
+<span class="kn">from</span> <span class="nn">mtspec.util</span> <span class="kn">import</span> <span class="n">_load_mtdata</span>
 
-<span class="n">ax2</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
-<span class="n">ax2</span><span class="o">.</span><span class="n">set_yscale</span><span class="p">(</span><span class="s1">&#39;log&#39;</span><span class="p">)</span>
-<span class="n">ax2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">freq</span><span class="p">,</span> <span class="n">spec</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
-<span class="n">ax2</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="n">freq</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">freq</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
-<span class="n">ax2</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Frequency [c Ma$^{-1}]$&quot;</span><span class="p">)</span>
-<span class="n">ax2</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Power Spectral Density ($\delta^</span><span class="si">{18}</span><span class="s2">O/ca^{-1}$)&quot;</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">_load_mtdata</span><span class="p">(</span><span class="s2">&quot;v22_174_series.dat.gz&quot;</span><span class="p">)</span>
+<span class="n">spec</span><span class="p">,</span> <span class="n">freq</span><span class="p">,</span> <span class="n">jackknife</span><span class="p">,</span> <span class="n">fstatistics</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">mtspec</span><span class="p">(</span>
+    <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="mf">4930.</span><span class="p">,</span> <span class="n">time_bandwidth</span><span class="o">=</span><span class="mf">3.5</span><span class="p">,</span> <span class="n">number_of_tapers</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+    <span class="n">nfft</span><span class="o">=</span><span class="mi">312</span><span class="p">,</span> <span class="n">statistics</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">rshape</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">fcrit</span><span class="o">=</span><span class="mf">0.9</span><span class="p">)</span>
+
+<span class="c1"># Convert to million years.</span>
+<span class="n">freq</span> <span class="o">*=</span> <span class="mf">1E6</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">211</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">freq</span><span class="p">,</span> <span class="n">fstatistics</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="n">freq</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">freq</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Frequency [c Ma$^{-1}]$&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;F-statistics for periodic lines&quot;</span><span class="p">)</span>
+
+<span class="c1"># Plot the confidence intervals.</span>
+<span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">90</span><span class="p">,</span> <span class="mi">95</span><span class="p">,</span> <span class="mi">99</span><span class="p">]:</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">fstatistics</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">hlines</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">freq</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">freq</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">linestyles</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;0.2&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">99</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span> <span class="o">+</span> <span class="mf">0.2</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">%i</span><span class="s2"> </span><span class="si">%%</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">p</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s2">&quot;right&quot;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">212</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">semilogy</span><span class="p">(</span><span class="n">freq</span><span class="p">,</span> <span class="n">spec</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="n">freq</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">freq</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Frequency [c Ma$^{-1}]$&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Power Spectral Density ($\delta^{18}O/ca^{-1}$)&quot;</span><span class="p">)</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
-<div class="section" id="recreate-fig-3">
-<h2>Recreate Fig. 3<a class="headerlink" href="#recreate-fig-3" title="Permalink to this headline">¶</a></h2>
-<p>(<a class="reference external" href=".//tutorial-3.py">Source code</a>, <a class="reference external" href=".//tutorial-3.png">png</a>, <a class="reference external" href=".//tutorial-3.hires.png">hires.png</a>, <a class="reference external" href=".//tutorial-3.pdf">pdf</a>)</p>
+<div class="section" id="fig-3-various-multitaper-variants">
+<h2><a class="toc-backref" href="#id3">Fig. 3: Various Multitaper Variants</a><a class="headerlink" href="#fig-3-various-multitaper-variants" title="Permalink to this headline">¶</a></h2>
+<p>Comparison of different multitaper spectral estimates and various settings.
+Top shows data, bottom 4 plots are spectral estimations. Function
+documentations: <a class="reference internal" href="multitaper_mtspec.html#mtspec.multitaper.mtspec" title="mtspec.multitaper.mtspec"><code class="xref py py-func docutils literal"><span class="pre">mtspec.multitaper.mtspec()</span></code></a> and
+<a class="reference internal" href="multitaper_sine_psd.html#mtspec.multitaper.sine_psd" title="mtspec.multitaper.sine_psd"><code class="xref py py-func docutils literal"><span class="pre">mtspec.multitaper.sine_psd()</span></code></a>.</p>
+<p>(<a class="reference external" href="./snippets/figure_3.py">Source code</a>, <a class="reference external" href="./snippets/figure_3.png">png</a>, <a class="reference external" href="./snippets/figure_3.hires.png">hires.png</a>, <a class="reference external" href="./snippets/figure_3.pdf">pdf</a>)</p>
 <div class="figure">
-<img alt="_images/tutorial-3.png" src="_images/tutorial-3.png" />
+<img alt="_images/figure_3.png" src="_images/figure_3.png" />
 </div>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">from</span> <span class="nn">mtspec</span> <span class="k">import</span> <span class="n">mtspec</span><span class="p">,</span> <span class="n">sine_psd</span>
-<span class="kn">from</span> <span class="nn">mtspec.util</span> <span class="k">import</span> <span class="n">_load_mtdata</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s2">&quot;ggplot&quot;</span><span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">mtspec</span> <span class="kn">import</span> <span class="n">mtspec</span><span class="p">,</span> <span class="n">sine_psd</span>
+<span class="kn">from</span> <span class="nn">mtspec.util</span> <span class="kn">import</span> <span class="n">_load_mtdata</span>
 
 <span class="n">data</span> <span class="o">=</span> <span class="n">_load_mtdata</span><span class="p">(</span><span class="s1">&#39;PASC.dat.gz&#39;</span><span class="p">)</span>
-<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
-<span class="n">ax1</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-<span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
-<span class="n">ax1</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">311</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
 
 <span class="n">spec</span><span class="p">,</span> <span class="n">freq</span> <span class="o">=</span> <span class="n">mtspec</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="n">number_of_tapers</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
-<span class="n">ax2</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
-<span class="n">ax2</span><span class="o">.</span><span class="n">set_yscale</span><span class="p">(</span><span class="s1">&#39;log&#39;</span><span class="p">)</span>
-<span class="n">ax2</span><span class="o">.</span><span class="n">set_xscale</span><span class="p">(</span><span class="s1">&#39;log&#39;</span><span class="p">)</span>
-<span class="n">ax2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">freq</span><span class="p">,</span> <span class="n">spec</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
-<span class="n">ax2</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="n">freq</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">freq</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">323</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">loglog</span><span class="p">(</span><span class="n">freq</span><span class="p">,</span> <span class="n">spec</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="n">freq</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">freq</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mf">0.85</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="s2">&quot;Single Taper&quot;</span><span class="p">,</span>
+         <span class="n">transform</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">transAxes</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">)</span>
 
 <span class="n">spec</span><span class="p">,</span> <span class="n">freq</span> <span class="o">=</span> <span class="n">mtspec</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">4.5</span><span class="p">,</span> <span class="n">number_of_tapers</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
 
-<span class="n">ax3</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
-<span class="n">ax3</span><span class="o">.</span><span class="n">set_yscale</span><span class="p">(</span><span class="s1">&#39;log&#39;</span><span class="p">)</span>
-<span class="n">ax3</span><span class="o">.</span><span class="n">set_xscale</span><span class="p">(</span><span class="s1">&#39;log&#39;</span><span class="p">)</span>
-<span class="n">ax3</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">freq</span><span class="p">,</span> <span class="n">spec</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
-<span class="n">ax3</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="n">freq</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">freq</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">324</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">loglog</span><span class="p">(</span><span class="n">freq</span><span class="p">,</span> <span class="n">spec</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="n">freq</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">freq</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mf">0.85</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="s2">&quot;5 Tapers Multitaper&quot;</span><span class="p">,</span>
+         <span class="n">transform</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">transAxes</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">)</span>
 
 <span class="n">spec</span><span class="p">,</span> <span class="n">freq</span> <span class="o">=</span> <span class="n">sine_psd</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
 
-<span class="n">ax4</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
-<span class="n">ax4</span><span class="o">.</span><span class="n">set_yscale</span><span class="p">(</span><span class="s1">&#39;log&#39;</span><span class="p">)</span>
-<span class="n">ax4</span><span class="o">.</span><span class="n">set_xscale</span><span class="p">(</span><span class="s1">&#39;log&#39;</span><span class="p">)</span>
-<span class="n">ax4</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">freq</span><span class="p">,</span> <span class="n">spec</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
-<span class="n">ax4</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="n">freq</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">freq</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">325</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">loglog</span><span class="p">(</span><span class="n">freq</span><span class="p">,</span> <span class="n">spec</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="n">freq</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">freq</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mf">0.85</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="s2">&quot;Sine Multitaper&quot;</span><span class="p">,</span>
+         <span class="n">transform</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">transAxes</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">)</span>
 
-<span class="n">spec</span><span class="p">,</span> <span class="n">freq</span> <span class="o">=</span> <span class="n">mtspec</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">4.5</span><span class="p">,</span> <span class="n">number_of_tapers</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">quadratic</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">spec</span><span class="p">,</span> <span class="n">freq</span> <span class="o">=</span> <span class="n">mtspec</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">4.5</span><span class="p">,</span> <span class="n">number_of_tapers</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+                    <span class="n">quadratic</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 
-<span class="n">ax5</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
-<span class="n">ax5</span><span class="o">.</span><span class="n">set_yscale</span><span class="p">(</span><span class="s1">&#39;log&#39;</span><span class="p">)</span>
-<span class="n">ax5</span><span class="o">.</span><span class="n">set_xscale</span><span class="p">(</span><span class="s1">&#39;log&#39;</span><span class="p">)</span>
-<span class="n">ax5</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">freq</span><span class="p">,</span> <span class="n">spec</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
-<span class="n">ax5</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="n">freq</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">freq</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">326</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">loglog</span><span class="p">(</span><span class="n">freq</span><span class="p">,</span> <span class="n">spec</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="n">freq</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">freq</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mf">0.85</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="s2">&quot;Quadratic Multitaper&quot;</span><span class="p">,</span>
+         <span class="n">transform</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">transAxes</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="dpss-example">
-<h2>DPSS Example<a class="headerlink" href="#dpss-example" title="Permalink to this headline">¶</a></h2>
-<p>(<a class="reference external" href=".//tutorial-4.py">Source code</a>, <a class="reference external" href=".//tutorial-4.png">png</a>, <a class="reference external" href=".//tutorial-4.hires.png">hires.png</a>, <a class="reference external" href=".//tutorial-4.pdf">pdf</a>)</p>
+<h2><a class="toc-backref" href="#id4">DPSS Example</a><a class="headerlink" href="#dpss-example" title="Permalink to this headline">¶</a></h2>
+<p>A simple example showing how to calculate and plot a couple DPSS. Function
+documentation: <a class="reference internal" href="multitaper_dpss.html#mtspec.multitaper.dpss" title="mtspec.multitaper.dpss"><code class="xref py py-func docutils literal"><span class="pre">mtspec.multitaper.dpss()</span></code></a>.</p>
+<p>(<a class="reference external" href="./snippets/dpss_example.py">Source code</a>, <a class="reference external" href="./snippets/dpss_example.png">png</a>, <a class="reference external" href="./snippets/dpss_example.hires.png">hires.png</a>, <a class="reference external" href="./snippets/dpss_example.pdf">pdf</a>)</p>
 <div class="figure">
-<img alt="_images/tutorial-4.png" src="_images/tutorial-4.png" />
+<img alt="_images/dpss_example.png" src="_images/dpss_example.png" />
 </div>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s2">&quot;ggplot&quot;</span><span class="p">)</span>
-<span class="kn">from</span> <span class="nn">mtspec</span> <span class="k">import</span> <span class="n">dpss</span>
 
-<span class="n">tapers</span><span class="p">,</span> <span class="n">lamb</span><span class="p">,</span> <span class="n">theta</span> <span class="o">=</span> <span class="n">dpss</span><span class="p">(</span><span class="mi">512</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">mtspec</span> <span class="kn">import</span> <span class="n">dpss</span>
 
-<span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
-<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">xrange</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">tapers</span><span class="p">[:,</span><span class="n">i</span><span class="p">])</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">tapers</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]))</span>
+<span class="n">tapers</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">dpss</span><span class="p">(</span><span class="n">npts</span><span class="o">=</span><span class="mi">512</span><span class="p">,</span> <span class="n">fw</span><span class="o">=</span><span class="mf">2.5</span><span class="p">,</span> <span class="n">number_of_tapers</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">8</span><span class="p">):</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">tapers</span><span class="p">[:,</span> <span class="n">i</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">tapers</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]))</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="wigner-ville-spectrum">
-<h2>Wigner-Ville Spectrum<a class="headerlink" href="#wigner-ville-spectrum" title="Permalink to this headline">¶</a></h2>
-<p>(<a class="reference external" href=".//tutorial-5.py">Source code</a>, <a class="reference external" href=".//tutorial-5.png">png</a>, <a class="reference external" href=".//tutorial-5.hires.png">hires.png</a>, <a class="reference external" href=".//tutorial-5.pdf">pdf</a>)</p>
+<h2><a class="toc-backref" href="#id5">Wigner-Ville Spectrum</a><a class="headerlink" href="#wigner-ville-spectrum" title="Permalink to this headline">¶</a></h2>
+<p>Time frequency like spectral estimation using the Wigner-Ville method.
+Function documentation: <a class="reference internal" href="multitaper_wigner_ville_spectrum.html#mtspec.multitaper.wigner_ville_spectrum" title="mtspec.multitaper.wigner_ville_spectrum"><code class="xref py py-func docutils literal"><span class="pre">mtspec.multitaper.wigner_ville_spectrum()</span></code></a>.</p>
+<p>(<a class="reference external" href="./snippets/wigner_ville_spectrum_example.py">Source code</a>, <a class="reference external" href="./snippets/wigner_ville_spectrum_example.png">png</a>, <a class="reference external" href="./snippets/wigner_ville_spectrum_example.hires.png">hires.png</a>, <a class="reference external" href="./snippets/wigner_ville_spectrum_example.pdf">pdf</a>)</p>
 <div class="figure">
-<img alt="_images/tutorial-5.png" src="_images/tutorial-5.png" />
+<img alt="_images/wigner_ville_spectrum_example.png" src="_images/wigner_ville_spectrum_example.png" />
 </div>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">from</span> <span class="nn">mtspec</span> <span class="k">import</span> <span class="n">mtspec</span><span class="p">,</span> <span class="n">wigner_ville_spectrum</span>
-<span class="kn">from</span> <span class="nn">mtspec.util</span> <span class="k">import</span> <span class="n">signal_bursts</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s2">&quot;ggplot&quot;</span><span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">mtspec</span> <span class="kn">import</span> <span class="n">mtspec</span><span class="p">,</span> <span class="n">wigner_ville_spectrum</span>
+<span class="kn">from</span> <span class="nn">mtspec.util</span> <span class="kn">import</span> <span class="n">signal_bursts</span>
 
 <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
 <span class="n">data</span> <span class="o">=</span> <span class="n">signal_bursts</span><span class="p">()</span>
 
 <span class="c1"># Plot the data</span>
 <span class="n">ax1</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_axes</span><span class="p">([</span><span class="mf">0.2</span><span class="p">,</span><span class="mf">0.75</span><span class="p">,</span> <span class="mf">0.79</span><span class="p">,</span> <span class="mf">0.24</span><span class="p">])</span>
-<span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">)</span>
 <span class="n">ax1</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
 
 <span class="c1"># Plot multitaper spectrum</span>
 <span class="n">ax2</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_axes</span><span class="p">([</span><span class="mf">0.06</span><span class="p">,</span><span class="mf">0.02</span><span class="p">,</span><span class="mf">0.13</span><span class="p">,</span><span class="mf">0.69</span><span class="p">])</span>
 <span class="n">spec</span><span class="p">,</span> <span class="n">freq</span> <span class="o">=</span> <span class="n">mtspec</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mf">3.5</span><span class="p">)</span>
-<span class="n">ax2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">spec</span><span class="p">,</span> <span class="n">freq</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">spec</span><span class="p">,</span> <span class="n">freq</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">)</span>
 <span class="n">ax2</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">spec</span><span class="o">.</span><span class="n">max</span><span class="p">())</span>
 <span class="n">ax2</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">freq</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">freq</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
 <span class="n">ax2</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">([])</span>
@@ -236,48 +281,99 @@ included as well. More information can be found in the Prieto paper itself
 <span class="n">ax3</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_axes</span><span class="p">([</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">,</span> <span class="mf">0.79</span><span class="p">,</span> <span class="mf">0.69</span><span class="p">])</span>
 <span class="n">ax3</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">([])</span>
 <span class="n">ax3</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">([])</span>
-<span class="n">ax3</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">wv</span><span class="p">),</span> <span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">)</span>
+<span class="n">ax3</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">wv</span><span class="p">),</span> <span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">,</span>
+           <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;magma&quot;</span><span class="p">)</span>
+
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 <div class="section" id="wigner-ville-smoothing">
-<h3>Wigner-Ville Smoothing<a class="headerlink" href="#wigner-ville-smoothing" title="Permalink to this headline">¶</a></h3>
-<p>One of the main disadvantages of the Wigner-Ville method is occurrence of interference terms. This can be somewhat alleviated by smoothing it at the cost of the clarity of the distribution.</p>
-<p>The following plot shows an example of this behaviour. The signal consists of a linear chirp and an exponential chirp. The left figure is with smoothing and the right one without it.</p>
-<p>(<a class="reference external" href=".//tutorial-6.py">Source code</a>, <a class="reference external" href=".//tutorial-6.png">png</a>, <a class="reference external" href=".//tutorial-6.hires.png">hires.png</a>, <a class="reference external" href=".//tutorial-6.pdf">pdf</a>)</p>
+<h3><a class="toc-backref" href="#id6">Wigner-Ville Smoothing</a><a class="headerlink" href="#wigner-ville-smoothing" title="Permalink to this headline">¶</a></h3>
+<p>One of the main disadvantages of the Wigner-Ville method is occurrence of
+interference terms. This can be somewhat alleviated by smoothing it at the
+cost of the clarity of the distribution.</p>
+<p>The following plot shows an example of this behaviour. The signal consists of
+a linear chirp and an exponential chirp. The left figure is with smoothing and
+the right one without it.</p>
+<p>(<a class="reference external" href="./snippets/wigner_ville_smoothing.py">Source code</a>, <a class="reference external" href="./snippets/wigner_ville_smoothing.png">png</a>, <a class="reference external" href="./snippets/wigner_ville_smoothing.hires.png">hires.png</a>, <a class="reference external" href="./snippets/wigner_ville_smoothing.pdf">pdf</a>)</p>
 <div class="figure">
-<img alt="_images/tutorial-6.png" src="_images/tutorial-6.png" />
+<img alt="_images/wigner_ville_smoothing.png" src="_images/wigner_ville_smoothing.png" />
 </div>
-<p>[<a class="reference external" href="https://github.com/krischer/mtspec/blob/master/doc/wv_smoothing.py">source code</a>]</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib</span> <span class="kn">as</span> <span class="nn">mpl</span>
+<span class="n">mpl</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;font.size&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">9.0</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pylab</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s2">&quot;ggplot&quot;</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">mtspec</span> <span class="kn">import</span> <span class="n">wigner_ville_spectrum</span>
+<span class="kn">from</span> <span class="nn">mtspec.util</span> <span class="kn">import</span> <span class="n">linear_chirp</span><span class="p">,</span> <span class="n">exponential_chirp</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">linear_chirp</span><span class="p">()</span> <span class="o">+</span> <span class="n">exponential_chirp</span><span class="p">()</span>
+
+<span class="c1"># Plot the data</span>
+<span class="n">ax1</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_axes</span><span class="p">([</span><span class="mf">0.05</span><span class="p">,</span><span class="mf">0.75</span><span class="p">,</span> <span class="mf">0.90</span><span class="p">,</span> <span class="mf">0.24</span><span class="p">])</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">([])</span>
+
+<span class="c1"># Get the smoothed WV spectrum.</span>
+<span class="n">wv</span> <span class="o">=</span> <span class="n">wigner_ville_spectrum</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mf">5.0</span><span class="p">,</span> <span class="n">smoothing_filter</span><span class="o">=</span><span class="s1">&#39;gauss&#39;</span><span class="p">,</span>
+                           <span class="n">filter_width</span><span class="o">=</span><span class="mi">25</span><span class="p">)</span>
+
+<span class="c1"># Plot the WV</span>
+<span class="n">ax2</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_axes</span><span class="p">([</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.025</span><span class="p">,</span> <span class="mf">0.48</span><span class="p">,</span> <span class="mf">0.64</span><span class="p">])</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">([])</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">([])</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">wv</span><span class="p">),</span> <span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">,</span>
+           <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;magma&quot;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;With smoothing&#39;</span><span class="p">)</span>
+
+<span class="c1"># Get the WV spectrum.</span>
+<span class="n">wv</span> <span class="o">=</span> <span class="n">wigner_ville_spectrum</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mf">5.0</span><span class="p">,</span> <span class="n">smoothing_filter</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+
+<span class="c1"># Plot the WV</span>
+<span class="n">ax3</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_axes</span><span class="p">([</span><span class="mf">0.51</span><span class="p">,</span> <span class="mf">0.025</span><span class="p">,</span> <span class="mf">0.48</span><span class="p">,</span> <span class="mf">0.64</span><span class="p">])</span>
+<span class="n">ax3</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">([])</span>
+<span class="n">ax3</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">([])</span>
+<span class="n">ax3</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">wv</span><span class="p">),</span> <span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">,</span>
+           <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;magma&quot;</span><span class="p">)</span>
+<span class="n">ax3</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Without smoothing&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
 </div>
 </div>
 <div class="section" id="multitaper-coherence-example">
-<h2>Multitaper coherence example<a class="headerlink" href="#multitaper-coherence-example" title="Permalink to this headline">¶</a></h2>
-<p>(<a class="reference external" href=".//tutorial-7.py">Source code</a>, <a class="reference external" href=".//tutorial-7.png">png</a>, <a class="reference external" href=".//tutorial-7.hires.png">hires.png</a>, <a class="reference external" href=".//tutorial-7.pdf">pdf</a>)</p>
+<h2><a class="toc-backref" href="#id7">Multitaper coherence example</a><a class="headerlink" href="#multitaper-coherence-example" title="Permalink to this headline">¶</a></h2>
+<p>Calculate the coherency of two signals using multitapers. Function
+documentation: <a class="reference internal" href="multitaper_mt_coherence.html#mtspec.multitaper.mt_coherence" title="mtspec.multitaper.mt_coherence"><code class="xref py py-func docutils literal"><span class="pre">mtspec.multitaper.mt_coherence()</span></code></a>.</p>
+<p>(<a class="reference external" href="./snippets/multitaper_coherency_example.py">Source code</a>, <a class="reference external" href="./snippets/multitaper_coherency_example.png">png</a>, <a class="reference external" href="./snippets/multitaper_coherency_example.hires.png">hires.png</a>, <a class="reference external" href="./snippets/multitaper_coherency_example.pdf">pdf</a>)</p>
 <div class="figure">
-<img alt="_images/tutorial-7.png" src="_images/tutorial-7.png" />
+<img alt="_images/multitaper_coherency_example.png" src="_images/multitaper_coherency_example.png" />
 </div>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib</span> <span class="k">as</span> <span class="nn">mpl</span>
-<span class="n">mpl</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;font.size&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">9.0</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s2">&quot;ggplot&quot;</span><span class="p">)</span>
-<span class="kn">from</span> <span class="nn">mtspec</span> <span class="k">import</span> <span class="n">mt_coherence</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">mtspec</span> <span class="kn">import</span> <span class="n">mt_coherence</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 
 <span class="c1"># generate random series with 1Hz sinus inside</span>
 <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">815</span><span class="p">)</span>
 <span class="n">npts</span> <span class="o">=</span> <span class="mi">256</span>
 <span class="n">sampling_rate</span> <span class="o">=</span> <span class="mf">10.0</span>
 <span class="c1"># one sine wave in one second (sampling_rate samples)</span>
-<span class="n">one_hz_sin</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">sampling_rate</span><span class="p">)</span> <span class="o">/</span>\
+<span class="n">one_hz_sin</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">sampling_rate</span><span class="p">)</span> <span class="o">/</span> \
                     <span class="n">sampling_rate</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span>
-<span class="n">one_hz_sin</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">one_hz_sin</span><span class="p">,</span> <span class="n">npts</span><span class="o">//</span><span class="n">sampling_rate</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)[:</span><span class="n">npts</span><span class="p">]</span>
+<span class="n">one_hz_sin</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">one_hz_sin</span><span class="p">,</span> <span class="n">npts</span> <span class="o">//</span> <span class="n">sampling_rate</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)[:</span><span class="n">npts</span><span class="p">]</span>
 <span class="n">xi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">npts</span><span class="p">)</span> <span class="o">+</span> <span class="n">one_hz_sin</span>
 <span class="n">xj</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">npts</span><span class="p">)</span> <span class="o">+</span> <span class="n">one_hz_sin</span>
 <span class="n">dt</span><span class="p">,</span> <span class="n">tbp</span><span class="p">,</span> <span class="n">kspec</span><span class="p">,</span> <span class="n">nf</span><span class="p">,</span> <span class="n">p</span> <span class="o">=</span> <span class="mf">1.0</span><span class="o">/</span><span class="n">sampling_rate</span><span class="p">,</span> <span class="mf">3.5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="n">npts</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="o">.</span><span class="mi">90</span>
-<span class="c1"># calculate mt_coherence</span>
-<span class="n">out</span> <span class="o">=</span> <span class="n">mt_coherence</span><span class="p">(</span><span class="n">dt</span><span class="p">,</span> <span class="n">xi</span><span class="p">,</span> <span class="n">xj</span><span class="p">,</span> <span class="n">tbp</span><span class="p">,</span> <span class="n">kspec</span><span class="p">,</span> <span class="n">nf</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                       <span class="n">cohe</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">iadapt</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># calculate coherency</span>
+<span class="n">out</span> <span class="o">=</span> <span class="n">mt_coherence</span><span class="p">(</span><span class="n">dt</span><span class="p">,</span> <span class="n">xi</span><span class="p">,</span> <span class="n">xj</span><span class="p">,</span> <span class="n">tbp</span><span class="p">,</span> <span class="n">kspec</span><span class="p">,</span> <span class="n">nf</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+                   <span class="n">cohe</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">iadapt</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
 <span class="c1"># the plotting part</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">211</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">npts</span><span class="p">)</span><span class="o">/</span><span class="n">sampling_rate</span><span class="p">,</span> <span class="n">xi</span><span class="p">)</span>
@@ -288,6 +384,7 @@ included as well. More information can be found in the Prieto paper itself
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">out</span><span class="p">[</span><span class="s1">&#39;freq&#39;</span><span class="p">],</span> <span class="n">out</span><span class="p">[</span><span class="s1">&#39;cohe&#39;</span><span class="p">])</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Frequency [Hz]&quot;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Coherency&quot;</span><span class="p">)</span>
+
 <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
