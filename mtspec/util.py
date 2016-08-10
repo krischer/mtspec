@@ -65,7 +65,7 @@ def signal_bursts():
     np.random.seed(815)
     length = 5 * 512
 
-    # Baseline low frequency plut noise.
+    # Baseline low frequency plus noise.
     data = np.sin(np.linspace(0, 80 * np.pi, length))
     noise = np.random.ranf(length)
     noise /= noise.max()
