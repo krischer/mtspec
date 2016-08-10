@@ -672,8 +672,8 @@ def mt_deconv(xi, xj, delta, nfft=None, time_bandwidth=None,
         number_of_tapers = int(2 * time_bandwidth) - 1
 
     # Transform the data to work with the library.
-    xi = np.require(xi, mt.float, mt.required)
-    xj = np.require(xj, mt.float, mt.required)
+    xi = np.require(xi, mt.float, requirements=[mt.order])
+    xj = np.require(xj, mt.float, requirements=[mt.order])
     # Get some information necessary for the call to the Fortran library.
     nf = nfft // 2 + 1
 
