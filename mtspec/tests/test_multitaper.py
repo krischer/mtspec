@@ -27,7 +27,7 @@ class MtSpecTestCase(unittest.TestCase):
     Test suite for mtspec.
     """
 
-    def test_singleDPSSTaperSpectrum(self):
+    def test_single_dpss_taper_spectrum(self):
         """
         Test for single DPSS taper spectrum. The result is compared to the
         output of test_recreatePaperFigures.py in the same directory. This is
@@ -49,7 +49,7 @@ class MtSpecTestCase(unittest.TestCase):
         np.testing.assert_almost_equal(freq, freq2)
         np.testing.assert_almost_equal(spec / spec, spec2 / spec, 5)
 
-    def test_multitaperSpectrum(self):
+    def test_multitaper_spectrum(self):
         """
         Test for mtspec. The result is compared to the output of
         test_recreatePaperFigures.py in the same directory. This is assumed to
@@ -71,7 +71,7 @@ class MtSpecTestCase(unittest.TestCase):
         np.testing.assert_almost_equal(freq, freq2)
         np.testing.assert_almost_equal(spec / spec, spec2 / spec, 5)
 
-    def test_multitaperSpectrumOptionalOutput(self):
+    def test_multitaper_spectrum_optional_output(self):
         """
         Test for mtspec. The result is compared to the output of
         test_recreatePaperFigures.py in the same directory. This is assumed to
@@ -112,7 +112,7 @@ class MtSpecTestCase(unittest.TestCase):
         # np.testing.assert_almost_equal(eigspec/eigspec, eigspec2/eigspec, 5)
         # np.testing.assert_almost_equal(eigcoef/eigcoef, eigcoef2/eigcoef, 5)
 
-    def test_eigenspectraOutput(self):
+    def test_eigenspectra_output(self):
         """
         Tests the eigenspectra output using a nonadaptive spectra. This also at
         least somewhat tests the weights.
@@ -139,7 +139,7 @@ class MtSpecTestCase(unittest.TestCase):
         np.testing.assert_almost_equal(spec[:10] / spec.max(),
                                        new_spec[:10] / new_spec.max())
 
-    def test_paddedMultitaperSpectrumWithErrors(self):
+    def test_padded_multitaper_spectrum_with_errors(self):
         """
         Test for mtspec_pad with jackknife interval errors. The result is
         compared to the output of test_recreatePaperFigures.py in the same
@@ -167,7 +167,7 @@ class MtSpecTestCase(unittest.TestCase):
         np.testing.assert_almost_equal(jackknife / jackknife,
                                        jackknife2 / jackknife, 6)
 
-    def test_quadraticMultitaperSpectrum(self):
+    def test_quadratic_multitaper_spectrum(self):
         """
         Test for quadratic mtspec. The result is compared to the output of
         test_recreatePaperFigures.py in the same directory. This is assumed to
@@ -190,7 +190,7 @@ class MtSpecTestCase(unittest.TestCase):
         np.testing.assert_almost_equal(freq, freq2)
         np.testing.assert_almost_equal(spec / spec, spec2 / spec, 5)
 
-    def test_fstatisticsAndReshapedSpectrum(self):
+    def test_fstatistics_and_reshaped_spectrum(self):
         """
         Test for mtspec_pad with jackknife interval errors. The result is
         compared to the output of test_recreatePaperFigures.py in the same
@@ -223,7 +223,7 @@ class MtSpecTestCase(unittest.TestCase):
         np.testing.assert_almost_equal(fstatistics / fstatistics,
                                        fstatistics2 / fstatistics, 5)
 
-    def test_sinePSD(self):
+    def test_sine_psd(self):
         """
         Test for the sine_psd spectra. The result is compared to the output of
         test_recreatePaperFigures.py in the same directory. This is assumed to
@@ -245,7 +245,7 @@ class MtSpecTestCase(unittest.TestCase):
         np.testing.assert_almost_equal(freq, freq2)
         np.testing.assert_almost_equal(spec / spec, spec2 / spec, 2)
 
-    def test_sinePSDStatistics(self):
+    def test_sine_psd_statistics(self):
         """
         Test for the sine_psd spectra with optional output. The result is
         compared to the output of test_recreatePaperFigures.py in the same
@@ -270,7 +270,7 @@ class MtSpecTestCase(unittest.TestCase):
         np.testing.assert_almost_equal(freq, freq2)
         np.testing.assert_almost_equal(spec / spec, spec2 / spec, 2)
 
-    def test_quadraticMultitaperIsDifferent(self):
+    def test_quadratic_multitaper_is_different(self):
         """
         The quadratic and the normal multitaper spectra look quite similar.
         Check that they are different.
@@ -316,7 +316,7 @@ class MtSpecTestCase(unittest.TestCase):
         # digits are compared.
         np.testing.assert_almost_equal(v3 / v3, v2 / v3, 2)
 
-    def test_wignerVille(self):
+    def test_wigner_ville(self):
         """
         Test for wigner_ville_spectrum. Test uses only a fraction of the
         whole spectrum due to space consumtions.
@@ -333,7 +333,7 @@ class MtSpecTestCase(unittest.TestCase):
         self.assertEqual(True, rms1 < 1e-6)
         self.assertEqual(True, rms2 < 1e-6)
 
-    def test_mtCoherence(self):
+    def test_mt_coherence(self):
         """
         Coherence test case.
         """
@@ -359,7 +359,7 @@ class MtSpecTestCase(unittest.TestCase):
         np.testing.assert_almost_equal(freq, out['freq'], 5)
         np.testing.assert_almost_equal(cohe/cohe, out['cohe']/cohe, 4)
 
-    def test_mtDeconv(self):
+    def test_mt_deconv(self):
         """
         Deconvolution test case
         """
@@ -384,9 +384,10 @@ class MtSpecTestCase(unittest.TestCase):
                                       number_of_tapers=number_of_tapers,
                                       nfft=npts,
                                       demean=1, iadapt=0)
-        Pdeconv = deconvolved[-500:][::-1]
+        p_deconv = deconvolved[-500:][::-1]
 
-        np.testing.assert_almost_equal(prieto_deconv[20:40], Pdeconv[20:40], 5)
+        np.testing.assert_almost_equal(prieto_deconv[20:40],
+                                       p_deconv[20:40], 5)
 
 
 def rms(x, y):
