@@ -204,3 +204,8 @@ latex_documents = [
 
 # If false, no module index is generated.
 #latex_use_modindex = True
+
+intersphinx_mapping = {
+    'python': ('https://docs.python.org/3.5/', None),
+    'numpy': ('https://docs.scipy.org/doc/numpy/', None)
+}
