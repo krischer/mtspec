@@ -13,11 +13,13 @@ ado = _load_mtdata('ADO.dat.gz')
 pasc -= pasc.mean()
 ado -= ado.mean()
 
-deconvolved, freq = mt_deconv(pasc, ado, delta=1.0,
-                              time_bandwidth=4.0,
-                              number_of_tapers=7,
-                              nfft=len(pasc), demean=True,
-                              weights="adaptive")
+r = mt_deconv(pasc, ado, delta=1.0,
+              time_bandwidth=4.0,
+              number_of_tapers=7,
+              nfft=len(pasc), demean=True,
+              weights="adaptive")
+
+deconvolved = r["deconvolved"]
 
 Pdeconv = deconvolved[-500:][::-1]
 Pdeconv /= Pdeconv.max()
