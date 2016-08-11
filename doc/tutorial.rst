@@ -1,10 +1,11 @@
 Tutorial
 ========
 
-This tutorial shows source code on how to recreate the first three figures from
-the multitaper paper of Prieto. Simple examples for the DPSS method, the
-Wigner Ville spectrum, and multitaper coherency calculations are included as
-well. More information can be found in the Prieto paper (reference_).
+This tutorial shows source code on how to recreate the first three figures
+and the sixth figure from the multitaper paper of Prieto. Simple examples for
+the DPSS method, the Wigner Ville spectrum, and multitaper coherency
+calculations are included as well. More information can be found in the Prieto
+paper (reference_).
 
 .. _reference: http://dx.doi.org/10.1016/j.cageo.2008.06.007
 
@@ -105,8 +106,11 @@ documentation: :func:`mtspec.multitaper.mt_coherence`.
     :language: python
 
 
-Recreate Fig. 6 - Deconvolution
--------------------------------
+Fig. 6: Deconvolution
+---------------------
+
+Demonstrates the deconvolution of two time series. See the
+:func:`mtspec.multitaper.mt_deconvolve` function for details.
 
 .. plot:: snippets/figure_6.py
 

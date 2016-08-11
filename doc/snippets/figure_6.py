@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import scipy.fftpack
 
-from mtspec import mt_deconv, mtspec
+from mtspec import mt_deconvolve, mtspec
 from mtspec.util import _load_mtdata
 
 plt.style.use("ggplot")
@@ -13,11 +13,11 @@ ado = _load_mtdata('ADO.dat.gz')
 pasc -= pasc.mean()
 ado -= ado.mean()
 
-r = mt_deconv(pasc, ado, delta=1.0,
-              time_bandwidth=4.0,
-              number_of_tapers=7,
-              nfft=len(pasc), demean=True,
-              weights="adaptive")
+r = mt_deconvolve(pasc, ado, delta=1.0,
+                  time_bandwidth=4.0,
+                  number_of_tapers=7,
+                  nfft=len(pasc), demean=True,
+                  weights="adaptive")
 
 deconvolved = r["deconvolved"]
 

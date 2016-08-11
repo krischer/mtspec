@@ -17,7 +17,7 @@ import os
 
 from .multitaper import mtspec, sine_psd, dpss  # NOQA
 from .multitaper import wigner_ville_spectrum, mt_coherence  # NOQA
-from .multitaper import mt_deconv  # NOQA
+from .multitaper import mt_deconvolve  # NOQA
 
 path = os.path.abspath(os.path.dirname(
     inspect.getfile(inspect.currentframe())))

@@ -617,9 +617,9 @@ def mt_coherence(df, xi, xj, tbp, kspec, nf, p, **kwargs):
     return dict([(k, v) for k, v in kwargs.items() if v is not None])
 
 
-def mt_deconv(data_a, data_b, delta, nfft=None, time_bandwidth=None,
-              number_of_tapers=None, weights="adaptive", demean=True,
-              fmax=0.0):
+def mt_deconvolve(data_a, data_b, delta, nfft=None, time_bandwidth=None,
+                  number_of_tapers=None, weights="adaptive", demean=True,
+                  fmax=0.0):
     """
     Deconvolve two time series using multitapers.
 

@@ -18,7 +18,7 @@ import os
 import unittest
 
 from ..multitaper import mtspec, sine_psd, dpss, wigner_ville_spectrum, \
-    mt_coherence, mt_deconv
+    mt_coherence, mt_deconvolve
 from ..util import signal_bursts, _load_mtdata
 
 
@@ -370,13 +370,13 @@ class MtSpecTestCase(unittest.TestCase):
         test_data = _load_mtdata("noise_deconv_first_1000_numbers.dat.gz")
 
         # Make sure the settings are the same as in the mtspec example.
-        r = mt_deconv(data_a=pasc, data_b=ado, delta=1.0,
-                      time_bandwidth=4.0,
-                      number_of_tapers=7.0,
-                      nfft=172800,
-                      demean=False,
-                      weights="adaptive",
-                      fmax=0.5)
+        r = mt_deconvolve(data_a=pasc, data_b=ado, delta=1.0,
+                          time_bandwidth=4.0,
+                          number_of_tapers=7.0,
+                          nfft=172800,
+                          demean=False,
+                          weights="adaptive",
+                          fmax=0.5)
 
         np.testing.assert_allclose(r["deconvolved"][:1000], test_data,
                                    rtol=1E-5)
