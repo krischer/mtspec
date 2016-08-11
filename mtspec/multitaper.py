@@ -661,16 +661,18 @@ def mt_deconvolve(data_a, data_b, delta, nfft=None, time_bandwidth=None,
     :param fmax: Maximum frequency for lowpass cosine filter. Set this to
         zero to not have a filter.
 
-    :return: Returns a dictionary with :class:`numpy.ndarray`. See the note
+    :return: Returns a dictionary with 5 :class:`numpy.ndarray`'s. See the note
         below.
 
     .. note::
 
-        This method will at return at least two arrays: The deconvolved time
-        series and the frequency bins used. If optional_output is true it will
-        also return (in the given order) arrays containing the spectral ratio
-        of the two spectra, the spectrum of the first and the spectrum of the
-        second series.
+        Returns a dictionary with five arrays:
+
+        * ``"deconvolved"``: Deconvolved time series.
+        * ``"spectrum_a"``: Spectrum of the first time series.
+        * ``"spectrum_b"``:  Spectrum of the second time series.
+        * ``"spectral_ratio"``: The ratio of both spectra.
+        * ``"frequencies"``: The used frequency bins for the spectra.
 
     """
     npts = len(data_a)
@@ -738,7 +740,7 @@ def mt_deconvolve(data_a, data_b, delta, nfft=None, time_bandwidth=None,
     return {
         "frequencies": freq,
         "deconvolved": tfun,
-        "spectral_ratio": speci,
+        "spectral_ratio": spec_ratio,
         "spectrum_a": speci,
         "spectrum_b": specj
     }
