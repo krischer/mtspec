@@ -396,7 +396,10 @@ documentation: <a class="reference internal" href="multitaper_mt_coherence.html#
 <h2><a class="toc-backref" href="#id8">Fig. 6: Deconvolution</a><a class="headerlink" href="#fig-6-deconvolution" title="Permalink to this headline">¶</a></h2>
 <p>Demonstrates the deconvolution of two time series. See the
 <a class="reference internal" href="multitaper_mt_deconvolve.html#mtspec.multitaper.mt_deconvolve" title="mtspec.multitaper.mt_deconvolve"><code class="xref py py-func docutils literal"><span class="pre">mtspec.multitaper.mt_deconvolve()</span></code></a> function for details.</p>
-<p>(<a class="reference external" href="./snippets/figure_6.py">Source code</a>)</p>
+<p>(<a class="reference external" href="./snippets/figure_6.py">Source code</a>, <a class="reference external" href="./snippets/figure_6.png">png</a>, <a class="reference external" href="./snippets/figure_6.hires.png">hires.png</a>, <a class="reference external" href="./snippets/figure_6.pdf">pdf</a>)</p>
+<div class="figure">
+<img alt="_images/figure_6.png" src="_images/figure_6.png" />
+</div>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">scipy.fftpack</span>
@@ -428,7 +431,7 @@ documentation: <a class="reference internal" href="multitaper_mt_coherence.html#
 <span class="n">ado</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">fftpack</span><span class="o">.</span><span class="n">fft</span><span class="p">(</span><span class="n">ado</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">nfft</span><span class="p">)</span>
 <span class="n">cc</span> <span class="o">=</span> <span class="n">pasc</span> <span class="o">*</span> <span class="n">ado</span><span class="o">.</span><span class="n">conj</span><span class="p">()</span>
 
-<span class="n">cc</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">fftpack</span><span class="o">.</span><span class="n">ifft</span><span class="p">(</span><span class="n">cc</span><span class="p">)</span>
+<span class="n">cc</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">fftpack</span><span class="o">.</span><span class="n">ifft</span><span class="p">(</span><span class="n">cc</span><span class="p">)</span><span class="o">.</span><span class="n">real</span>
 <span class="n">Pcc</span> <span class="o">=</span> <span class="n">cc</span><span class="p">[</span><span class="o">-</span><span class="mi">500</span><span class="p">:][::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
 <span class="n">Pcc</span> <span class="o">/=</span> <span class="n">Pcc</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
 

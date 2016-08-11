@@ -29,7 +29,7 @@ pasc = scipy.fftpack.fft(pasc, n=nfft)
 ado = scipy.fftpack.fft(ado, n=nfft)
 cc = pasc * ado.conj()
 
-cc = scipy.fftpack.ifft(cc)
+cc = scipy.fftpack.ifft(cc).real
 Pcc = cc[-500:][::-1]
 Pcc /= Pcc.max()
 
