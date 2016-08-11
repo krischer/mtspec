@@ -367,7 +367,7 @@ class MtSpecTestCase(unittest.TestCase):
         ado = _load_mtdata('ADO.dat.gz')
 
         # Created with the example programs shipping with the fortran code.
-        test_data = _load_mtdata("noise_deconv_first_1000_numbers.dat.gz").T[1]
+        test_data = _load_mtdata("noise_deconv_first_1000_numbers.dat.gz")
 
         # Make sure the settings are the same as in the mtspec example.
         r = mt_deconv(data_a=pasc, data_b=ado, delta=1.0,

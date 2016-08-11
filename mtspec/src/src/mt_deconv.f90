@@ -4,6 +4,9 @@ subroutine mt_deconv( &
 
 
 !
+!  Changed some things for the python wrappper - mainly made all arguments
+!  mandatory, as it otherwise does not really work with ctypes.
+!
 !  Generate a deconvolution between two time series from
 !  the yk's and the weights of the usual multitaper spectrum
 !  estimation.
