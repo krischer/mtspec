@@ -662,6 +662,135 @@
     <span class="k">return</span> <span class="nb">dict</span><span class="p">([(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">v</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">])</span></div>
 
 
+<div class="viewcode-block" id="mt_deconvolve"><a class="viewcode-back" href="../../multitaper_mt_deconvolve.html#mtspec.multitaper.mt_deconvolve">[docs]</a><span class="k">def</span> <span class="nf">mt_deconvolve</span><span class="p">(</span><span class="n">data_a</span><span class="p">,</span> <span class="n">data_b</span><span class="p">,</span> <span class="n">delta</span><span class="p">,</span> <span class="n">nfft</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">time_bandwidth</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                  <span class="n">number_of_tapers</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="s2">&quot;adaptive&quot;</span><span class="p">,</span> <span class="n">demean</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+                  <span class="n">fmax</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Deconvolve two time series using multitapers.</span>
+
+<span class="sd">    This uses the eigencoefficients and the weights from the multitaper</span>
+<span class="sd">    spectral estimations and more or less follows this paper:</span>
+
+<span class="sd">    .. |br| raw:: html</span>
+
+<span class="sd">        &lt;br /&gt;</span>
+
+<span class="sd">    **Receiver Functions from Multiple-Taper Spectral Correlation Estimates**</span>
+<span class="sd">    *Jeffrey Park, Vadim Levin* |br|</span>
+<span class="sd">    Bulletin of the Seismological Society of America Dec 2000,</span>
+<span class="sd">    90 (6) 1507-1520</span>
+<span class="sd">    http://dx.doi.org/10.1785/0119990122</span>
+
+<span class="sd">    :type data_a: :class:`numpy.ndarray`</span>
+<span class="sd">    :param data_a: Data for first time series.</span>
+<span class="sd">    :type data_b: :class:`numpy.ndarray`</span>
+<span class="sd">    :param data_b: Data for second time series.</span>
+<span class="sd">    :type delta: float</span>
+<span class="sd">    :param delta: Sample spacing of the data.</span>
+<span class="sd">    :type nfft: int</span>
+<span class="sd">    :param nfft: Number of points for the FFT. If ``nfft == None``, no zero</span>
+<span class="sd">        padding will be applied before the FFT.</span>
+<span class="sd">    :type time_bandwidth: float</span>
+<span class="sd">    :param time_bandwidth: Time-bandwidth product. Common values are 2, 3, 4,</span>
+<span class="sd">        and numbers in between.</span>
+<span class="sd">    :type number_of_tapers: int</span>
+<span class="sd">    :param number_of_tapers: Number of tapers to use. Defaults to</span>
+<span class="sd">        ``int(2*time_bandwidth) - 1``. This is maximum senseful amount. More</span>
+<span class="sd">        tapers will have no great influence on the final spectrum but increase</span>
+<span class="sd">        the calculation time. Use fewer tapers for a faster calculation.</span>
+<span class="sd">    :type weights: str</span>
+<span class="sd">    :param weights: ``&quot;adaptive&quot;`` or ``&quot;constant&quot;`` weights.</span>
+<span class="sd">    :type deman: bool</span>
+<span class="sd">    :param demean: Force the complex TF to be demeaned.</span>
+<span class="sd">    :type fmax: float</span>
+<span class="sd">    :param fmax: Maximum frequency for lowpass cosine filter. Set this to</span>
+<span class="sd">        zero to not have a filter.</span>
+
+<span class="sd">    :return: Returns a dictionary with 5 :class:`numpy.ndarray`&#39;s. See the note</span>
+<span class="sd">        below.</span>
+
+<span class="sd">    .. note::</span>
+
+<span class="sd">        Returns a dictionary with five arrays:</span>
+
+<span class="sd">        * ``&quot;deconvolved&quot;``: Deconvolved time series.</span>
+<span class="sd">        * ``&quot;spectrum_a&quot;``: Spectrum of the first time series.</span>
+<span class="sd">        * ``&quot;spectrum_b&quot;``:  Spectrum of the second time series.</span>
+<span class="sd">        * ``&quot;spectral_ratio&quot;``: The ratio of both spectra.</span>
+<span class="sd">        * ``&quot;frequencies&quot;``: The used frequency bins for the spectra.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">npts</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">data_a</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">data_b</span><span class="p">)</span> <span class="o">!=</span> <span class="n">npts</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Input arrays must have the same length!&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">nfft</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">nfft</span> <span class="o">=</span> <span class="n">npts</span>
+    <span class="k">elif</span> <span class="n">nfft</span> <span class="o">&lt;</span> <span class="n">npts</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;nfft must be larger then the number of samples in &quot;</span>
+                         <span class="s2">&quot;the array.&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Deconvolution utilizes the 32bit version.</span>
+    <span class="n">mt</span> <span class="o">=</span> <span class="n">_MtspecType</span><span class="p">(</span><span class="s2">&quot;float32&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Use the optimal number of tapers in case no number is specified.</span>
+    <span class="k">if</span> <span class="n">number_of_tapers</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">number_of_tapers</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">time_bandwidth</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+
+    <span class="c1"># Transform the data to work with the library.</span>
+    <span class="n">data_a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">require</span><span class="p">(</span><span class="n">data_a</span><span class="p">,</span> <span class="n">mt</span><span class="o">.</span><span class="n">float</span><span class="p">,</span> <span class="n">requirements</span><span class="o">=</span><span class="p">[</span><span class="n">mt</span><span class="o">.</span><span class="n">order</span><span class="p">])</span>
+    <span class="n">data_b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">require</span><span class="p">(</span><span class="n">data_b</span><span class="p">,</span> <span class="n">mt</span><span class="o">.</span><span class="n">float</span><span class="p">,</span> <span class="n">requirements</span><span class="o">=</span><span class="p">[</span><span class="n">mt</span><span class="o">.</span><span class="n">order</span><span class="p">])</span>
+
+    <span class="n">nf</span> <span class="o">=</span> <span class="n">nfft</span> <span class="o">//</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span>
+
+    <span class="c1"># Internally uses integers</span>
+    <span class="k">if</span> <span class="n">demean</span><span class="p">:</span>
+        <span class="n">demean</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">demean</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="c1"># iad = 0 are adaptive, iad = 1 are constant weight - this is</span>
+    <span class="c1"># counter intuitive.</span>
+    <span class="k">if</span> <span class="n">weights</span> <span class="o">==</span> <span class="s2">&quot;constant&quot;</span><span class="p">:</span>
+        <span class="n">adaptive</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">elif</span> <span class="n">weights</span> <span class="o">==</span> <span class="s2">&quot;adaptive&quot;</span><span class="p">:</span>
+        <span class="n">adaptive</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Weights must be either &quot;adaptive&quot; or &quot;constant&quot;.&#39;</span><span class="p">)</span>
+
+    <span class="n">tfun</span> <span class="o">=</span> <span class="n">mt</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">nfft</span><span class="p">)</span>
+    <span class="n">freq</span> <span class="o">=</span> <span class="n">mt</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">nf</span><span class="p">)</span>
+    <span class="n">spec_ratio</span> <span class="o">=</span> <span class="n">mt</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">nf</span><span class="p">)</span>
+    <span class="n">speci</span> <span class="o">=</span> <span class="n">mt</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">nf</span><span class="p">)</span>
+    <span class="n">specj</span> <span class="o">=</span> <span class="n">mt</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">nf</span><span class="p">)</span>
+
+    <span class="n">mtspeclib</span><span class="o">.</span><span class="n">mt_deconv_</span><span class="p">(</span>
+        <span class="n">C</span><span class="o">.</span><span class="n">byref</span><span class="p">(</span><span class="n">C</span><span class="o">.</span><span class="n">c_int</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">npts</span><span class="p">))),</span>
+        <span class="n">C</span><span class="o">.</span><span class="n">byref</span><span class="p">(</span><span class="n">C</span><span class="o">.</span><span class="n">c_int</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">nfft</span><span class="p">))),</span>
+        <span class="n">C</span><span class="o">.</span><span class="n">byref</span><span class="p">(</span><span class="n">C</span><span class="o">.</span><span class="n">c_float</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">delta</span><span class="p">))),</span>
+        <span class="n">mt</span><span class="o">.</span><span class="n">p</span><span class="p">(</span><span class="n">data_a</span><span class="p">),</span>
+        <span class="n">mt</span><span class="o">.</span><span class="n">p</span><span class="p">(</span><span class="n">data_b</span><span class="p">),</span>
+        <span class="n">C</span><span class="o">.</span><span class="n">byref</span><span class="p">(</span><span class="n">C</span><span class="o">.</span><span class="n">c_float</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">time_bandwidth</span><span class="p">))),</span>
+        <span class="n">C</span><span class="o">.</span><span class="n">byref</span><span class="p">(</span><span class="n">C</span><span class="o">.</span><span class="n">c_int</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">number_of_tapers</span><span class="p">))),</span>
+        <span class="n">C</span><span class="o">.</span><span class="n">byref</span><span class="p">(</span><span class="n">C</span><span class="o">.</span><span class="n">c_int</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">nf</span><span class="p">))),</span>
+        <span class="n">C</span><span class="o">.</span><span class="n">byref</span><span class="p">(</span><span class="n">C</span><span class="o">.</span><span class="n">c_int</span><span class="p">(</span><span class="n">adaptive</span><span class="p">)),</span>
+        <span class="n">mt</span><span class="o">.</span><span class="n">p</span><span class="p">(</span><span class="n">freq</span><span class="p">),</span>
+        <span class="n">mt</span><span class="o">.</span><span class="n">p</span><span class="p">(</span><span class="n">tfun</span><span class="p">),</span>
+        <span class="n">mt</span><span class="o">.</span><span class="n">p</span><span class="p">(</span><span class="n">spec_ratio</span><span class="p">),</span>
+        <span class="n">mt</span><span class="o">.</span><span class="n">p</span><span class="p">(</span><span class="n">speci</span><span class="p">),</span>
+        <span class="n">mt</span><span class="o">.</span><span class="n">p</span><span class="p">(</span><span class="n">specj</span><span class="p">),</span>
+        <span class="n">C</span><span class="o">.</span><span class="n">byref</span><span class="p">(</span><span class="n">C</span><span class="o">.</span><span class="n">c_int</span><span class="p">(</span><span class="n">demean</span><span class="p">)),</span>
+        <span class="n">C</span><span class="o">.</span><span class="n">byref</span><span class="p">(</span><span class="n">C</span><span class="o">.</span><span class="n">c_float</span><span class="p">(</span><span class="n">fmax</span><span class="p">)))</span>
+
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s2">&quot;frequencies&quot;</span><span class="p">:</span> <span class="n">freq</span><span class="p">,</span>
+        <span class="s2">&quot;deconvolved&quot;</span><span class="p">:</span> <span class="n">tfun</span><span class="p">,</span>
+        <span class="s2">&quot;spectral_ratio&quot;</span><span class="p">:</span> <span class="n">spec_ratio</span><span class="p">,</span>
+        <span class="s2">&quot;spectrum_a&quot;</span><span class="p">:</span> <span class="n">speci</span><span class="p">,</span>
+        <span class="s2">&quot;spectrum_b&quot;</span><span class="p">:</span> <span class="n">specj</span>
+    <span class="p">}</span></div>
+
+
 <span class="k">class</span> <span class="nc">_MtspecType</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Simple class that stores type definition for interfacing with</span>
@@ -756,6 +885,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../multitaper_mtspec.html">mtspec.mtspec</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../multitaper_sine_psd.html">mtspec.sine_psd</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../multitaper_mt_coherence.html">mtspec.mt_coherence</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../multitaper_mt_deconvolve.html">mtspec.mt_deconvolve</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../multitaper_wigner_ville_spectrum.html">mtspec.wigner_ville_spectrum</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../util.html">mtspec.util</a></li>
 </ul>

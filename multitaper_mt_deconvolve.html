@@ -1,0 +1,187 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>mtspec.mt_deconvolve &mdash; mtspec 0.3.x documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.3.x',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="mtspec 0.3.x documentation" href="index.html" />
+    <link rel="next" title="mtspec.wigner_ville_spectrum" href="multitaper_wigner_ville_spectrum.html" />
+    <link rel="prev" title="mtspec.mt_coherence" href="multitaper_mt_coherence.html" />
+    
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+    <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="mtspec-mt-deconvolve">
+<h1>mtspec.mt_deconvolve<a class="headerlink" href="#mtspec-mt-deconvolve" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="mtspec.multitaper.mt_deconvolve">
+<code class="descclassname">mtspec.multitaper.</code><code class="descname">mt_deconvolve</code><span class="sig-paren">(</span><em>data_a</em>, <em>data_b</em>, <em>delta</em>, <em>nfft=None</em>, <em>time_bandwidth=None</em>, <em>number_of_tapers=None</em>, <em>weights='adaptive'</em>, <em>demean=True</em>, <em>fmax=0.0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mtspec/multitaper.html#mt_deconvolve"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mtspec.multitaper.mt_deconvolve" title="Permalink to this definition">¶</a></dt>
+<dd><p>Deconvolve two time series using multitapers.</p>
+<p>This uses the eigencoefficients and the weights from the multitaper
+spectral estimations and more or less follows this paper:</p>
+<p><strong>Receiver Functions from Multiple-Taper Spectral Correlation Estimates</strong>
+<em>Jeffrey Park, Vadim Levin</em> <br />
+Bulletin of the Seismological Society of America Dec 2000,
+90 (6) 1507-1520
+<a class="reference external" href="http://dx.doi.org/10.1785/0119990122">http://dx.doi.org/10.1785/0119990122</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>data_a</strong> (<a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.11)"><code class="xref py py-class docutils literal"><span class="pre">numpy.ndarray</span></code></a>) &#8211; Data for first time series.</li>
+<li><strong>data_b</strong> (<a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.11)"><code class="xref py py-class docutils literal"><span class="pre">numpy.ndarray</span></code></a>) &#8211; Data for second time series.</li>
+<li><strong>delta</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#float" title="(in Python v3.5)"><em>float</em></a>) &#8211; Sample spacing of the data.</li>
+<li><strong>nfft</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#int" title="(in Python v3.5)"><em>int</em></a>) &#8211; Number of points for the FFT. If <code class="docutils literal"><span class="pre">nfft</span> <span class="pre">==</span> <span class="pre">None</span></code>, no zero
+padding will be applied before the FFT.</li>
+<li><strong>time_bandwidth</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#float" title="(in Python v3.5)"><em>float</em></a>) &#8211; Time-bandwidth product. Common values are 2, 3, 4,
+and numbers in between.</li>
+<li><strong>number_of_tapers</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#int" title="(in Python v3.5)"><em>int</em></a>) &#8211; Number of tapers to use. Defaults to
+<code class="docutils literal"><span class="pre">int(2*time_bandwidth)</span> <span class="pre">-</span> <span class="pre">1</span></code>. This is maximum senseful amount. More
+tapers will have no great influence on the final spectrum but increase
+the calculation time. Use fewer tapers for a faster calculation.</li>
+<li><strong>weights</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/stdtypes.html#str" title="(in Python v3.5)"><em>str</em></a>) &#8211; <code class="docutils literal"><span class="pre">&quot;adaptive&quot;</span></code> or <code class="docutils literal"><span class="pre">&quot;constant&quot;</span></code> weights.</li>
+<li><strong>demean</strong> &#8211; Force the complex TF to be demeaned.</li>
+<li><strong>fmax</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#float" title="(in Python v3.5)"><em>float</em></a>) &#8211; Maximum frequency for lowpass cosine filter. Set this to
+zero to not have a filter.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Returns a dictionary with 5 <a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.11)"><code class="xref py py-class docutils literal"><span class="pre">numpy.ndarray</span></code></a>&#8216;s. See the note
+below.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>Returns a dictionary with five arrays:</p>
+<ul class="last simple">
+<li><code class="docutils literal"><span class="pre">&quot;deconvolved&quot;</span></code>: Deconvolved time series.</li>
+<li><code class="docutils literal"><span class="pre">&quot;spectrum_a&quot;</span></code>: Spectrum of the first time series.</li>
+<li><code class="docutils literal"><span class="pre">&quot;spectrum_b&quot;</span></code>:  Spectrum of the second time series.</li>
+<li><code class="docutils literal"><span class="pre">&quot;spectral_ratio&quot;</span></code>: The ratio of both spectra.</li>
+<li><code class="docutils literal"><span class="pre">&quot;frequencies&quot;</span></code>: The used frequency bins for the spectra.</li>
+</ul>
+</div>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="index.html">
+    <img class="logo" src="_static/logo.svg" alt="Logo"/>
+    
+  </a>
+</p>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=krischer&repo=mtspec&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+    
+
+<p>
+<a href="https://travis-ci.org/krischer/mtspec">
+    <img
+        alt="https://secure.travis-ci.org/krischer/mtspec.svg?branch=master"
+        src="https://secure.travis-ci.org/krischer/mtspec.svg?branch=master"
+    />
+</a>
+</p>
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="tutorial.html">Tutorial</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="multitaper_dpss.html">mtspec.dpss</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multitaper_mtspec.html">mtspec.mtspec</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multitaper_sine_psd.html">mtspec.sine_psd</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multitaper_mt_coherence.html">mtspec.mt_coherence</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">mtspec.mt_deconvolve</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multitaper_wigner_ville_spectrum.html">mtspec.wigner_ville_spectrum</a></li>
+<li class="toctree-l1"><a class="reference internal" href="util.html">mtspec.util</a></li>
+</ul>
+
+
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2009-2016, Lion Krischer, Moritz Beyreuther.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
+      
+      |
+      <a href="_sources/multitaper_mt_deconvolve.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

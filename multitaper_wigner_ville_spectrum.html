@@ -25,7 +25,7 @@
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="top" title="mtspec 0.3.x documentation" href="index.html" />
     <link rel="next" title="mtspec.util" href="util.html" />
-    <link rel="prev" title="mtspec.mt_coherence" href="multitaper_mt_coherence.html" />
+    <link rel="prev" title="mtspec.mt_deconvolve" href="multitaper_mt_deconvolve.html" />
     
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
@@ -64,19 +64,19 @@ first.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>data</strong> (<em>numpy.ndarray</em>) &#8211; The input signal.</li>
-<li><strong>delta</strong> (<em>float</em>) &#8211; The sampling interval of the data.</li>
-<li><strong>time_bandwidth</strong> (<em>float</em>) &#8211; Time bandwidth product for the tapers.</li>
-<li><strong>number_of_tapers</strong> (<em>int</em>) &#8211; Number of tapers to use. If <code class="docutils literal"><span class="pre">None</span></code>, the number
+<li><strong>data</strong> (<a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.11)"><em>numpy.ndarray</em></a>) &#8211; The input signal.</li>
+<li><strong>delta</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#float" title="(in Python v3.5)"><em>float</em></a>) &#8211; The sampling interval of the data.</li>
+<li><strong>time_bandwidth</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#float" title="(in Python v3.5)"><em>float</em></a>) &#8211; Time bandwidth product for the tapers.</li>
+<li><strong>number_of_tapers</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#int" title="(in Python v3.5)"><em>int</em></a>) &#8211; Number of tapers to use. If <code class="docutils literal"><span class="pre">None</span></code>, the number
 will be automatically determined from the time bandwidth product
 which is usually the optimal choice.</li>
-<li><strong>smoothing_filter</strong> (<em>str</em>) &#8211; One of <code class="docutils literal"><span class="pre">&quot;boxcar&quot;</span></code>, <code class="docutils literal"><span class="pre">&quot;gauss&quot;</span></code> or just <code class="docutils literal"><span class="pre">None</span></code></li>
-<li><strong>filter_width</strong> (<em>int</em>) &#8211; Filter width in samples.</li>
-<li><strong>frequency_divider</strong> (<em>int</em>) &#8211; This method will always calculate all
+<li><strong>smoothing_filter</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/stdtypes.html#str" title="(in Python v3.5)"><em>str</em></a>) &#8211; One of <code class="docutils literal"><span class="pre">&quot;boxcar&quot;</span></code>, <code class="docutils literal"><span class="pre">&quot;gauss&quot;</span></code> or just <code class="docutils literal"><span class="pre">None</span></code></li>
+<li><strong>filter_width</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#int" title="(in Python v3.5)"><em>int</em></a>) &#8211; Filter width in samples.</li>
+<li><strong>frequency_divider</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#int" title="(in Python v3.5)"><em>int</em></a>) &#8211; This method will always calculate all
 frequencies from 0 ... Nyquist frequency. This parameter allows the
 adjustment of the maximum frequency, so that the frequencies range
 from 0 .. Nyquist frequency / int(frequency_divider).</li>
-<li><strong>verbose</strong> (<em>bool</em>) &#8211; Verbose output on/off.</li>
+<li><strong>verbose</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#bool" title="(in Python v3.5)"><em>bool</em></a>) &#8211; Verbose output on/off.</li>
 </ul>
 </td>
 </tr>
@@ -179,6 +179,7 @@ is sinusoidal overlaid with two simple linear chirps.</p>
 <li class="toctree-l1"><a class="reference internal" href="multitaper_mtspec.html">mtspec.mtspec</a></li>
 <li class="toctree-l1"><a class="reference internal" href="multitaper_sine_psd.html">mtspec.sine_psd</a></li>
 <li class="toctree-l1"><a class="reference internal" href="multitaper_mt_coherence.html">mtspec.mt_coherence</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multitaper_mt_deconvolve.html">mtspec.mt_deconvolve</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">mtspec.wigner_ville_spectrum</a></li>
 <li class="toctree-l1"><a class="reference internal" href="util.html">mtspec.util</a></li>
 </ul>
