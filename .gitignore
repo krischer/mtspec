@@ -3,4 +3,4 @@ mtspec.egg-info
 mtspec/lib/*.so
 mtspec/tests/output/*
 doc/html_doc
-
+.cache
