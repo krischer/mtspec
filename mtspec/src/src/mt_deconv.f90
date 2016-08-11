@@ -161,7 +161,7 @@ subroutine mt_deconv( &
     spec_ratio = sqrt(si/sj)
 
     !  Apply a cos^2 filter before
-    if (fmax > 1) then
+    if (fmax > 0) then
         if (fmax < f(nf) .and. fmax > f(2) ) then
             print *, 'Filter'
             do i = 1,nf

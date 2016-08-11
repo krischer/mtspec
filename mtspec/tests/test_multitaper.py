@@ -381,6 +381,47 @@ class MtSpecTestCase(unittest.TestCase):
         np.testing.assert_allclose(r["deconvolved"][:1000], test_data,
                                    rtol=1E-5)
 
+    def test_mt_deconvolve_settings(self):
+        """
+        A bit of dummy test that just assures that all the settings actually do
+        something.
+        """
+        np.random.seed(12345)
+        x_a = np.random.random(1000)
+        x_b = np.random.random(1000)
+
+        r1 = mt_deconvolve(data_a=x_a, data_b=x_b, delta=1.0,
+                           time_bandwidth=4.0, number_of_tapers=7.0,
+                           demean=False, weights="constant", fmax=0.0)
+
+        r2 = mt_deconvolve(data_a=x_a, data_b=x_b, delta=1.0,
+                           time_bandwidth=4.0, number_of_tapers=7.0,
+                           demean=True, weights="constant", fmax=0.0)
+
+        r3 = mt_deconvolve(data_a=x_a, data_b=x_b, delta=1.0,
+                           time_bandwidth=4.0, number_of_tapers=7.0,
+                           demean=False, weights="adaptive", fmax=0.0)
+
+        r4 = mt_deconvolve(data_a=x_a, data_b=x_b, delta=1.0,
+                           time_bandwidth=4.0, number_of_tapers=7.0,
+                           demean=False, weights="constant", fmax=0.02)
+
+        # r5 is the same as r1 - just to make sure.
+        r5 = mt_deconvolve(data_a=x_a, data_b=x_b, delta=1.0,
+                           time_bandwidth=4.0, number_of_tapers=7.0,
+                           demean=False, weights="constant", fmax=0.0)
+
+        np.testing.assert_array_equal(r1["deconvolved"], r5["deconvolved"])
+
+        with self.assertRaises(AssertionError):
+            np.testing.assert_array_equal(r1["deconvolved"], r2["deconvolved"])
+
+        with self.assertRaises(AssertionError):
+            np.testing.assert_array_equal(r1["deconvolved"], r3["deconvolved"])
+
+        with self.assertRaises(AssertionError):
+            np.testing.assert_array_equal(r1["deconvolved"], r4["deconvolved"])
+
 
 def rms(x, y):
     """
