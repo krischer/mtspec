@@ -14,6 +14,10 @@ http://krischer.github.io/mtspec/.
 
 ::
 
+    Main Changes in 0.3.2 (August 11, 2016)
+    ---------------------------------------
+    * Added wrapper for the multitaper deconvolution function.
+
     Main Changes in 0.3.1 (July 26, 2016)
     -------------------------------------
     * Flake8 and matplotlib are no longer hard test dependencies.
