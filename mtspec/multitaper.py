@@ -617,37 +617,52 @@ def mt_coherence(df, xi, xj, tbp, kspec, nf, p, **kwargs):
     return dict([(k, v) for k, v in kwargs.items() if v is not None])
 
 
-def mt_deconv(xi, xj, delta, nfft=None, time_bandwidth=None,
-              number_of_tapers=None, optional_output=False, **kwargs):
+def mt_deconv(data_a, data_b, delta, nfft=None, time_bandwidth=None,
+              number_of_tapers=None, weights="adaptive", demean=True,
+              fmax=0.0):
     """
-    Construct the deconvolution of the 2 traces
+    Deconvolve two time series using multitapers.
 
-    INPUT
+    This uses the eigencoefficients and the weights from the multitaper
+    spectral estimations and more or less follows this paper:
 
-    :param xi: :class:`numpy.ndarray`; data for first series
-    :param xj: :class:`numpy.ndarray`; data for second series
-    :param delta: float
-         Sample spacing of the data.
+    .. |br| raw:: html
 
-    :param nfft: int
-         Number of points for fft. If nfft == None, no zero padding
-         will be applied before the fft
-    :param time_bandwidth: float
-         Time-bandwidth product. Common values are 2, 3, 4 and numbers in
-         between.
+        <br />
 
-    :param number_of_tapers: integer, optional
-         Number of tapers to use. Defaults to int(2*time_bandwidth) - 1. This
-         is maximum senseful amount. More tapers will have no great influence
-         on the final spectrum but increase the calculation time. Use fewer
-         tapers for a faster calculation.
+    **Receiver Functions from Multiple-Taper Spectral Correlation Estimates**
+    *Jeffrey Park, Vadim Levin* |br|
+    Bulletin of the Seismological Society of America Dec 2000,
+    90 (6) 1507-1520
+    http://dx.doi.org/10.1785/0119990122
 
-    :param iadapt: int, optional; 0 - adaptive, 1 - constant weights
-    :param demean: bool, optional; if True, force complex TF to be demeaned.
-    :param fmax: float, optional;	maximum frequency for lowpass cosine filter
+    :type data_a: :class:`numpy.ndarray`
+    :param data_a: Data for first time series.
+    :type data_b: :class:`numpy.ndarray`
+    :param data_b: Data for second time series.
+    :type delta: float
+    :param delta: Sample spacing of the data.
+    :type nfft: int
+    :param nfft: Number of points for the FFT. If ``nfft == None``, no zero
+        padding will be applied before the FFT.
+    :type time_bandwidth: float
+    :param time_bandwidth: Time-bandwidth product. Common values are 2, 3, 4,
+        and numbers in between.
+    :type number_of_tapers: int
+    :param number_of_tapers: Number of tapers to use. Defaults to
+        ``int(2*time_bandwidth) - 1``. This is maximum senseful amount. More
+        tapers will have no great influence on the final spectrum but increase
+        the calculation time. Use fewer tapers for a faster calculation.
+    :type weights: str
+    :param weights: ``"adaptive"`` or ``"constant"`` weights.
+    :type deman: bool
+    :param demean: Force the complex TF to be demeaned.
+    :type fmax: float
+    :param fmax: Maximum frequency for lowpass cosine filter. Set this to
+        zero to not have a filter.
 
-
-    :return: Returns a list with :class:`numpy.ndarray`. See the note below.
+    :return: Returns a dictionary with :class:`numpy.ndarray`. See the note
+        below.
 
     .. note::
 
@@ -658,13 +673,17 @@ def mt_deconv(xi, xj, delta, nfft=None, time_bandwidth=None,
         second series.
 
     """
-    npts = len(xi)
-    if len(xj) != npts:
-        raise Exception("Input ndarrays have mismatching length")
+    npts = len(data_a)
+    if len(data_b) != npts:
+        raise ValueError("Input arrays must have the same length!")
 
-    if nfft is None or nfft == npts:
+    if nfft is None:
         nfft = npts
+    elif nfft < npts:
+        raise ValueError("nfft must be larger then the number of samples in "
+                         "the array.")
 
+    # Deconvolution utilizes the 32bit version.
     mt = _MtspecType("float32")
 
     # Use the optimal number of tapers in case no number is specified.
@@ -672,44 +691,57 @@ def mt_deconv(xi, xj, delta, nfft=None, time_bandwidth=None,
         number_of_tapers = int(2 * time_bandwidth) - 1
 
     # Transform the data to work with the library.
-    xi = np.require(xi, mt.float, requirements=[mt.order])
-    xj = np.require(xj, mt.float, requirements=[mt.order])
-    # Get some information necessary for the call to the Fortran library.
+    data_a = np.require(data_a, mt.float, requirements=[mt.order])
+    data_b = np.require(data_b, mt.float, requirements=[mt.order])
+
     nf = nfft // 2 + 1
 
-    # fill up optional arguments, if not given set them None
-    args = []
-    for key in ('freq', 'tfun', 'spec_ratio', 'speci', 'specj', 'iadapt',
-                'demean', 'fmax'):
-        kwargs.setdefault(key, None)
-        if key in ('iadapt', 'demean') and kwargs[key]:
-            args.append(C.byref(C.c_int(kwargs[key])))
-        elif key in ('fmax') and kwargs[key]:
-            args.append(C.byref(C.c_float(kwargs[key])))
-        elif key == 'tfun':
-            kwargs[key] = mt.empty(nfft)
-            args.append(mt.p(kwargs[key]))
-        elif key in ('freq', 'spec_ratio', 'speci', 'specj'):
-            kwargs[key] = mt.empty(nf)
-            args.append(mt.p(kwargs[key]))
-        else:
-            args.append(kwargs[key])
+    # Internally uses integers
+    if demean:
+        demean = 1
+    else:
+        demean = 0
 
-    mtspeclib.mt_deconv_(C.byref(C.c_int(int(npts))),
-                         C.byref(C.c_int(int(nfft))),
-                         C.byref(C.c_float(float(delta))),
-                         mt.p(xi), mt.p(xj),
-                         C.byref(C.c_float(float(time_bandwidth))),
-                         C.byref(C.c_int(int(number_of_tapers))),
-                         C.byref(C.c_int(int(nf))),
-                         *args)
+    # iad = 0 are adaptive, iad = 1 are constant weight - this is
+    # counter intuitive.
+    if weights == "constant":
+        adaptive = 1
+    elif weights == "adaptive":
+        adaptive = 0
+    else:
+        raise ValueError('Weights must be either "adaptive" or "constant".')
 
-    return_values = [kwargs['tfun'], kwargs['freq']]
-    if optional_output is True:
-        return_values.extend([kwargs['spec_ratio'], kwargs['speci'],
-                              kwargs['specj']])
+    tfun = mt.empty(nfft)
+    freq = mt.empty(nf)
+    spec_ratio = mt.empty(nf)
+    speci = mt.empty(nf)
+    specj = mt.empty(nf)
 
-    return return_values
+    mtspeclib.mt_deconv_(
+        C.byref(C.c_int(int(npts))),
+        C.byref(C.c_int(int(nfft))),
+        C.byref(C.c_float(float(delta))),
+        mt.p(data_a),
+        mt.p(data_b),
+        C.byref(C.c_float(float(time_bandwidth))),
+        C.byref(C.c_int(int(number_of_tapers))),
+        C.byref(C.c_int(int(nf))),
+        C.byref(C.c_int(adaptive)),
+        mt.p(freq),
+        mt.p(tfun),
+        mt.p(spec_ratio),
+        mt.p(speci),
+        mt.p(specj),
+        C.byref(C.c_int(demean)),
+        C.byref(C.c_float(fmax)))
+
+    return {
+        "frequencies": freq,
+        "deconvolved": tfun,
+        "spectral_ratio": speci,
+        "spectrum_a": speci,
+        "spectrum_b": specj
+    }
 
 
 class _MtspecType(object):

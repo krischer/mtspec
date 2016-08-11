@@ -361,33 +361,25 @@ class MtSpecTestCase(unittest.TestCase):
 
     def test_mt_deconv(self):
         """
-        Deconvolution test case
+        Deconvolution test case.
         """
-        datafile = os.path.join(
-            os.path.dirname(__file__), 'data', 'mt_deconv.npz')
-        prieto_deconv = np.load(datafile)['prieto_deconv']
-
-        sampling_rate = 1.0
-        time_bandwidth = 4.0
-        number_of_tapers = 7
-
         pasc = _load_mtdata('PASC.dat.gz')
         ado = _load_mtdata('ADO.dat.gz')
 
-        pasc -= pasc.mean()
-        ado -= ado.mean()
+        # Created with the example programs shipping with the fortran code.
+        test_data = _load_mtdata("noise_deconv_first_1000_numbers.dat.gz").T[1]
 
-        npts = len(pasc)
+        # Make sure the settings are the same as in the mtspec example.
+        r = mt_deconv(data_a=pasc, data_b=ado, delta=1.0,
+                      time_bandwidth=4.0,
+                      number_of_tapers=7.0,
+                      nfft=172800,
+                      demean=False,
+                      weights="adaptive",
+                      fmax=0.5)
 
-        deconvolved, freq = mt_deconv(pasc, ado, sampling_rate,
-                                      time_bandwidth=time_bandwidth,
-                                      number_of_tapers=number_of_tapers,
-                                      nfft=npts,
-                                      demean=1, iadapt=0)
-        p_deconv = deconvolved[-500:][::-1]
-
-        np.testing.assert_almost_equal(prieto_deconv[20:40],
-                                       p_deconv[20:40], 5)
+        np.testing.assert_allclose(r["deconvolved"][:1000], test_data,
+                                   rtol=1E-5)
 
 
 def rms(x, y):
