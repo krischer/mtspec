@@ -379,7 +379,7 @@ class MtSpecTestCase(unittest.TestCase):
                           fmax=0.5)
 
         np.testing.assert_allclose(r["deconvolved"][:1000], test_data,
-                                   rtol=1E-5)
+                                   rtol=1E-4)
 
     def test_mt_deconvolve_settings(self):
         """
