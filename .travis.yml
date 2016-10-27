@@ -27,8 +27,8 @@ before_install:
   - sudo rm -rf /dev/shm
   - sudo ln -s /run/shm /dev/shm
   - conda install --yes numpy python=$TRAVIS_PYTHON_VERSION
-  # Matplotlib is only required for the documentation - only Python 3.5 builds that.
-  - if [[ $TRAVIS_PYTHON_VERSION == '3.5' ]]; then conda install --yes matplotlib scipy sphinx ; fi
+  # Matplotlib + ObsPy is only required for the documentation - only Python 3.5 builds that.
+  - if [[ $TRAVIS_PYTHON_VERSION == '3.5' ]]; then conda install -c conda-forge --yes matplotlib scipy sphinx obspy; fi
   - if [[ $TRAVIS_PYTHON_VERSION == '3.5' ]]; then pip install alabaster ; fi
   - pip install flake8  # Make sure this is up-to-date (don't use conda).
   - pip install coveralls
