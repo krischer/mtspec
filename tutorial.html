@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Tutorial &mdash; mtspec 0.3.x documentation</title>
+    <title>Tutorial &#8212; mtspec 0.3.x documentation</title>
     
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -23,12 +23,15 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
     <link rel="top" title="mtspec 0.3.x documentation" href="index.html" />
     <link rel="next" title="mtspec.dpss" href="multitaper_dpss.html" />
     <link rel="prev" title="mtspec" href="index.html" />
     
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
@@ -62,6 +65,7 @@ paper (<a class="reference external" href="http://dx.doi.org/10.1016/j.cageo.200
 </li>
 <li><a class="reference internal" href="#multitaper-coherence-example" id="id7">Multitaper coherence example</a></li>
 <li><a class="reference internal" href="#fig-6-deconvolution" id="id8">Fig. 6: Deconvolution</a></li>
+<li><a class="reference internal" href="#multitaper-deconvolution-for-earthquake-source-studies" id="id9">Multitaper deconvolution for earthquake source studies</a></li>
 </ul>
 </div>
 <div class="section" id="fig-1-multitaper-spectrum-estimate-with-confidence-intervals">
@@ -466,6 +470,92 @@ documentation: <a class="reference internal" href="multitaper_mt_coherence.html#
 </pre></div>
 </div>
 </div>
+<div class="section" id="multitaper-deconvolution-for-earthquake-source-studies">
+<h2><a class="toc-backref" href="#id9">Multitaper deconvolution for earthquake source studies</a><a class="headerlink" href="#multitaper-deconvolution-for-earthquake-source-studies" title="Permalink to this headline">¶</a></h2>
+<p>This example shows how to compute the relative source time function of a target
+event using the empirical Green&#8217;s function approach with the
+<a class="reference internal" href="multitaper_mt_deconvolve.html#mtspec.multitaper.mt_deconvolve" title="mtspec.multitaper.mt_deconvolve"><code class="xref py py-func docutils literal"><span class="pre">mt_deconvolve()</span></code></a> function.</p>
+<p>It utilizes the <a class="reference external" href="https://obspy.org">ObsPy library</a> to read and filter the
+seismological example data but it is not required for using <code class="docutils literal"><span class="pre">mtspec</span></code>.</p>
+<p>(<a class="reference external" href="./snippets/empirical_green_function.py">Source code</a>, <a class="reference external" href="./snippets/empirical_green_function.png">png</a>, <a class="reference external" href="./snippets/empirical_green_function.hires.png">hires.png</a>, <a class="reference external" href="./snippets/empirical_green_function.pdf">pdf</a>)</p>
+<div class="figure">
+<img alt="_images/empirical_green_function.png" src="_images/empirical_green_function.png" />
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">obspy</span>
+<span class="kn">from</span> <span class="nn">obspy.signal.filter</span> <span class="kn">import</span> <span class="n">lowpass</span>
+
+<span class="kn">from</span> <span class="nn">mtspec</span> <span class="kn">import</span> <span class="n">mt_deconvolve</span><span class="p">,</span> <span class="n">mtspec</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">&#39;ggplot&#39;</span><span class="p">)</span>
+
+<span class="c1"># Read the data</span>
+<span class="n">main_data</span> <span class="o">=</span> <span class="n">obspy</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s1">&#39;data/main.sac&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">egf</span> <span class="o">=</span> <span class="n">obspy</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s1">&#39;data/egf.sac&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="n">sr</span> <span class="o">=</span> <span class="n">main_data</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">sampling_rate</span>
+<span class="n">dt</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">sr</span>
+
+<span class="n">r</span> <span class="o">=</span> <span class="n">mt_deconvolve</span><span class="p">(</span><span class="n">main_data</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">egf</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span>
+                  <span class="n">nfft</span><span class="o">=</span><span class="n">main_data</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">npts</span><span class="p">,</span>
+                  <span class="n">time_bandwidth</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">number_of_tapers</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span>
+                  <span class="n">weights</span><span class="o">=</span><span class="s1">&#39;constant&#39;</span><span class="p">,</span> <span class="n">demean</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+<span class="n">decon</span> <span class="o">=</span> <span class="n">r</span><span class="p">[</span><span class="s1">&#39;deconvolved&#39;</span><span class="p">]</span>
+<span class="n">freq</span> <span class="o">=</span> <span class="n">r</span><span class="p">[</span><span class="s1">&#39;frequencies&#39;</span><span class="p">]</span>
+
+<span class="c1"># Time vector for RSTF.</span>
+<span class="n">time</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">decon</span><span class="p">))</span><span class="o">*</span><span class="n">dt</span>
+
+<span class="n">M</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">decon</span><span class="p">))</span>
+<span class="n">N</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">M</span><span class="p">)</span>
+
+<span class="n">SeD</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">logical_and</span><span class="p">(</span><span class="n">M</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">M</span> <span class="o">&lt;=</span> <span class="n">N</span> <span class="o">/</span> <span class="mi">2</span><span class="p">))</span>
+<span class="n">d1</span> <span class="o">=</span> <span class="n">decon</span><span class="p">[</span><span class="n">SeD</span><span class="p">]</span>
+
+<span class="n">SeD2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">logical_and</span><span class="p">(</span><span class="n">M</span> <span class="o">&gt;</span> <span class="n">N</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">M</span> <span class="o">&lt;=</span> <span class="n">N</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+<span class="n">d2</span> <span class="o">=</span> <span class="n">decon</span><span class="p">[</span><span class="n">SeD2</span><span class="p">]</span>
+
+<span class="c1"># Relative source time function</span>
+<span class="n">stf</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">d2</span><span class="p">,</span> <span class="n">d1</span><span class="p">))</span>
+
+<span class="c1"># Cleaning the rSTF from high frequency noise</span>
+<span class="n">stf</span> <span class="o">=</span> <span class="n">lowpass</span><span class="p">(</span><span class="n">stf</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="n">sr</span><span class="p">,</span> <span class="n">corners</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">zerophase</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">stf</span> <span class="o">/=</span> <span class="n">stf</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+
+<span class="c1"># Fourier Transform of the rSTF</span>
+<span class="n">Cspec</span><span class="p">,</span> <span class="n">Cfreq</span> <span class="o">=</span> <span class="n">mtspec</span><span class="p">(</span><span class="n">stf</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="n">dt</span><span class="p">,</span> <span class="n">time_bandwidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+                      <span class="n">number_of_tapers</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+
+<span class="n">m</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">Cspec</span><span class="p">)</span>
+<span class="n">Cspec</span> <span class="o">=</span> <span class="n">Cspec</span><span class="p">[:</span><span class="n">m</span> <span class="o">//</span> <span class="mi">2</span><span class="p">]</span>
+<span class="n">Cfreq</span> <span class="o">=</span> <span class="n">Cfreq</span><span class="p">[:</span><span class="n">m</span> <span class="o">//</span> <span class="mi">2</span><span class="p">]</span>
+
+<span class="c1"># Creating figure</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">ax1</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">211</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">loglog</span><span class="p">(</span><span class="n">Cfreq</span><span class="p">,</span> <span class="n">Cspec</span><span class="p">,</span> <span class="s1">&#39;0.1&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.7</span><span class="p">,</span>
+           <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Spectral ratio&#39;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Frequency [Hz]&quot;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Amplitude&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="bp">True</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="s2">&quot;both&quot;</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;grey&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+
+<span class="n">ax2</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">212</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="n">stf</span><span class="p">,</span> <span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span>
+         <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Source Time function&#39;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="n">stf</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;green&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Time [s]&quot;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
 </div>
 
 
@@ -525,8 +615,8 @@ documentation: <a class="reference internal" href="multitaper_mt_coherence.html#
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
@@ -540,8 +630,8 @@ documentation: <a class="reference internal" href="multitaper_mt_coherence.html#
       &copy;2009-2016, Lion Krischer, Moritz Beyreuther.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.1</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.8</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
       
       |
       <a href="_sources/tutorial.txt"
