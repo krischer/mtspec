@@ -121,8 +121,12 @@ Demonstrates the deconvolution of two time series. See the
 Multitaper deconvolution for earthquake source studies
 ------------------------------------------------------
 
-Compute the relative source time function of a target event using the empirical
-Green's function approach: :func:`mtspec.multitaper.mt_deconvolve`.
+This example shows how to compute the relative source time function of a target
+event using the empirical Green's function approach with the
+:func:`~mtspec.multitaper.mt_deconvolve` function.
+
+It utilizes the `ObsPy library <https://obspy.org>`_ to read and filter the
+seismological example data but it is not required for using ``mtspec``.
 
 .. plot:: snippets/empirical_green_function.py
 
