@@ -1,6 +1,8 @@
 # mtspec - Multitaper Spectral Estimation
 
-[![Build Status](https://travis-ci.org/krischer/mtspec.svg?branch=master)](https://travis-ci.org/krischer/mtspec) [![Anaconda-Server Badge](https://anaconda.org/conda-forge/mtspec/badges/version.svg)](https://anaconda.org/conda-forge/mtspec) [![PyPI Version](https://img.shields.io/pypi/v/mtspec.svg)](https://pypi.python.org/pypi/mtspec) [![Supported Python versions](https://img.shields.io/pypi/pyversions/mtspec.svg)](https://pypi.python.org/pypi/mtspec/) [![License](https://img.shields.io/pypi/l/mtspec.svg)](https://pypi.python.org/pypi/mtspec/)
+[![Build Status](https://travis-ci.org/krischer/mtspec.svg?branch=master)](https://travis-ci.org/krischer/mtspec) [![Anaconda-Server Badge](https://anaconda.org/conda-forge/mtspec/badges/version.svg)](https://anaconda.org/conda-forge/mtspec) [![PyPI Version](https://img.shields.io/pypi/v/mtspec.svg)](https://pypi.python.org/pypi/mtspec) [![Supported Python versions](https://img.shields.io/pypi/pyversions/mtspec.svg)](https://pypi.python.org/pypi/mtspec/) [![License](https://img.shields.io/pypi/l/mtspec.svg)](https://pypi.python.org/pypi/mtspec/) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.321789.svg)](https://doi.org/10.5281/zenodo.321789)
+
+
 
 [Documentation](http://krischer.github.io/mtspec/)
 
