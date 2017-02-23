@@ -20,7 +20,7 @@ distributions, and construct coherence spectra with multitapers.
 It currently wraps version 3.1 of the library. This is mainly due to later
 versions using FFTW which would introduce an additional dependency.
 
-If you use the Python wrapper please consider citing it as (http://doi.org/10.5281/zenodo.321789):
+If you use the Python wrapper please consider citing it as (http://doi.org/10.5281/zenodo.321789) ::
 
     Lion Krischer. (2016). mtspec Python wrappers 0.3.2 [Data set].
     Zenodo.
