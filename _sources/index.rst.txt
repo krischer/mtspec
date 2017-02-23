@@ -11,7 +11,7 @@ by Germán Prieto. The relevant publication is ::
     Prieto, G. A., R. L. Parker, F. L. Vernon. (2009),
     A Fortran 90 library for multitaper spectrum analysis,
     Computers and Geosciences, 35, pp. 1701-1710.
-    doi:10.1016/ j.cageo.2008.06.007
+    doi:10.1016/j.cageo.2008.06.007
 
 It enables you to calculate Slepian windows, perform multitaper spectral
 estimations with various options, calculate Wigner-Ville time-frequency
@@ -19,6 +19,12 @@ distributions, and construct coherence spectra with multitapers.
 
 It currently wraps version 3.1 of the library. This is mainly due to later
 versions using FFTW which would introduce an additional dependency.
+
+If you use the Python wrapper please consider citing it as (http://doi.org/10.5281/zenodo.321789):
+
+    Lion Krischer. (2016). mtspec Python wrappers 0.3.2 [Data set].
+    Zenodo.
+    doi:10.5281/zenodo.321789
 
 
 Getting Started and Documentation
