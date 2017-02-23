@@ -17,7 +17,8 @@
         VERSION:     '0.3.x',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
       };
     </script>
     <script type="text/javascript" src="_static/jquery.js"></script>
@@ -25,7 +26,6 @@
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="top" title="mtspec 0.3.x documentation" href="index.html" />
     <link rel="next" title="mtspec.util" href="util.html" />
     <link rel="prev" title="mtspec.mt_deconvolve" href="multitaper_mt_deconvolve.html" />
     
@@ -67,7 +67,7 @@ first.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>data</strong> (<a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.11)"><em>numpy.ndarray</em></a>) &#8211; The input signal.</li>
+<li><strong>data</strong> (<a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.12)"><em>numpy.ndarray</em></a>) &#8211; The input signal.</li>
 <li><strong>delta</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#float" title="(in Python v3.5)"><em>float</em></a>) &#8211; The sampling interval of the data.</li>
 <li><strong>time_bandwidth</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#float" title="(in Python v3.5)"><em>float</em></a>) &#8211; Time bandwidth product for the tapers.</li>
 <li><strong>number_of_tapers</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#int" title="(in Python v3.5)"><em>int</em></a>) &#8211; Number of tapers to use. If <code class="docutils literal"><span class="pre">None</span></code>, the number
@@ -206,11 +206,11 @@ is sinusoidal overlaid with two simple linear chirps.</p>
       &copy;2009-2016, Lion Krischer, Moritz Beyreuther.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.8</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.5.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
       
       |
-      <a href="_sources/multitaper_wigner_ville_spectrum.txt"
+      <a href="_sources/multitaper_wigner_ville_spectrum.rst.txt"
           rel="nofollow">Page source</a>
     </div>
 

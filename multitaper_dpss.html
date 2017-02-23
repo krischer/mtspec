@@ -17,7 +17,8 @@
         VERSION:     '0.3.x',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
       };
     </script>
     <script type="text/javascript" src="_static/jquery.js"></script>
@@ -25,7 +26,6 @@
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="top" title="mtspec 0.3.x documentation" href="index.html" />
     <link rel="next" title="mtspec.mtspec" href="multitaper_mtspec.html" />
     <link rel="prev" title="Tutorial" href="tutorial.html" />
     
@@ -73,7 +73,7 @@ the Toeplitz matrix, eq. 18.</p>
 <li><strong>number_of_tapers</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#int" title="(in Python v3.5)"><em>int</em></a>) &#8211; The desired number of tapers.</li>
 <li><strong>auto_spline</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#bool" title="(in Python v3.5)"><em>bool</em></a>) &#8211; Whether or not to automatically use spline
 interpolation for <code class="docutils literal"><span class="pre">npts</span></code> &gt; 200000.</li>
-<li><strong>npts_max</strong> (<em>None or int</em>) &#8211; The number of actual points to calculate the DPSS. If this
+<li><strong>npts_max</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/constants.html#None" title="(in Python v3.5)"><em>None</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3.5/library/functions.html#int" title="(in Python v3.5)"><em>int</em></a>) &#8211; The number of actual points to calculate the DPSS. If this
 number is smaller than <code class="docutils literal"><span class="pre">npts</span></code>, spline interpolation will be
 performed, regardless of the value of <code class="docutils literal"><span class="pre">auto_spline</span></code>.</li>
 </ul>
@@ -176,11 +176,11 @@ eigenvalues of the <code class="docutils literal"><span class="pre">v</span></co
       &copy;2009-2016, Lion Krischer, Moritz Beyreuther.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.8</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.5.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
       
       |
-      <a href="_sources/multitaper_dpss.txt"
+      <a href="_sources/multitaper_dpss.rst.txt"
           rel="nofollow">Page source</a>
     </div>
 
