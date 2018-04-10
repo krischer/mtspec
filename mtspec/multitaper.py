@@ -30,7 +30,8 @@ def mtspec(data, delta, time_bandwidth, nfft=None, number_of_tapers=None,
     This method estimates the adaptive weighted multitaper spectrum, as in
     Thomson 1982.  This is done by estimating the DPSS (discrete prolate
     spheroidal sequences), multiplying each of the tapers with the data series,
-    take the FFT, and using the adaptive scheme for a better estimation.
+    take the FFT, and using the adaptive scheme for a better estimation. It
+    outputs the power spectral density (PSD).
 
     :param data: :class:`numpy.ndarray`
          Array with the data.
@@ -186,7 +187,9 @@ def sine_psd(data, delta, number_of_tapers=None, number_of_iterations=2,
     Prieto.
 
     The subroutine is in charge of estimating the adaptive sine multitaper as
-    in Riedel and Sidorenko (1995).
+    in Riedel and Sidorenko (1995). It outputs the power spectral density
+    (PSD).
+
     This is done by performing a MSE adaptive estimation. First a pilot
     spectral estimate is used, and S" is estimated, in order to get te number
     of tapers to use, using (13) of Riedel and Sidorenko for a min square error
