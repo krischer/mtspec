@@ -1,26 +1,15 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
     <title>mtspec &#8212; mtspec 0.3.x documentation</title>
-    
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    './',
-        VERSION:     '0.3.x',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" src="_static/documentation_options.js"></script>
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
@@ -36,8 +25,7 @@
 
     <link rel="stylesheet" href="_static/custom.css" type="text/css" />
 
-  </head>
-  <body role="document">
+  </head><body>
   
 
     <div class="document">
@@ -52,7 +40,7 @@
 <p><strong>mtspec</strong> is a Python wrapper for the
 <a class="reference external" href="http://wwwprof.uniandes.edu.co/~gprieto/software/mwlib.html">Multitaper Spectrum Estimation Library</a>
 by Germán Prieto. The relevant publication is</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">Prieto</span><span class="p">,</span> <span class="n">G</span><span class="o">.</span> <span class="n">A</span><span class="o">.</span><span class="p">,</span> <span class="n">R</span><span class="o">.</span> <span class="n">L</span><span class="o">.</span> <span class="n">Parker</span><span class="p">,</span> <span class="n">F</span><span class="o">.</span> <span class="n">L</span><span class="o">.</span> <span class="n">Vernon</span><span class="o">.</span> <span class="p">(</span><span class="mi">2009</span><span class="p">),</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Prieto</span><span class="p">,</span> <span class="n">G</span><span class="o">.</span> <span class="n">A</span><span class="o">.</span><span class="p">,</span> <span class="n">R</span><span class="o">.</span> <span class="n">L</span><span class="o">.</span> <span class="n">Parker</span><span class="p">,</span> <span class="n">F</span><span class="o">.</span> <span class="n">L</span><span class="o">.</span> <span class="n">Vernon</span><span class="o">.</span> <span class="p">(</span><span class="mi">2009</span><span class="p">),</span>
 <span class="n">A</span> <span class="n">Fortran</span> <span class="mi">90</span> <span class="n">library</span> <span class="k">for</span> <span class="n">multitaper</span> <span class="n">spectrum</span> <span class="n">analysis</span><span class="p">,</span>
 <span class="n">Computers</span> <span class="ow">and</span> <span class="n">Geosciences</span><span class="p">,</span> <span class="mi">35</span><span class="p">,</span> <span class="n">pp</span><span class="o">.</span> <span class="mi">1701</span><span class="o">-</span><span class="mf">1710.</span>
 <span class="n">doi</span><span class="p">:</span><span class="mf">10.1016</span><span class="o">/</span><span class="n">j</span><span class="o">.</span><span class="n">cageo</span><span class="o">.</span><span class="mf">2008.06</span><span class="o">.</span><span class="mi">007</span>
@@ -64,7 +52,7 @@ distributions, and construct coherence spectra with multitapers.</p>
 <p>It currently wraps version 3.1 of the library. This is mainly due to later
 versions using FFTW which would introduce an additional dependency.</p>
 <p>If you use the Python wrapper please consider citing it as (<a class="reference external" href="http://doi.org/10.5281/zenodo.321789">http://doi.org/10.5281/zenodo.321789</a>)</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">Lion</span> <span class="n">Krischer</span><span class="o">.</span> <span class="p">(</span><span class="mi">2016</span><span class="p">)</span><span class="o">.</span> <span class="n">mtspec</span> <span class="n">Python</span> <span class="n">wrappers</span> <span class="mf">0.3</span><span class="o">.</span><span class="mi">2</span> <span class="p">[</span><span class="n">Data</span> <span class="nb">set</span><span class="p">]</span><span class="o">.</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Lion</span> <span class="n">Krischer</span><span class="o">.</span> <span class="p">(</span><span class="mi">2016</span><span class="p">)</span><span class="o">.</span> <span class="n">mtspec</span> <span class="n">Python</span> <span class="n">wrappers</span> <span class="mf">0.3</span><span class="o">.</span><span class="mi">2</span> <span class="p">[</span><span class="n">Data</span> <span class="nb">set</span><span class="p">]</span><span class="o">.</span>
 <span class="n">Zenodo</span><span class="o">.</span>
 <span class="n">doi</span><span class="p">:</span><span class="mf">10.5281</span><span class="o">/</span><span class="n">zenodo</span><span class="o">.</span><span class="mi">321789</span>
 </pre></div>
@@ -83,9 +71,9 @@ versions using FFTW which would introduce an additional dependency.</p>
 <h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="easy-way">
 <h3>Easy Way<a class="headerlink" href="#easy-way" title="Permalink to this headline">¶</a></h3>
-<p>The simplest way to install <code class="docutils literal"><span class="pre">mtspec</span></code> is to download
+<p>The simplest way to install <code class="docutils literal notranslate"><span class="pre">mtspec</span></code> is to download
 <a class="reference external" href="https://www.continuum.io/why-anaconda">(Ana)conda</a>, install it, and run:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span></span>$ conda config --add channels conda-forge
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ conda config --add channels conda-forge
 $ conda install mtspec
 </pre></div>
 </div>
@@ -98,25 +86,25 @@ the installation instructions are for custom installations.</p>
 mainly a question of compiling the shared Fortran libraries - pull requests are
 welcome.</p>
 <ul class="simple">
-<li><code class="docutils literal"><span class="pre">gfortran</span> <span class="pre">&gt;=</span> <span class="pre">4.7</span></code></li>
-<li><code class="docutils literal"><span class="pre">Python</span> <span class="pre">2.7,</span> <span class="pre">3.3,</span> <span class="pre">3.4,</span> <span class="pre">or</span> <span class="pre">3.5</span></code></li>
-<li><code class="docutils literal"><span class="pre">NumPy</span> <span class="pre">&gt;=</span> <span class="pre">1.7</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">gfortran</span> <span class="pre">&gt;=</span> <span class="pre">4.7</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">Python</span> <span class="pre">2.7,</span> <span class="pre">3.3,</span> <span class="pre">3.4,</span> <span class="pre">or</span> <span class="pre">3.5</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">NumPy</span> <span class="pre">&gt;=</span> <span class="pre">1.7</span></code></li>
 </ul>
 <div class="section" id="fortran-compiler">
 <h4>Fortran Compiler<a class="headerlink" href="#fortran-compiler" title="Permalink to this headline">¶</a></h4>
-<p>If you don&#8217;t have <code class="docutils literal"><span class="pre">gfortran</span></code>, please install it (on Linux) with</p>
-<div class="highlight-bash"><div class="highlight"><pre><span></span>$ sudo apt-get install gfortran
+<p>If you don’t have <code class="docutils literal notranslate"><span class="pre">gfortran</span></code>, please install it (on Linux) with</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ sudo apt-get install gfortran
 </pre></div>
 </div>
 <p>or the equivalent of your distribution. On OSX we recommend to install
-<a class="reference external" href="http://brew.sh/">Homebrew</a> and then use it to install <code class="docutils literal"><span class="pre">gfortran</span></code>:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span></span>$ brew install gcc
+<a class="reference external" href="http://brew.sh/">Homebrew</a> and then use it to install <code class="docutils literal notranslate"><span class="pre">gfortran</span></code>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ brew install gcc
 </pre></div>
 </div>
 <p>On Windows, you’ll have download and install
 <a class="reference external" href="http://tdm-gcc.tdragon.net/">TDM-GCC</a> after you’ve
 installed Anaconda and before you install mtspec. Don’t forget
-to mark the <em>fortran</em> option in the &#8220;gcc&#8221; part of the installation.</p>
+to mark the <em>fortran</em> option in the “gcc” part of the installation.</p>
 </div>
 <div class="section" id="python-and-dependencies">
 <h4>Python and Dependencies<a class="headerlink" href="#python-and-dependencies" title="Permalink to this headline">¶</a></h4>
@@ -125,10 +113,10 @@ dependencies are installed. Otherwise do yourself a favor and download the
 <a class="reference external" href="https://store.continuum.io/cshop/anaconda/">Anaconda</a> Python distribution.
 It is a free scientific Python distribution bundling almost all necessary
 modules with a convenient installer (does not require root access!).
-Once installed assert that <code class="docutils literal"><span class="pre">pip</span></code> and <code class="docutils literal"><span class="pre">conda</span></code> point to the Anaconda
+Once installed assert that <code class="docutils literal notranslate"><span class="pre">pip</span></code> and <code class="docutils literal notranslate"><span class="pre">conda</span></code> point to the Anaconda
 installation folder (you may need to open a new terminal after installing
-Anaconda). Then install <strong>mtspec</strong>&#8216;s dependencies with</p>
-<div class="highlight-bash"><div class="highlight"><pre><span></span>$ conda install numpy pip
+Anaconda). Then install <strong>mtspec</strong>’s dependencies with</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ conda install numpy pip
 </pre></div>
 </div>
 </div>
@@ -138,15 +126,15 @@ Anaconda). Then install <strong>mtspec</strong>&#8216;s dependencies with</p>
 <p>For normal usage just install <strong>mtspec</strong> with</p>
 <div class="section" id="user-installation">
 <h4>User Installation<a class="headerlink" href="#user-installation" title="Permalink to this headline">¶</a></h4>
-<div class="highlight-bash"><div class="highlight"><pre><span></span>$ pip install mtspec
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ pip install mtspec
 </pre></div>
 </div>
 </div>
 <div class="section" id="developer-installation">
 <h4>Developer Installation<a class="headerlink" href="#developer-installation" title="Permalink to this headline">¶</a></h4>
-<p>If you want the bleeding edge version or intend to edit <strong>mtspec</strong>&#8216;s code,
+<p>If you want the bleeding edge version or intend to edit <strong>mtspec</strong>’s code,
 clone the git repository and install in an editable fashion:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span></span>$ git clone https://github.com/krischer/mtspec.git
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ git clone https://github.com/krischer/mtspec.git
 $ <span class="nb">cd</span> mtspec
 $ pip install -v -e .
 </pre></div>
@@ -156,37 +144,37 @@ $ pip install -v -e .
 <div class="section" id="testing">
 <h3>Testing<a class="headerlink" href="#testing" title="Permalink to this headline">¶</a></h3>
 <p>To assert that your installation is working properly, execute</p>
-<div class="highlight-bash"><div class="highlight"><pre><span></span>$ python -m mtspec.tests
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ python -m mtspec.tests
 </pre></div>
 </div>
 <p>and make sure all tests pass. Otherwise please contact the developers.</p>
-<p>If you intend to develop for <code class="docutils literal"><span class="pre">mtspec</span></code>, please also install <code class="docutils literal"><span class="pre">flake8&gt;=3</span></code> -
+<p>If you intend to develop for <code class="docutils literal notranslate"><span class="pre">mtspec</span></code>, please also install <code class="docutils literal notranslate"><span class="pre">flake8&gt;=3</span></code> -
 the tests will then also include code formatting checks.</p>
 </div>
 <div class="section" id="build-the-documentation">
 <h3>Build the Documentation<a class="headerlink" href="#build-the-documentation" title="Permalink to this headline">¶</a></h3>
-<p>The documentation requires <code class="docutils literal"><span class="pre">sphinx</span></code> and the Alabaster theme. Install both
+<p>The documentation requires <code class="docutils literal notranslate"><span class="pre">sphinx</span></code> and the Alabaster theme. Install both
 with</p>
-<div class="highlight-bash"><div class="highlight"><pre><span></span>$ pip install sphinx alabaster
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ pip install sphinx alabaster
 </pre></div>
 </div>
 <p>Build the doc with</p>
-<div class="highlight-bash"><div class="highlight"><pre><span></span>$ <span class="nb">cd</span> doc
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ <span class="nb">cd</span> doc
 $ make html
 </pre></div>
 </div>
-<p>Finally open the <code class="docutils literal"><span class="pre">doc/html_doc/index.html</span></code> file with the browser of your
+<p>Finally open the <code class="docutils literal notranslate"><span class="pre">doc/html_doc/index.html</span></code> file with the browser of your
 choice.</p>
 </div>
 <div class="section" id="additional-notes">
 <h3>Additional Notes<a class="headerlink" href="#additional-notes" title="Permalink to this headline">¶</a></h3>
-<p>In case you get the error message <code class="docutils literal"><span class="pre">&quot;Internal</span> <span class="pre">Error:</span> <span class="pre">printf</span> <span class="pre">is</span> <span class="pre">broken&quot;</span></code>, you
+<p>In case you get the error message <code class="docutils literal notranslate"><span class="pre">&quot;Internal</span> <span class="pre">Error:</span> <span class="pre">printf</span> <span class="pre">is</span> <span class="pre">broken&quot;</span></code>, you
 can use the following workaround:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span></span><span class="nb">export</span> <span class="nv">LC_ALL</span><span class="o">=</span>C
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span> <span class="nv">LC_ALL</span><span class="o">=</span>C
 python script.py
 </pre></div>
 </div>
-<p>This is a known <code class="docutils literal"><span class="pre">gfortran</span></code> bug, see
+<p>This is a known <code class="docutils literal notranslate"><span class="pre">gfortran</span></code> bug, see
 <a class="reference external" href="http://projects.scipy.org/scipy/ticket/696">here</a>
 for an explanation.</p>
 </div>
@@ -263,12 +251,14 @@ for an explanation.</p>
 
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -279,8 +269,8 @@ for an explanation.</p>
       &copy;2009-2016, Lion Krischer, Moritz Beyreuther.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.5.2</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |
       <a href="_sources/index.rst.txt"

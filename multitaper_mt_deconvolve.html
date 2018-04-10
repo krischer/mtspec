@@ -1,26 +1,15 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
     <title>mtspec.mt_deconvolve &#8212; mtspec 0.3.x documentation</title>
-    
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    './',
-        VERSION:     '0.3.x',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" src="_static/documentation_options.js"></script>
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
@@ -37,8 +26,7 @@
 
     <link rel="stylesheet" href="_static/custom.css" type="text/css" />
 
-  </head>
-  <body role="document">
+  </head><body>
   
 
     <div class="document">
@@ -64,25 +52,25 @@ Bulletin of the Seismological Society of America Dec 2000,
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>data_a</strong> (<a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.12)"><code class="xref py py-class docutils literal"><span class="pre">numpy.ndarray</span></code></a>) &#8211; Data for first time series.</li>
-<li><strong>data_b</strong> (<a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.12)"><code class="xref py py-class docutils literal"><span class="pre">numpy.ndarray</span></code></a>) &#8211; Data for second time series.</li>
-<li><strong>delta</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#float" title="(in Python v3.5)"><em>float</em></a>) &#8211; Sample spacing of the data.</li>
-<li><strong>nfft</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#int" title="(in Python v3.5)"><em>int</em></a>) &#8211; Number of points for the FFT. If <code class="docutils literal"><span class="pre">nfft</span> <span class="pre">==</span> <span class="pre">None</span></code>, no zero
+<li><strong>data_a</strong> (<a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a>) – Data for first time series.</li>
+<li><strong>data_b</strong> (<a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a>) – Data for second time series.</li>
+<li><strong>delta</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#float" title="(in Python v3.5)"><em>float</em></a>) – Sample spacing of the data.</li>
+<li><strong>nfft</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#int" title="(in Python v3.5)"><em>int</em></a>) – Number of points for the FFT. If <code class="docutils literal notranslate"><span class="pre">nfft</span> <span class="pre">==</span> <span class="pre">None</span></code>, no zero
 padding will be applied before the FFT.</li>
-<li><strong>time_bandwidth</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#float" title="(in Python v3.5)"><em>float</em></a>) &#8211; Time-bandwidth product. Common values are 2, 3, 4,
+<li><strong>time_bandwidth</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#float" title="(in Python v3.5)"><em>float</em></a>) – Time-bandwidth product. Common values are 2, 3, 4,
 and numbers in between.</li>
-<li><strong>number_of_tapers</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#int" title="(in Python v3.5)"><em>int</em></a>) &#8211; Number of tapers to use. Defaults to
-<code class="docutils literal"><span class="pre">int(2*time_bandwidth)</span> <span class="pre">-</span> <span class="pre">1</span></code>. This is maximum senseful amount. More
+<li><strong>number_of_tapers</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#int" title="(in Python v3.5)"><em>int</em></a>) – Number of tapers to use. Defaults to
+<code class="docutils literal notranslate"><span class="pre">int(2*time_bandwidth)</span> <span class="pre">-</span> <span class="pre">1</span></code>. This is maximum senseful amount. More
 tapers will have no great influence on the final spectrum but increase
 the calculation time. Use fewer tapers for a faster calculation.</li>
-<li><strong>weights</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/stdtypes.html#str" title="(in Python v3.5)"><em>str</em></a>) &#8211; <code class="docutils literal"><span class="pre">&quot;adaptive&quot;</span></code> or <code class="docutils literal"><span class="pre">&quot;constant&quot;</span></code> weights.</li>
-<li><strong>demean</strong> &#8211; Force the complex TF to be demeaned.</li>
-<li><strong>fmax</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#float" title="(in Python v3.5)"><em>float</em></a>) &#8211; Maximum frequency for lowpass cosine filter. Set this to
+<li><strong>weights</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/stdtypes.html#str" title="(in Python v3.5)"><em>str</em></a>) – <code class="docutils literal notranslate"><span class="pre">&quot;adaptive&quot;</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;constant&quot;</span></code> weights.</li>
+<li><strong>demean</strong> – Force the complex TF to be demeaned.</li>
+<li><strong>fmax</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#float" title="(in Python v3.5)"><em>float</em></a>) – Maximum frequency for lowpass cosine filter. Set this to
 zero to not have a filter.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Returns a dictionary with 5 <a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.12)"><code class="xref py py-class docutils literal"><span class="pre">numpy.ndarray</span></code></a>&#8216;s. See the note
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Returns a dictionary with 5 <a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a>’s. See the note
 below.</p>
 </td>
 </tr>
@@ -92,11 +80,11 @@ below.</p>
 <p class="first admonition-title">Note</p>
 <p>Returns a dictionary with five arrays:</p>
 <ul class="last simple">
-<li><code class="docutils literal"><span class="pre">&quot;deconvolved&quot;</span></code>: Deconvolved time series.</li>
-<li><code class="docutils literal"><span class="pre">&quot;spectrum_a&quot;</span></code>: Spectrum of the first time series.</li>
-<li><code class="docutils literal"><span class="pre">&quot;spectrum_b&quot;</span></code>:  Spectrum of the second time series.</li>
-<li><code class="docutils literal"><span class="pre">&quot;spectral_ratio&quot;</span></code>: The ratio of both spectra.</li>
-<li><code class="docutils literal"><span class="pre">&quot;frequencies&quot;</span></code>: The used frequency bins for the spectra.</li>
+<li><code class="docutils literal notranslate"><span class="pre">&quot;deconvolved&quot;</span></code>: Deconvolved time series.</li>
+<li><code class="docutils literal notranslate"><span class="pre">&quot;spectrum_a&quot;</span></code>: Spectrum of the first time series.</li>
+<li><code class="docutils literal notranslate"><span class="pre">&quot;spectrum_b&quot;</span></code>:  Spectrum of the second time series.</li>
+<li><code class="docutils literal notranslate"><span class="pre">&quot;spectral_ratio&quot;</span></code>: The ratio of both spectra.</li>
+<li><code class="docutils literal notranslate"><span class="pre">&quot;frequencies&quot;</span></code>: The used frequency bins for the spectra.</li>
 </ul>
 </div>
 </dd></dl>
@@ -159,12 +147,14 @@ below.</p>
 
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -175,8 +165,8 @@ below.</p>
       &copy;2009-2016, Lion Krischer, Moritz Beyreuther.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.5.2</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |
       <a href="_sources/multitaper_mt_deconvolve.rst.txt"

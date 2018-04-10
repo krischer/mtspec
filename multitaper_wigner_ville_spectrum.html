@@ -1,26 +1,15 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
     <title>mtspec.wigner_ville_spectrum &#8212; mtspec 0.3.x documentation</title>
-    
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    './',
-        VERSION:     '0.3.x',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" src="_static/documentation_options.js"></script>
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
@@ -37,8 +26,7 @@
 
     <link rel="stylesheet" href="_static/custom.css" type="text/css" />
 
-  </head>
-  <body role="document">
+  </head><body>
   
 
     <div class="document">
@@ -58,7 +46,7 @@ spectrogram but introduces many artifacts and possibly negative values
 which are not physical. This can be alleviated a bit by applying a
 smoothing kernel which is also known as a reduced interference
 distribution (RID).</p>
-<p>Wraps the <code class="docutils literal"><span class="pre">wv_spec()</span></code> and <code class="docutils literal"><span class="pre">wv_spec_to_array()</span></code> subroutines of the
+<p>Wraps the <code class="docutils literal notranslate"><span class="pre">wv_spec()</span></code> and <code class="docutils literal notranslate"><span class="pre">wv_spec_to_array()</span></code> subroutines of the
 Fortran library.</p>
 <p>It is very slow for large arrays so try with a small one (&lt; 5000 samples)
 first.</p>
@@ -67,19 +55,19 @@ first.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>data</strong> (<a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.12)"><em>numpy.ndarray</em></a>) &#8211; The input signal.</li>
-<li><strong>delta</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#float" title="(in Python v3.5)"><em>float</em></a>) &#8211; The sampling interval of the data.</li>
-<li><strong>time_bandwidth</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#float" title="(in Python v3.5)"><em>float</em></a>) &#8211; Time bandwidth product for the tapers.</li>
-<li><strong>number_of_tapers</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#int" title="(in Python v3.5)"><em>int</em></a>) &#8211; Number of tapers to use. If <code class="docutils literal"><span class="pre">None</span></code>, the number
+<li><strong>data</strong> (<a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.14)"><em>numpy.ndarray</em></a>) – The input signal.</li>
+<li><strong>delta</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#float" title="(in Python v3.5)"><em>float</em></a>) – The sampling interval of the data.</li>
+<li><strong>time_bandwidth</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#float" title="(in Python v3.5)"><em>float</em></a>) – Time bandwidth product for the tapers.</li>
+<li><strong>number_of_tapers</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#int" title="(in Python v3.5)"><em>int</em></a>) – Number of tapers to use. If <code class="docutils literal notranslate"><span class="pre">None</span></code>, the number
 will be automatically determined from the time bandwidth product
 which is usually the optimal choice.</li>
-<li><strong>smoothing_filter</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/stdtypes.html#str" title="(in Python v3.5)"><em>str</em></a>) &#8211; One of <code class="docutils literal"><span class="pre">&quot;boxcar&quot;</span></code>, <code class="docutils literal"><span class="pre">&quot;gauss&quot;</span></code> or just <code class="docutils literal"><span class="pre">None</span></code></li>
-<li><strong>filter_width</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#int" title="(in Python v3.5)"><em>int</em></a>) &#8211; Filter width in samples.</li>
-<li><strong>frequency_divider</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#int" title="(in Python v3.5)"><em>int</em></a>) &#8211; This method will always calculate all
-frequencies from 0 ... Nyquist frequency. This parameter allows the
+<li><strong>smoothing_filter</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/stdtypes.html#str" title="(in Python v3.5)"><em>str</em></a>) – One of <code class="docutils literal notranslate"><span class="pre">&quot;boxcar&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;gauss&quot;</span></code> or just <code class="docutils literal notranslate"><span class="pre">None</span></code></li>
+<li><strong>filter_width</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#int" title="(in Python v3.5)"><em>int</em></a>) – Filter width in samples.</li>
+<li><strong>frequency_divider</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#int" title="(in Python v3.5)"><em>int</em></a>) – This method will always calculate all
+frequencies from 0 … Nyquist frequency. This parameter allows the
 adjustment of the maximum frequency, so that the frequencies range
 from 0 .. Nyquist frequency / int(frequency_divider).</li>
-<li><strong>verbose</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#bool" title="(in Python v3.5)"><em>bool</em></a>) &#8211; Verbose output on/off.</li>
+<li><strong>verbose</strong> (<a class="reference external" href="https://docs.python.org/3.5/library/functions.html#bool" title="(in Python v3.5)"><em>bool</em></a>) – Verbose output on/off.</li>
 </ul>
 </td>
 </tr>
@@ -89,7 +77,7 @@ from 0 .. Nyquist frequency / int(frequency_divider).</li>
 <p>This example demonstrates how to plot a signal, its multitaper spectral
 estimate, and its Wigner-Ville time-frequency distribution. The signal
 is sinusoidal overlaid with two simple linear chirps.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">mtspec</span> <span class="k">import</span> <span class="n">mtspec</span><span class="p">,</span> <span class="n">wigner_ville_spectrum</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">mtspec.util</span> <span class="k">import</span> <span class="n">signal_bursts</span>
@@ -97,17 +85,17 @@ is sinusoidal overlaid with two simple linear chirps.</p>
 </pre></div>
 </div>
 <p>Get the example signal.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">signal_bursts</span><span class="p">()</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">signal_bursts</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>Plot the data on the top axes.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ax1</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_axes</span><span class="p">([</span><span class="mf">0.2</span><span class="p">,</span><span class="mf">0.75</span><span class="p">,</span> <span class="mf">0.79</span><span class="p">,</span> <span class="mf">0.23</span><span class="p">])</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ax1</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_axes</span><span class="p">([</span><span class="mf">0.2</span><span class="p">,</span><span class="mf">0.75</span><span class="p">,</span> <span class="mf">0.79</span><span class="p">,</span> <span class="mf">0.23</span><span class="p">])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;0.1&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">ax1</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
 </pre></div>
 </div>
 <p>Plot its spectral estimate on the side.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ax2</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_axes</span><span class="p">([</span><span class="mf">0.06</span><span class="p">,</span><span class="mf">0.02</span><span class="p">,</span><span class="mf">0.13</span><span class="p">,</span><span class="mf">0.69</span><span class="p">])</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ax2</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_axes</span><span class="p">([</span><span class="mf">0.06</span><span class="p">,</span><span class="mf">0.02</span><span class="p">,</span><span class="mf">0.13</span><span class="p">,</span><span class="mf">0.69</span><span class="p">])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">spec</span><span class="p">,</span> <span class="n">freq</span> <span class="o">=</span> <span class="n">mtspec</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mf">3.5</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">ax2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">spec</span><span class="p">,</span> <span class="n">freq</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;0.1&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">ax2</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">spec</span><span class="o">.</span><span class="n">max</span><span class="p">())</span>
@@ -116,7 +104,7 @@ is sinusoidal overlaid with two simple linear chirps.</p>
 </pre></div>
 </div>
 <p>Create and plot the Wigner-Ville distribution.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">wv</span> <span class="o">=</span> <span class="n">wigner_ville_spectrum</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mf">3.5</span><span class="p">,</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">wv</span> <span class="o">=</span> <span class="n">wigner_ville_spectrum</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mf">3.5</span><span class="p">,</span>
 <span class="gp">... </span>                           <span class="n">smoothing_filter</span><span class="o">=</span><span class="s1">&#39;gauss&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">ax3</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_axes</span><span class="p">([</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">,</span> <span class="mf">0.79</span><span class="p">,</span> <span class="mf">0.69</span><span class="p">])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">ax3</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">([])</span>
@@ -190,12 +178,14 @@ is sinusoidal overlaid with two simple linear chirps.</p>
 
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -206,8 +196,8 @@ is sinusoidal overlaid with two simple linear chirps.</p>
       &copy;2009-2016, Lion Krischer, Moritz Beyreuther.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.5.2</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |
       <a href="_sources/multitaper_wigner_ville_spectrum.rst.txt"
