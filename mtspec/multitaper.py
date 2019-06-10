@@ -82,7 +82,7 @@ def mtspec(data, delta, time_bandwidth, nfft=None, number_of_tapers=None,
         also return (in the given order) (multidimensional) arrays containing
         the eigenspectra, the corresponding eigencoefficients and an array
         containing the weights for each eigenspectra normalized so that the sum
-        of squares over the eigenspectra is one.  If statistics is True is will
+        of squares over the eigenspectra is one.  If statistics is True it will
         also return (in the given order) (multidimensional) arrays containing
         the jackknife 5% and 95% confidence intervals, the F statistics for
         single line and the number of degrees of freedom for each frequency
