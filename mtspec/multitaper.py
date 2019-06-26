@@ -777,7 +777,7 @@ class _MtspecType(object):
             raise ValueError("dtype must be either 'float32' or 'float64'"
                              + " or 'complex32'")
         self.float = dtype
-        self.real = 'float%d' % (float(dtype[-2:]))
+        #self.real = 'float%d' % (float(dtype[-2:]))
         self.complex = 'complex%d' % (2*float(dtype[-2:]))
         self.c_float = self.struct[dtype][0]
         self.pointer = C.POINTER(self.c_float)
@@ -793,7 +793,7 @@ class _MtspecType(object):
         """
         if complex:
             return np.empty(shape, dtype=self.complex, order=self.order)
-        return np.empty(shape, dtype=self.real, order=self.order)
+        return np.empty(shape, dtype=self.float, order=self.order)
 
     def p(self, ndarray, complex=False):
         """
