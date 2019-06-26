@@ -96,13 +96,13 @@ def mtspec(data, delta, time_bandwidth, nfft=None, number_of_tapers=None,
     complex = any(np.iscomplex(data))
     if nfft is None or nfft == npts:
         nfft = npts
-        if complex:
-            mt = _MtspecType("complex64") # mtspec_c_
-        else:
-            mt = _MtspecType("float64")  # mtspec_d_
+        mt = _MtspecType("float64")  # mtspec_d_
     else:
         mt = _MtspecType("float32")  # mtspec_pad_
         quadratic = False
+    if complex:
+        mt = _MtspecType("float32")  # mtspec_d_
+        mt.mtspec = mtspeclib.mtspec_c_
     # Use the optimal number of tapers in case no number is specified.
     if number_of_tapers is None:
         number_of_tapers = int(2 * time_bandwidth) - 1
@@ -765,8 +765,7 @@ class _MtspecType(object):
     the fortran code and provides some helper functions.
     """
     struct = {"float32": (C.c_float, mtspeclib.mtspec_pad_),
-              "float64": (C.c_double, mtspeclib.mtspec_d_),
-              "complex64": (C.c_double, mtspeclib.mtspec_c_)}
+              "float64": (C.c_double, mtspeclib.mtspec_d_)}
 
     def __init__(self, dtype):
         """
@@ -779,9 +778,8 @@ class _MtspecType(object):
                              + " or 'complex32'")
         self.float = dtype
         self.real = 'float%d' % (float(dtype[-2:]))
-        self.complex = 'complex%d' % (2 * float(dtype[-2:]))
-        #self.c_float = self.struct[dtype][0]
-        self.c_float = C.c_double
+        self.complex = 'complex%d' % (2*float(dtype[-2:]))
+        self.c_float = self.struct[dtype][0]
         self.pointer = C.POINTER(self.c_float)
         self.order = "F"
         self.mtspec = self.struct[dtype][1]
@@ -807,7 +805,8 @@ class _MtspecType(object):
         # short variable name for passing as argument in function calls
         if ndarray is None:
             return None
-        #if complex:
-        return ndarray.ctypes.data_as(self.pointer)
-        #else:
-        #    return ndarray.ctypes.data_as(self.pointer)
+        if complex:
+            pointer_complex = C.POINTER(2*self.c_float)
+            return ndarray.ctypes.data_as(pointer_complex)
+        else:
+            return ndarray.ctypes.data_as(self.pointer)
