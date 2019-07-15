@@ -101,7 +101,7 @@ def mtspec(data, delta, time_bandwidth, nfft=None, number_of_tapers=None,
         mt = _MtspecType("float32")  # mtspec_pad_
         quadratic = False
     if complex:
-        mt = _MtspecType("float32")  # mtspec_d_
+        mt = _MtspecType("float32")  # mtspec_c_
         mt.mtspec = mtspeclib.mtspec_c_
     # Use the optimal number of tapers in case no number is specified.
     if number_of_tapers is None:
@@ -110,7 +110,7 @@ def mtspec(data, delta, time_bandwidth, nfft=None, number_of_tapers=None,
     if complex:
         data = np.require(data, dtype=mt.complex, requirements=[mt.order])
     else:
-        data = np.require(data, dtype=mt.real, requirements=[mt.order])
+        data = np.require(data, dtype=mt.float, requirements=[mt.order])
     # Get some information necessary for the call to the Fortran library.
     if complex:
         number_of_frequency_bins = nfft
@@ -175,6 +175,7 @@ def mtspec(data, delta, time_bandwidth, nfft=None, number_of_tapers=None,
             mt.p(eigenspectra), rshape, mt.p(f_statistics), fcrit, None]
     # diffrent arguments, depending on mtspec_pad_ or mtspec_d_, adapt
     if npts == nfft:
+        #print('npts == nfft')
         args.pop(1)
 
     # finally call the shared library function
@@ -779,6 +780,8 @@ class _MtspecType(object):
         self.float = dtype
         #self.real = 'float%d' % (float(dtype[-2:]))
         self.complex = 'complex%d' % (2*float(dtype[-2:]))
+        #self.complex = 'complex%d' % (float(dtype[-2:]))
+        # aboves leads to: TypeError: data type "complex32" not understood
         self.c_float = self.struct[dtype][0]
         self.pointer = C.POINTER(self.c_float)
         self.order = "F"
