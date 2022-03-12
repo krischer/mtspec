@@ -1,3 +1,13 @@
+# Unmaintained!!
+
+This package is currently unmaintained so please use at your own risk. If you want to take over maintenance of this package, please let me know.
+
+I'd recommend to use this package instead: https://github.com/gaprieto/multitaper
+
+It is a Python implementation of the multitaper Fortran module (by the same author!) this package here wraps. Thus it makes sense to sunset this package and focus any potential efforts on the new Python implementation.
+
+---
+
 # mtspec - Multitaper Spectral Estimation
 
 [![Build Status](https://travis-ci.org/krischer/mtspec.svg?branch=master)](https://travis-ci.org/krischer/mtspec) [![Anaconda-Server Badge](https://anaconda.org/conda-forge/mtspec/badges/version.svg)](https://anaconda.org/conda-forge/mtspec) [![PyPI Version](https://img.shields.io/pypi/v/mtspec.svg)](https://pypi.python.org/pypi/mtspec) [![Supported Python versions](https://img.shields.io/pypi/pyversions/mtspec.svg)](https://pypi.python.org/pypi/mtspec/) [![License](https://img.shields.io/pypi/l/mtspec.svg)](https://pypi.python.org/pypi/mtspec/) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.321789.svg)](https://doi.org/10.5281/zenodo.321789)
