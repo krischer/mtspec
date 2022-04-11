@@ -71,6 +71,28 @@ class MtSpecTestCase(unittest.TestCase):
         np.testing.assert_almost_equal(freq, freq2)
         np.testing.assert_almost_equal(spec / spec, spec2 / spec, 5)
 
+    def test_multitaper_spectrum_complex_input(self):
+        """
+        Test for mtspec. The result is compared to the output of
+        test_recreatePaperFigures.py in the same directory. This is assumed to
+        be correct because they are identical to the figures in the paper on
+        the machine that created these.
+        """
+        data = _load_mtdata('PASC.dat.gz')
+        # Calculate the spectra.
+        spec, freq = mtspec(data+1j*data, 1.0, 4.5, number_of_tapers=5)
+        # No NaNs are supposed to be in the output.
+        self.assertEqual(np.isnan(spec).any(), False)
+        self.assertEqual(np.isnan(spec).any(), False)
+        # Load the good data.
+        datafile = os.path.join(os.path.dirname(__file__), 'data',
+                                'multitaper.npz')
+        spec2 = np.load(datafile)['spec']
+        freq2 = np.arange(43201) * 1.15740741e-05
+        # Compare, normalize for subdigit comparision
+        np.testing.assert_almost_equal(freq, freq2)
+        np.testing.assert_almost_equal(spec / spec, 2*spec2 / spec, 5)
+
     def test_multitaper_spectrum_optional_output(self):
         """
         Test for mtspec. The result is compared to the output of

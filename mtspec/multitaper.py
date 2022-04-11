@@ -93,19 +93,29 @@ def mtspec(data, delta, time_bandwidth, nfft=None, number_of_tapers=None,
 
     # Depending if nfft is specified or not initialte MtspecTytpe
     # for mtspec_pad_ or mtspec_d_
+    complex = any(np.iscomplex(data))
     if nfft is None or nfft == npts:
         nfft = npts
         mt = _MtspecType("float64")  # mtspec_d_
     else:
         mt = _MtspecType("float32")  # mtspec_pad_
         quadratic = False
+    if complex:
+        mt = _MtspecType("float32")  # mtspec_c_
+        mt.mtspec = mtspeclib.mtspec_c_
     # Use the optimal number of tapers in case no number is specified.
     if number_of_tapers is None:
         number_of_tapers = int(2 * time_bandwidth) - 1
     # Transform the data to work with the library.
-    data = np.require(data, dtype=mt.float, requirements=[mt.order])
+    if complex:
+        data = np.require(data, dtype=mt.complex, requirements=[mt.order])
+    else:
+        data = np.require(data, dtype=mt.float, requirements=[mt.order])
     # Get some information necessary for the call to the Fortran library.
-    number_of_frequency_bins = int(nfft / 2) + 1
+    if complex:
+        number_of_frequency_bins = nfft
+    else:
+        number_of_frequency_bins = int(nfft / 2) + 1
     # Create output arrays.
     spectrum = mt.empty(number_of_frequency_bins)
     frequency_bins = mt.empty(number_of_frequency_bins)
@@ -155,7 +165,7 @@ def mtspec(data, delta, time_bandwidth, nfft=None, number_of_tapers=None,
         fcrit = None
     # Call the library. Fortran passes pointers!
     args = [C.byref(C.c_int(npts)), C.byref(C.c_int(nfft)),
-            C.byref(mt.c_float(delta)), mt.p(data),
+            C.byref(mt.c_float(delta)), mt.p(data, complex),
             C.byref(mt.c_float(time_bandwidth)),
             C.byref(C.c_int(number_of_tapers)),
             C.byref(C.c_int(number_of_frequency_bins)), mt.p(frequency_bins),
@@ -165,6 +175,7 @@ def mtspec(data, delta, time_bandwidth, nfft=None, number_of_tapers=None,
             mt.p(eigenspectra), rshape, mt.p(f_statistics), fcrit, None]
     # diffrent arguments, depending on mtspec_pad_ or mtspec_d_, adapt
     if npts == nfft:
+        #print('npts == nfft')
         args.pop(1)
 
     # finally call the shared library function
@@ -764,9 +775,13 @@ class _MtspecType(object):
         :param dtype: 'float32' or 'float64'
         """
         if dtype not in self.struct.keys():
-            raise ValueError("dtype must be either 'float32' or 'float64'")
+            raise ValueError("dtype must be either 'float32' or 'float64'"
+                             + " or 'complex32'")
         self.float = dtype
-        self.complex = 'complex%d' % (2 * float(dtype[-2:]))
+        #self.real = 'float%d' % (float(dtype[-2:]))
+        self.complex = 'complex%d' % (2*float(dtype[-2:]))
+        #self.complex = 'complex%d' % (float(dtype[-2:]))
+        # aboves leads to: TypeError: data type "complex32" not understood
         self.c_float = self.struct[dtype][0]
         self.pointer = C.POINTER(self.c_float)
         self.order = "F"
@@ -783,7 +798,7 @@ class _MtspecType(object):
             return np.empty(shape, dtype=self.complex, order=self.order)
         return np.empty(shape, dtype=self.float, order=self.order)
 
-    def p(self, ndarray):
+    def p(self, ndarray, complex=False):
         """
         A wrapper around ctypes.data_as which automatically sets the
         correct type. Returns none if ndarray is None.
@@ -793,4 +808,8 @@ class _MtspecType(object):
         # short variable name for passing as argument in function calls
         if ndarray is None:
             return None
-        return ndarray.ctypes.data_as(self.pointer)
+        if complex:
+            pointer_complex = C.POINTER(2*self.c_float)
+            return ndarray.ctypes.data_as(pointer_complex)
+        else:
+            return ndarray.ctypes.data_as(self.pointer)
