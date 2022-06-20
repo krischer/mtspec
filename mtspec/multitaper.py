@@ -600,7 +600,7 @@ def mt_coherence(df, xi, xj, tbp, kspec, nf, p, **kwargs):
                 'cohe_ci', 'phase_ci', 'iadapt'):
         kwargs.setdefault(key, None)
         if key in ('cohe_ci', 'phase_ci') and kwargs[key]:
-            kwargs[key] = mt.empty(nf, 2)
+            kwargs[key] = mt.empty((nf, 2))
             args.append(mt.p(kwargs[key]))
         elif key == 'iadapt' and kwargs[key]:
             args.append(C.byref(C.c_int(kwargs[key])))
